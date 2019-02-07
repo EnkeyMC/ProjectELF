@@ -15,7 +15,8 @@ before_install:
   - sudo apt-get -y update
 
 install:
-  - sudo apt-get install -y qt511base
+  - sudo apt-get install libgl1-mesa-dev
+  - sudo apt-get install -y qt511base qt511declarative
 
 before_script:
   - QTDIR="/opt/qt511"
