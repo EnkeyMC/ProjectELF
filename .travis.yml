@@ -1,0 +1,20 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    packages:
+      - cmake
+
+before_install:
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo apt-get update -qq
+  - sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev
+  - sudo apt-get install qt5-default qttools5-dev-tools
+
+script:
+  - mkdir build && cd build
+  - cmake .. && make && ProjectElf -v && CTEST_OUTPUT_ON_FAILURE=1 GTEST_COLOR=1 make test
