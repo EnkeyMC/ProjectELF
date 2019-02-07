@@ -25,4 +25,4 @@ before_script:
 
 script:
   - mkdir build && cd build
-  - cmake .. && make && ProjectElf -v && CTEST_OUTPUT_ON_FAILURE=1 GTEST_COLOR=1 make test
+  - cmake .. && make && ./ProjectElf -v && CTEST_OUTPUT_ON_FAILURE=1 GTEST_COLOR=1 make test
