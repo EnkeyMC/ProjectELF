@@ -10,6 +10,7 @@ environment:
 install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
   - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
+  - set PATH=%PATH:C:\Program Files\Git\usr\bin=% # trick to remove sh.exe
 
 before_build:
   - mkdir build
