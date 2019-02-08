@@ -23,4 +23,6 @@ build_script:
   - mingw32-make
 
 test_script:
+  - set CTEST_OUTPUT_ON_FAILURE=1
+  - set GTEST_COLOR=1
   - mingw32-make test
