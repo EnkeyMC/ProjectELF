@@ -9,7 +9,8 @@ environment:
 
 install:
   - set PATH=%PATH%;%QTDIR%\bin
-  - set PATH=C:\Qt\Tools\mingw530_32;%PATH%
+  - set CC=C:\Qt\Tools\mingw530_32\bin\gcc.exe
+  - set CXX=C:\Qt\Tools\mingw530_32\bin\g++.exe
   - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
   - set PATH=%PATH:C:\Program Files\Git\usr\bin=% # trick to remove sh.exe
 
