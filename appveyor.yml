@@ -1,0 +1,23 @@
+version: 1.0.{build}
+
+image: Visual Studio 2015
+configuration: Debug
+platform: x64
+
+environment:
+  QTDIR: C:\Qt\5.11.2\mingw53_32
+
+install:
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
+  - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
+
+before_build:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -G"CodeBlocks - MinGW Makefiles" ..
+
+build_script:
+  - mingw32-make
+
+test_script:
+  - mingw32-make test
