@@ -8,7 +8,7 @@ environment:
   QTDIR: C:\Qt\5.11.2\mingw53_32
 
 install:
-  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
+  - set PATH=%PATH%;%QTDIR%\bin;C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1
   - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
   - set PATH=%PATH:C:\Program Files\Git\usr\bin=% # trick to remove sh.exe
 

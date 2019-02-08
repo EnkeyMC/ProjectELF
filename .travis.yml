@@ -24,5 +24,8 @@ before_script:
   - source /opt/qt511/bin/qt511-env.sh
 
 script:
-  - mkdir build && cd build
-  - cmake .. && make && ls -l && CTEST_OUTPUT_ON_FAILURE=1 GTEST_COLOR=1 make test
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - CTEST_OUTPUT_ON_FAILURE=1 GTEST_COLOR=1 make test
