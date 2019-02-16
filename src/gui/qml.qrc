@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/components/ViewSwitchButtons.qml</file>
+        <file>qml/components/MainMenuBar.qml</file>
+        <file>qml/components/FileTabButton.qml</file>
+        <file>qml/components/StatusBar.qml</file>
+        <file>qml/components/FilePane.qml</file>
+        <file>qml/singletons/View.qml</file>
+        <file>qml/singletons/qmldir</file>
     </qresource>
 </RCC>

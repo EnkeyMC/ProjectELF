@@ -1,6 +1,9 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import QtGraphicalEffects 1.0
+
+import "components"
 
 ApplicationWindow {
     id: mainWindow
@@ -10,72 +13,32 @@ ApplicationWindow {
     title: qsTr("ProjectELF")
 
     menuBar: RowLayout {
-        MenuBar {
+        MainMenuBar {
             Layout.fillWidth: true
-
-            Menu {
-                title: qsTr("&File")
-                Action { text: qsTr("&Open...") }
-                Action { text: qsTr("&Save") }
-                Action { text: qsTr("Save &As...") }
-                MenuSeparator { }
-                Action { text: qsTr("&Quit") }
-            }
-            Menu {
-                title: qsTr("&Edit")
-                Action { text: qsTr("Cu&t") }
-                Action { text: qsTr("&Copy") }
-                Action { text: qsTr("&Paste") }
-            }
-            Menu {
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
-            }
         }
 
-        ButtonGroup {
-            buttons: btns.children
-        }
-
-        RowLayout {
-            id: btns
-
-            RadioButton {
-                text: qsTr("View")
-                checked: true
-            }
-
-            RadioButton {
-                text: qsTr("Edit")
-            }
+        ViewSwitchButtons {
+            id: viewSwitch
         }
     }
 
-    footer: Rectangle {
-        color: "#cccccc"
+    footer: StatusBar {
         width: mainWindow.width
-        height: 30
-
-        Behavior on color { PropertyAnimation{} }
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onHoveredChanged: parent.color = "#222222"
-        }
     }
 
     ColumnLayout {
+        spacing: 0
         anchors.fill: parent
 
         TabBar {
             id: fileTabs
+            position: TabBar.Header
 
-            TabButton {
+            FileTabButton {
                 text: qsTr("file1")
             }
 
-            TabButton {
+            FileTabButton {
                 text: qsTr("file2")
             }
         }
@@ -86,16 +49,10 @@ ApplicationWindow {
             Layout.fillWidth: true
             currentIndex: fileTabs.currentIndex
 
-            Item {
-                id: fileTab
-                Text {
-                    id: text1
-                    text: qsTr("longer longer longer longer longer longer longer text")
-                }
+            FilePane {
             }
 
-            Item {
-                id: file2Tab
+            FilePane {
             }
         }
     }
