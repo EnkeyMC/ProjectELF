@@ -1,7 +1,7 @@
 pragma Singleton
 import QtQuick 2.0
 
-Item {
+QtObject {
     readonly property int _ViewOverview: 0
     readonly property int _ViewEdit: 1
 

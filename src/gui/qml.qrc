@@ -8,5 +8,6 @@
         <file>qml/components/FilePane.qml</file>
         <file>qml/singletons/View.qml</file>
         <file>qml/singletons/qmldir</file>
+        <file>qml/singletons/Style.qml</file>
     </qresource>
 </RCC>
