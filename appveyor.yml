@@ -13,13 +13,11 @@ install:
   - set CXX=C:\Qt\Tools\mingw530_32\bin\g++.exe
   - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
   - set PATH=%PATH:C:\Program Files\Git\usr\bin=% # trick to remove sh.exe
-  - dir C:\Qt\5.11\mingw53_32\lib\cmake\Qt5
 
 before_build:
   - mkdir build
   - cd build
-  - SET
-  - cmake -DCMAKE_PREFIX_PATH=%Qt5_DIR%  -DCMAKE_BUILD_TYPE=Debug -G"CodeBlocks - MinGW Makefiles" ..
+  - cmake -DCMAKE_PREFIX_PATH=C:\Qt\5.11\mingw53_32\lib\cmake\Qt5  -DCMAKE_BUILD_TYPE=Debug -G"CodeBlocks - MinGW Makefiles" ..
 
 build_script:
   - mingw32-make
