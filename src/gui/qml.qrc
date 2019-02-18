@@ -9,5 +9,8 @@
         <file>qml/singletons/View.qml</file>
         <file>qml/singletons/qmldir</file>
         <file>qml/singletons/Style.qml</file>
+        <file>qml/components/MenuPrimary.qml</file>
+        <file>qml/js/utils.js</file>
+        <file>qml/components/PEMenuSeparator.qml</file>
     </qresource>
 </RCC>
