@@ -5,7 +5,7 @@ configuration: Debug
 platform: x64
 
 environment:
-  QTDIR: C:\Qt\5.11\mingw53_32
+  QTDIR: C:\Qt\5.11.3\mingw53_32
 
 install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin
