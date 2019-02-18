@@ -13,7 +13,7 @@ install:
   - set CXX=C:\Qt\Tools\mingw530_32\bin\g++.exe
   - set Qt5_DIR=%QTDIR%\lib\cmake\Qt5
   - set PATH=%PATH:C:\Program Files\Git\usr\bin=% # trick to remove sh.exe
-  - dir C:\Qt\5.11\lib\cmake\
+  - dir C:\Qt\5.11\mingw53_32\lib\cmake\
 
 before_build:
   - mkdir build
