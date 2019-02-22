@@ -4,24 +4,35 @@ import QtQuick.Layouts 1.11
 
 import "../singletons"
 
-RowLayout {
-    id: btns
+Rectangle {
+    color: Style._ColorPrimaryDark
+    width: 200
+    height: Style.mainMenuBar._Height
 
-    Button {
-        text: qsTr("Overview")
-        checkable: true
-        checked: true
-        autoExclusive: true
 
-        onClicked: View.currentView = View._ViewOverview
-    }
+    RowLayout {
+        id: btns
+        anchors.fill: parent
+        spacing: 0
 
-    Button {
-        text: qsTr("Edit")
-        checkable: true
-        autoExclusive: true
+        PEButton {
+            Layout.fillWidth: true
+            text: qsTr("Overview")
+            checkable: true
+            checked: true
+            autoExclusive: true
 
-        onClicked: View.currentView = View._ViewEdit
+            onClicked: View.currentView = View._ViewOverview
+        }
+
+        PEButton {
+            Layout.fillWidth: true
+            text: qsTr("Edit")
+            checkable: true
+            autoExclusive: true
+
+            onClicked: View.currentView = View._ViewEdit
+        }
     }
 }
 

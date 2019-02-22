@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.11
 import QtGraphicalEffects 1.0
 
 import "components"
+import "singletons"
 
 ApplicationWindow {
     id: mainWindow
@@ -13,11 +14,14 @@ ApplicationWindow {
     title: qsTr("ProjectELF")
 
     menuBar: RowLayout {
+        spacing: 0
+
         MainMenuBar {
             Layout.fillWidth: true
         }
 
         ViewSwitchButtons {
+            Layout.fillHeight: true
             id: viewSwitch
         }
     }
@@ -30,15 +34,15 @@ ApplicationWindow {
         spacing: 0
         anchors.fill: parent
 
-        TabBar {
+        PETabBar {
             id: fileTabs
-            position: TabBar.Header
+            Layout.fillWidth: true
 
-            FileTabButton {
+            PEClosableTabButton {
                 text: qsTr("file1")
             }
 
-            FileTabButton {
+            PEClosableTabButton {
                 text: qsTr("file2")
             }
         }
@@ -55,5 +59,9 @@ ApplicationWindow {
             FilePane {
             }
         }
+    }
+
+    background: Rectangle {
+        color: Style._ColorSecondaryDark
     }
 }

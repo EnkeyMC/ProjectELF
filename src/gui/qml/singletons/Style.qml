@@ -22,4 +22,13 @@ QtObject {
         readonly property int _Height: 25
         readonly property int _Width: 200
     }
+
+    readonly property QtObject button: QtObject {
+        readonly property int _Height: 25
+        readonly property int _FontSize: 13
+    }
+
+    readonly property QtObject tabBar: QtObject {
+        readonly property int _Height: 25
+    }
 }
