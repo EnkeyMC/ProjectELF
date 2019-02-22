@@ -17,7 +17,7 @@ install:
 before_build:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_PREFIX_PATH=C:\Qt\5.11\mingw53_32\lib\cmake\Qt5  -DCMAKE_BUILD_TYPE=Debug -G"CodeBlocks - MinGW Makefiles" ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug -G"CodeBlocks - MinGW Makefiles" ..
 
 build_script:
   - mingw32-make
