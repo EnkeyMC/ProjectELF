@@ -7,7 +7,11 @@ import "../singletons"
 TabButton {
     id: control
 
+    padding: 0
+    width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
+
     contentItem: RowLayout {
+        id: layout
 
         Item {
             width: 10
@@ -16,7 +20,7 @@ TabButton {
         Text {
             text: control.text
             font: control.font
-            color: control.checked ? "black" : "white"
+            color: Style._ColorTextDark
 
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter

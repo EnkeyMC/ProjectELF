@@ -39,11 +39,15 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             PEClosableTabButton {
-                text: qsTr("file1")
+                text: qsTr("file1fdsfdsafdasf")
             }
 
             PEClosableTabButton {
                 text: qsTr("file2")
+            }
+
+            PEClosableTabButton {
+                text: qsTr("file3")
             }
         }
 
@@ -62,6 +66,6 @@ ApplicationWindow {
     }
 
     background: Rectangle {
-        color: Style._ColorSecondaryDark
+        color: Style._ColorPrimaryLight
     }
 }

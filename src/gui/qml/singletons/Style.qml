@@ -10,6 +10,10 @@ QtObject {
     readonly property color _ColorSecondaryDark: "#5F6E78"
     readonly property color _ColorAccent: "#4796CC"
 
+    readonly property color _ColorSuccess: "#61cd2e"
+    readonly property color _ColorWarning: "#e4b363"
+    readonly property color _ColorError: "#db162f"
+
     readonly property color _ColorTextLight: "#FFFFFF"
     readonly property color _ColorTextDark: "#000000"
 
@@ -30,5 +34,15 @@ QtObject {
 
     readonly property QtObject tabBar: QtObject {
         readonly property int _Height: 25
+        readonly property int _Spacing: 2
+        readonly property int _TopPadding: 2
+    }
+
+    readonly property QtObject statusBar: QtObject {
+        readonly property int _Height: 20
+    }
+
+    readonly property QtObject progressBar: QtObject {
+        readonly property int _Height: 8
     }
 }

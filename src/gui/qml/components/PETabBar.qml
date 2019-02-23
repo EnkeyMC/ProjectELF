@@ -4,38 +4,24 @@ import QtQuick.Controls 2.4
 import "../singletons"
 
 Rectangle {
-    default property alias _tabButtons: control.data
+    default property alias content: control.contentChildren
     property alias currentIndex: control.currentIndex
 
     color: Style._ColorSecondaryDark
+    height: Style.tabBar._Height + Style.tabBar._TopPadding
 
     TabBar {
         id: control
         height: parent.height
         position: TabBar.Header
+        width: parent.width
 
-        spacing: 2
-
-        contentItem: ListView {
-            model: control.contentModel
-            currentIndex: control.currentIndex
-
-            spacing: control.spacing
-            orientation: ListView.Horizontal
-            boundsBehavior: Flickable.StopAtBounds
-            flickableDirection: Flickable.AutoFlickIfNeeded
-            snapMode: ListView.SnapToItem
-
-            highlightMoveDuration: 0
-            highlightRangeMode: ListView.ApplyRange
-            preferredHighlightBegin: 40
-            preferredHighlightEnd: width - 40
-        }
+        spacing: Style.tabBar._Spacing
+        topPadding: Style.tabBar._TopPadding
 
         background: Rectangle {
             width: control.width
             color: Style._ColorSecondaryDark
         }
     }
-
 }

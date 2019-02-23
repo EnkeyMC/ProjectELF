@@ -7,7 +7,7 @@ import "../singletons"
 Rectangle {
     id: statusBar
     color: Style._ColorPrimaryDark
-    height: 20
+    height: Style.statusBar._Height
 
     RowLayout {
         anchors.fill: parent
@@ -16,8 +16,8 @@ Rectangle {
             width: 5
         }
 
-        ProgressBar {
-            height: statusBar.height
+        PEProgressBar {
+            height: parent.height
             indeterminate: true
         }
 
