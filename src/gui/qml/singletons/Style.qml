@@ -45,4 +45,8 @@ QtObject {
     readonly property QtObject progressBar: QtObject {
         readonly property int _Height: 8
     }
+
+    readonly property QtObject toolBar: QtObject {
+        readonly property int _Height: 30
+    }
 }

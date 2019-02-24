@@ -11,35 +11,45 @@ TabButton {
     width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
 
     contentItem: RowLayout {
+        spacing: 0
         id: layout
 
-        Item {
-            width: 10
+        RowLayout {
+            spacing: 0
+            Layout.fillHeight: true
+
+            Item {
+                width: 10
+            }
+
+            Text {
+                text: control.text
+                font: control.font
+                color: Style._ColorTextDark
+
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Item {
+                width: 10
+            }
         }
 
-        Text {
-            text: control.text
-            font: control.font
-            color: Style._ColorTextDark
-
-            elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
-        }
-
         Item {
-            width: 10
+            Layout.fillWidth: true
         }
 
         Item {
             width: 20
             height: parent.height
 
-            anchors.margins: 20
-
             Button {
                 id: closeBtn
 
-                anchors.fill: parent
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: parent.width
                 text: "×"
 
                 contentItem: Text {
@@ -59,6 +69,6 @@ TabButton {
 
     background: Rectangle {
         implicitHeight: Style.tabBar._Height
-        color: control.checked ? Style._ColorPrimaryLight : Style._ColorSecondaryLight
+        color: !control.checked ? Style._ColorPrimaryLight : Style._ColorSecondaryLight
     }
 }
