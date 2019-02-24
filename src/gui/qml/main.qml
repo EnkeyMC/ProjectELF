@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.0
 
 import "components"
 import "singletons"
+import "controls"
 
 ApplicationWindow {
     id: mainWindow

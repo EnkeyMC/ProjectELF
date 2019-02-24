@@ -3,7 +3,6 @@
         <file>qml/main.qml</file>
         <file>qml/components/ViewSwitchButtons.qml</file>
         <file>qml/components/MainMenuBar.qml</file>
-        <file>qml/components/PEClosableTabButton.qml</file>
         <file>qml/components/StatusBar.qml</file>
         <file>qml/components/FilePane.qml</file>
         <file>qml/singletons/View.qml</file>
@@ -11,10 +10,11 @@
         <file>qml/singletons/Style.qml</file>
         <file>qml/components/MenuPrimary.qml</file>
         <file>qml/js/utils.js</file>
-        <file>qml/components/PEMenuSeparator.qml</file>
-        <file>qml/components/PEButton.qml</file>
-        <file>qml/components/PETabBar.qml</file>
-        <file>qml/components/PEProgressBar.qml</file>
         <file>qml/components/StatusBarText.qml</file>
+        <file>qml/controls/PEButton.qml</file>
+        <file>qml/controls/PEClosableTabButton.qml</file>
+        <file>qml/controls/PEMenuSeparator.qml</file>
+        <file>qml/controls/PEProgressBar.qml</file>
+        <file>qml/controls/PETabBar.qml</file>
     </qresource>
 </RCC>
