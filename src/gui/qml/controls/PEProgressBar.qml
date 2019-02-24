@@ -19,7 +19,6 @@ ProgressBar {
         id: content
         implicitWidth: 200
         implicitHeight: Style.progressBar._Height
-        clip: true
 
         Rectangle {
             id: contentProgress

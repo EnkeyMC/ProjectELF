@@ -9,36 +9,14 @@ import "../controls"
 QQC1.SplitView {
     orientation: Qt.Horizontal
 
-    ColumnLayout {
-        width: 200
-        Layout.minimumWidth: 150
-
-        PEToolBar {
-            Layout.fillWidth: true
-
-            Text {
-                leftPadding: 15
-                anchors.fill: parent
-                text: qsTr("Basic information")
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
-    }
-
-    ColumnLayout {
+    DiagramPane {
         Layout.fillWidth: true
         Layout.minimumWidth: 200
+    }
 
-        PEToolBar {
-            Layout.fillWidth: true
-
-            Text {
-                leftPadding: 15
-                anchors.fill: parent
-                text: qsTr("File structure")
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+    BasicInfoPane {
+        Layout.minimumWidth: 150
+        width: 200
     }
 
     handleDelegate: Rectangle {
