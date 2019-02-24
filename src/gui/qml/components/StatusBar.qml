@@ -21,7 +21,7 @@ Rectangle {
             indeterminate: true
         }
 
-        Text {
+        StatusBarText {
             Layout.leftMargin: 5
             Layout.fillHeight: true
             verticalAlignment: Text.AlignVCenter
@@ -32,7 +32,7 @@ Rectangle {
             Layout.fillWidth: true
         }
 
-        Text {
+        StatusBarText {
             Layout.fillHeight: true
             verticalAlignment: Text.AlignVCenter
             text: qsTr("Errors")

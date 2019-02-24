@@ -15,5 +15,6 @@
         <file>qml/components/PEButton.qml</file>
         <file>qml/components/PETabBar.qml</file>
         <file>qml/components/PEProgressBar.qml</file>
+        <file>qml/components/StatusBarText.qml</file>
     </qresource>
 </RCC>
