@@ -22,5 +22,7 @@
         <file>qml/components/BasicInfoPane.qml</file>
         <file>qml/controls/PEGroupBox.qml</file>
         <file>qml/controls/PETermDefinition.qml</file>
+        <file>qml/components/ViewEdit.qml</file>
+        <file>qml/controls/PESplitView.qml</file>
     </qresource>
 </RCC>
