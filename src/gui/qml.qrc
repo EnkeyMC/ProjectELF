@@ -16,5 +16,11 @@
         <file>qml/controls/PEMenuSeparator.qml</file>
         <file>qml/controls/PEProgressBar.qml</file>
         <file>qml/controls/PETabBar.qml</file>
+        <file>qml/components/ViewOverview.qml</file>
+        <file>qml/controls/PEToolBar.qml</file>
+        <file>qml/components/DiagramPane.qml</file>
+        <file>qml/components/BasicInfoPane.qml</file>
+        <file>qml/controls/PEGroupBox.qml</file>
+        <file>qml/controls/PETermDefinition.qml</file>
     </qresource>
 </RCC>
