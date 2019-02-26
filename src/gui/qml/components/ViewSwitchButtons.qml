@@ -20,7 +20,7 @@ Rectangle {
             Layout.fillWidth: true
             text: qsTr("Overview")
             checkable: true
-            checked: true
+            checked: View.currentView == View._ViewOverview
             autoExclusive: true
 
             onClicked: View.currentView = View._ViewOverview
@@ -30,6 +30,7 @@ Rectangle {
             Layout.fillWidth: true
             text: qsTr("Edit")
             checkable: true
+            checked: View.currentView == View._ViewEdit
             autoExclusive: true
 
             onClicked: View.currentView = View._ViewEdit

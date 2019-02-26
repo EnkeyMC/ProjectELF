@@ -24,5 +24,9 @@
         <file>qml/controls/PETermDefinition.qml</file>
         <file>qml/components/ViewEdit.qml</file>
         <file>qml/controls/PESplitView.qml</file>
+        <file>qml/controls/PETableHeader.qml</file>
+        <file>qml/controls/PETableCell.qml</file>
+        <file>qml/controls/PETable.qml</file>
+        <file>qml/controls/PETableEditableCell.qml</file>
     </qresource>
 </RCC>

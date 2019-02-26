@@ -11,6 +11,7 @@ PESplitView {
     ColumnLayout {
         Layout.fillHeight: true
         width: 250
+        spacing: 0
 
         PEToolBar {
             Layout.fillWidth: true
@@ -22,21 +23,42 @@ PESplitView {
         }
 
         ScrollView {
+            id: scroll
             Layout.fillWidth: true
             Layout.fillHeight: true
+            clip: true
 
-            ColumnLayout {
-                spacing: 1
+            PETable {
+                id: table
+                width: Math.max(150, scroll.availableWidth)
+                columns: 2
 
-                RowLayout {
-                    Rectangle {
-                        color: Style._ColorSecondaryDark
+                PETableHeader {
+                    text: "text"
+                }
 
-                        Text {
-                            text: qsTr("text")
-                            color: Style._ColorTextLight
-                        }
+                PETableHeader {
+                    text: "header"
+                }
+
+                PETableCell {
+                    Text {
+                        text: "Preettteeyy"
                     }
+                }
+
+                PETableEditableCell {
+                    placeholderText: "editable cell"
+                }
+
+                PETableCell {
+                    Text {
+                        text: "llooongg"
+                    }
+                }
+
+                PETableEditableCell {
+                    placeholderText: "editable cell"
                 }
             }
         }
