@@ -16,9 +16,8 @@ PESplitView {
         PEToolBar {
             Layout.fillWidth: true
 
-            Text {
+            PEToolBarText {
                 text: qsTr("ELF Header")
-                verticalAlignment: Text.AlignVCenter
             }
         }
 
@@ -28,37 +27,41 @@ PESplitView {
             Layout.fillHeight: true
             clip: true
 
-            PETable {
-                id: table
+            PEExpandablePane {
                 width: Math.max(150, scroll.availableWidth)
-                columns: 2
 
-                PETableHeader {
-                    text: "text"
-                }
+                PETable {
+                    id: table
+                    columns: 2
+                    width: parent.width
 
-                PETableHeader {
-                    text: "header"
-                }
-
-                PETableCell {
-                    Text {
-                        text: "Preettteeyy"
+                    PETableHeader {
+                        text: "text"
                     }
-                }
 
-                PETableEditableCell {
-                    placeholderText: "editable cell"
-                }
-
-                PETableCell {
-                    Text {
-                        text: "llooongg"
+                    PETableHeader {
+                        text: "header"
                     }
-                }
 
-                PETableEditableCell {
-                    placeholderText: "editable cell"
+                    PETableCell {
+                        Text {
+                            text: "Preettteeyy"
+                        }
+                    }
+
+                    PETableEditableCell {
+                        placeholderText: "editable cell"
+                    }
+
+                    PETableCell {
+                        Text {
+                            text: "llooongg"
+                        }
+                    }
+
+                    PETableEditableCell {
+                        placeholderText: "editable cell"
+                    }
                 }
             }
         }
@@ -71,7 +74,7 @@ PESplitView {
         PEToolBar {
             Layout.fillWidth: true
 
-            Text {
+            PEToolBarText {
                 text: "Section header"
             }
         }
@@ -84,7 +87,7 @@ PESplitView {
         PEToolBar {
             Layout.fillWidth: true
 
-            Text {
+            PEToolBarText {
                 text: "Sections"
             }
         }

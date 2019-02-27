@@ -5,55 +5,64 @@ import QtQuick.Layouts 1.11
 import "../singletons"
 import "../controls"
 
-Item {
-    id: expandableItem
-    height: 0
-    clip: true
-    
-    PETable {
-        id: table
-        columns: 2
-        width: parent.width
-        
-        PETableHeader {
-            text: "text"
-        }
-        
-        PETableHeader {
-            text: "header"
-        }
-        
-        PETableCell {
+ColumnLayout {
+    id: expandable
+    spacing: 0
+
+    default property alias __items: expandableItem.data
+
+    Pane {
+        Layout.fillWidth: true
+
+        RowLayout {
             Text {
-                text: "Preettteeyy"
+                text: qsTr("text")
             }
         }
-        
-        PETableEditableCell {
-            placeholderText: "editable cell"
-        }
-        
-        PETableCell {
-            Text {
-                text: "llooongg"
+
+        background: Rectangle {
+            color: Style._ColorSecondaryDark
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: expandableItem.state == 'expanded' ? expandableItem.state = '' : expandableItem.state = 'expanded'
             }
-        }
-        
-        PETableEditableCell {
-            placeholderText: "editable cell"
         }
     }
-    
-    states: [
-        State {
-            name: "expanded"
-            PropertyChanges {
-                target: expandableItem
-                height: expandableItem.childrenRect.height
+
+    Item {
+        id: expandableItem
+        Layout.fillWidth: true
+        height: 0
+        clip: true
+
+        states: [
+            State {
+                name: "expanded"
+                PropertyChanges {
+                    target: expandableItem
+                    height: expandableItem.childrenRect.height
+                }
             }
-        }
-        
-    ]
-    
-    
+        ]
+
+        transitions: [
+            Transition {
+                to: "expanded"
+                NumberAnimation {
+                    duration: 400
+                    properties: "height"
+                    easing.type: Easing.InOutCubic
+                }
+            },
+            Transition {
+                to: ""
+                NumberAnimation {
+                    duration: 400
+                    properties: "height"
+                    easing.type: Easing.InOutCubic
+                }
+            }
+        ]
+    }
 }

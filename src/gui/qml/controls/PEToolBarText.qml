@@ -7,7 +7,7 @@ import "../controls"
 
 Text {
     leftPadding: 10
-    anchors.fill: parent
-    text: qsTr("Basic information")
+    rightPadding: 10
+    height: parent.height
     verticalAlignment: Text.AlignVCenter
 }

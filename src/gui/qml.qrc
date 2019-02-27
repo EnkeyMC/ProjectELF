@@ -28,5 +28,7 @@
         <file>qml/controls/PETableCell.qml</file>
         <file>qml/controls/PETable.qml</file>
         <file>qml/controls/PETableEditableCell.qml</file>
+        <file>qml/controls/PEToolBarText.qml</file>
+        <file>qml/controls/PEExpandablePane.qml</file>
     </qresource>
 </RCC>

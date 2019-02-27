@@ -9,11 +9,8 @@ ColumnLayout {
     PEToolBar {
         Layout.fillWidth: true
         
-        Text {
-            leftPadding: 10
-            anchors.fill: parent
+        PEToolBarText {
             text: qsTr("Basic information")
-            verticalAlignment: Text.AlignVCenter
         }
     }
     
