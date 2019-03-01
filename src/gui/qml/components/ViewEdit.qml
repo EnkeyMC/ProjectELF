@@ -28,6 +28,7 @@ PESplitView {
             clip: true
 
             PEExpandablePane {
+                title: "Expandable"
                 width: Math.max(150, scroll.availableWidth)
 
                 PETable {
@@ -36,16 +37,16 @@ PESplitView {
                     width: parent.width
 
                     PETableHeader {
-                        text: "text"
+                        text: "Key"
                     }
 
                     PETableHeader {
-                        text: "header"
+                        text: "Value"
                     }
 
                     PETableCell {
                         Text {
-                            text: "Preettteeyy"
+                            text: "Key1"
                         }
                     }
 
@@ -55,7 +56,7 @@ PESplitView {
 
                     PETableCell {
                         Text {
-                            text: "llooongg"
+                            text: "Key2"
                         }
                     }
 

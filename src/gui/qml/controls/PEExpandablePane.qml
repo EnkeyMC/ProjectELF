@@ -9,14 +9,45 @@ ColumnLayout {
     id: expandable
     spacing: 0
 
+    property string title: ""
     default property alias __items: expandableItem.data
 
     Pane {
         Layout.fillWidth: true
+        leftPadding: 10
+        rightPadding: 10
+        topPadding: 5
+        bottomPadding: 5
 
         RowLayout {
+            Canvas {
+                id: indicator
+                width: 7
+                height: 7
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    ctx.reset()
+                    ctx.fillStyle = Style._ColorTextLight
+
+                    if (expandableItem.state == 'expanded') {
+                        ctx.moveTo(0, 0)
+                        ctx.lineTo(width, 0)
+                        ctx.lineTo(width/2, height)
+                    } else {
+                        ctx.moveTo(0, 0)
+                        ctx.lineTo(width, height/2)
+                        ctx.lineTo(0, height)
+                    }
+
+                    ctx.closePath()
+                    ctx.fill()
+                }
+            }
+
             Text {
-                text: qsTr("text")
+                text: expandable.title
+                color: Style._ColorTextLight
             }
         }
 
@@ -35,6 +66,8 @@ ColumnLayout {
         Layout.fillWidth: true
         height: 0
         clip: true
+
+        onStateChanged: indicator.requestPaint()
 
         states: [
             State {

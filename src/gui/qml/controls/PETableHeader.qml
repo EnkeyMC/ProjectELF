@@ -18,7 +18,6 @@ PETableCell {
 
     background: Rectangle {
         width: parent.width
-        color: Style._ColorSecondaryDark
-//        border.color: Qt.lighter(Style._ColorPrimaryLight)
+        color: Qt.lighter(Style._ColorSecondaryDark, 1.2)
     }
 }
