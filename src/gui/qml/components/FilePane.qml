@@ -16,10 +16,8 @@ Item {
 
         }
 
-        Item {
-            Text {
-                text: "Edit"
-            }
+        ViewEdit {
+
         }
     }
 }
