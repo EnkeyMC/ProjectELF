@@ -1,5 +1,34 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/components/ViewSwitchButtons.qml</file>
+        <file>qml/components/MainMenuBar.qml</file>
+        <file>qml/components/StatusBar.qml</file>
+        <file>qml/components/FilePane.qml</file>
+        <file>qml/singletons/View.qml</file>
+        <file>qml/singletons/qmldir</file>
+        <file>qml/singletons/Style.qml</file>
+        <file>qml/components/MenuPrimary.qml</file>
+        <file>qml/js/utils.js</file>
+        <file>qml/components/StatusBarText.qml</file>
+        <file>qml/controls/PEButton.qml</file>
+        <file>qml/controls/PEClosableTabButton.qml</file>
+        <file>qml/controls/PEMenuSeparator.qml</file>
+        <file>qml/controls/PEProgressBar.qml</file>
+        <file>qml/controls/PETabBar.qml</file>
+        <file>qml/components/ViewOverview.qml</file>
+        <file>qml/controls/PEToolBar.qml</file>
+        <file>qml/components/DiagramPane.qml</file>
+        <file>qml/components/BasicInfoPane.qml</file>
+        <file>qml/controls/PEGroupBox.qml</file>
+        <file>qml/controls/PETermDefinition.qml</file>
+        <file>qml/components/ViewEdit.qml</file>
+        <file>qml/controls/PESplitView.qml</file>
+        <file>qml/controls/PETableHeader.qml</file>
+        <file>qml/controls/PETableCell.qml</file>
+        <file>qml/controls/PETable.qml</file>
+        <file>qml/controls/PETableEditableCell.qml</file>
+        <file>qml/controls/PEToolBarText.qml</file>
+        <file>qml/controls/PEExpandablePane.qml</file>
     </qresource>
 </RCC>

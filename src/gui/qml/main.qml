@@ -2,6 +2,10 @@ import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 
+import "components"
+import "singletons"
+import "controls"
+
 ApplicationWindow {
     id: mainWindow
     visible: true
@@ -10,73 +14,40 @@ ApplicationWindow {
     title: qsTr("ProjectELF")
 
     menuBar: RowLayout {
-        MenuBar {
+        spacing: 0
+
+        MainMenuBar {
             Layout.fillWidth: true
-
-            Menu {
-                title: qsTr("&File")
-                Action { text: qsTr("&Open...") }
-                Action { text: qsTr("&Save") }
-                Action { text: qsTr("Save &As...") }
-                MenuSeparator { }
-                Action { text: qsTr("&Quit") }
-            }
-            Menu {
-                title: qsTr("&Edit")
-                Action { text: qsTr("Cu&t") }
-                Action { text: qsTr("&Copy") }
-                Action { text: qsTr("&Paste") }
-            }
-            Menu {
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
-            }
         }
 
-        ButtonGroup {
-            buttons: btns.children
-        }
-
-        RowLayout {
-            id: btns
-
-            RadioButton {
-                text: qsTr("View")
-                checked: true
-            }
-
-            RadioButton {
-                text: qsTr("Edit")
-            }
+        ViewSwitchButtons {
+            Layout.fillHeight: true
+            id: viewSwitch
         }
     }
 
-    footer: Rectangle {
-        color: "#cccccc"
+    footer: StatusBar {
         width: mainWindow.width
-        height: 30
-
-        Behavior on color { PropertyAnimation{} }
-
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onHoveredChanged: parent.color = "#222222"
-        }
     }
 
     ColumnLayout {
+        spacing: 0
         anchors.fill: parent
 
-        TabBar {
+        PETabBar {
             id: fileTabs
+            Layout.fillWidth: true
 
-            TabButton {
-                text: qsTr("file1")
+            PEClosableTabButton {
+                text: qsTr("file1fdsfdsafdasf")
             }
 
-            TabButton {
+            PEClosableTabButton {
                 text: qsTr("file2")
+            }
+
+            PEClosableTabButton {
+                text: qsTr("file3")
             }
         }
 
@@ -86,17 +57,15 @@ ApplicationWindow {
             Layout.fillWidth: true
             currentIndex: fileTabs.currentIndex
 
-            Item {
-                id: fileTab
-                Text {
-                    id: text1
-                    text: qsTr("longer longer longer longer longer longer longer text")
-                }
+            FilePane {
             }
 
-            Item {
-                id: file2Tab
+            FilePane {
             }
         }
+    }
+
+    background: Rectangle {
+        color: Style._ColorPrimaryLight
     }
 }
