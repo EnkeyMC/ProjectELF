@@ -1,6 +1,7 @@
 #ifndef PROJECTELF_VERSION_H
 #define PROJECTELF_VERSION_H
 
+#include <string>
 
 namespace Version {
     const int MAJOR = 0;
