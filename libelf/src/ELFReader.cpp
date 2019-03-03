@@ -3,3 +3,7 @@
 //
 
 #include "ELFReader.h"
+
+elf::ELFReader::ELFReader(std::istream &istream, elf::ELF &output) : istream(istream), elf(output) {
+
+}

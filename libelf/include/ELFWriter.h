@@ -11,7 +11,7 @@ namespace elf {
 
 class ElfWriter {
 public:
-    static void save(const ELF &elf, std::ostream &ostream) const;
+    static void save(const ELF &elf, std::ostream &ostream);
 };
 
 }

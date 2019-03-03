@@ -4,6 +4,6 @@
 
 #include "ELFWriter.h"
 
-void elf::ElfWriter::save(const elf::ELF &elf, std::ostream &ostream) const {
+void elf::ElfWriter::save(const elf::ELF &elf, std::ostream &ostream) {
     // TODO saving
 }

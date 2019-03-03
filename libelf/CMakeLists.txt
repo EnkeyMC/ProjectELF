@@ -3,7 +3,10 @@ project(libelf LANGUAGES CXX)
 set(PROJECT_NAME_TESTS ${PROJECT_NAME}_tests)
 
 set(SOURCE_FILES
-        src/ELF.cpp src/ELFReader.cpp src/ELFWriter.cpp)
+        src/ELF.cpp
+        src/ELFReader.cpp
+        src/ELFWriter.cpp
+        src/ELFIssue.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
