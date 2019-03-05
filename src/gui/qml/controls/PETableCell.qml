@@ -6,6 +6,7 @@ import "../singletons"
 import "../controls"
 
 Pane {
+    id: tableCell
     topPadding: 5
     bottomPadding: 5
     leftPadding: 10

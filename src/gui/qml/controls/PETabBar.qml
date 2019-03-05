@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4
 import "../singletons"
 
 Rectangle {
+    id: tabBar
     default property alias content: control.contentChildren
     property alias currentIndex: control.currentIndex
 

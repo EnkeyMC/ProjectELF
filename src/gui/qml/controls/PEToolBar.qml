@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.11
 import "../singletons"
 
 Rectangle {
+    id: toolBar
     color: Style._ColorSecondaryLight
     height: Style.toolBar._Height
 }

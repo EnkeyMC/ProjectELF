@@ -13,7 +13,7 @@ Rectangle {
     RowLayout {
         anchors.fill: parent
 
-        Item {
+        Spacer {
             width: 5
         }
 
@@ -29,7 +29,7 @@ Rectangle {
             text: qsTr("Loading...")
         }
 
-        Item {
+        Spacer {
             Layout.fillWidth: true
         }
 
@@ -39,7 +39,7 @@ Rectangle {
             text: qsTr("Errors")
         }
 
-        Item {
+        Spacer {
             width: 5
         }
     }

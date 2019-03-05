@@ -4,10 +4,10 @@ import QtQuick.Controls 2.4
 import "../singletons"
 
 Button {
-    id: control
+    id: button
 
     contentItem: Text {
-        text: control.text
+        text: button.text
         font.pixelSize: Style.button._FontSize
         color: Style._ColorTextLight
         horizontalAlignment: Text.AlignHCenter
@@ -17,14 +17,14 @@ Button {
         implicitHeight: Style.button._Height
         implicitWidth: 80
 
-        color: (control.down ||
-               control.checked)
+        color: (button.down ||
+               button.checked)
             ?
                    Style._ColorAccent
             :
-               (control.highlighted ||
-               control.visualFocus ||
-               control.hovered)
+               (button.highlighted ||
+               button.visualFocus ||
+               button.hovered)
             ?
                    Qt.darker(Style._ColorAccent, 1.1)
             :

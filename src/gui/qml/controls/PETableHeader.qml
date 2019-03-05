@@ -6,6 +6,7 @@ import "../singletons"
 import "../controls"
 
 PETableCell {
+    id: tableHeader
     property alias text: headerText.text
     property alias horizontalAlignment: headerText.horizontalAlignment
 

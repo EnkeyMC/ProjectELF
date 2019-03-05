@@ -21,7 +21,7 @@
         <file>qml/components/DiagramPane.qml</file>
         <file>qml/components/BasicInfoPane.qml</file>
         <file>qml/controls/PEGroupBox.qml</file>
-        <file>qml/controls/PETermDefinition.qml</file>
+        <file>qml/controls/PEKeyValue.qml</file>
         <file>qml/components/ViewEdit.qml</file>
         <file>qml/controls/PESplitView.qml</file>
         <file>qml/controls/PETableHeader.qml</file>
@@ -30,5 +30,6 @@
         <file>qml/controls/PETableEditableCell.qml</file>
         <file>qml/controls/PEToolBarText.qml</file>
         <file>qml/controls/PEExpandablePane.qml</file>
+        <file>qml/controls/Spacer.qml</file>
     </qresource>
 </RCC>

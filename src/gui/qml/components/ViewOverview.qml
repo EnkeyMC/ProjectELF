@@ -6,6 +6,7 @@ import "../singletons"
 import "../controls"
 
 PESplitView {
+    id: viewOverview
     orientation: Qt.Horizontal
 
     DiagramPane {
