@@ -1,13 +1,12 @@
 #ifndef PROJECTELF_ELF_H
 #define PROJECTELF_ELF_H
 
-#include <istream>
-#include <ostream>
-
 namespace elf {
 
 class ELF {
 public:
+
+    void clear();
 
 };
 

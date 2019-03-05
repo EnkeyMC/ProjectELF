@@ -5,6 +5,7 @@
 #ifndef PROJECTELF_ELFWRITER_H
 #define PROJECTELF_ELFWRITER_H
 
+#include <ostream>
 #include "ELF.h"
 
 namespace elf {

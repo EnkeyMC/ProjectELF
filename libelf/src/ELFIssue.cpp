@@ -2,22 +2,32 @@
 // Created by MOmac on 03.03.2019.
 //
 
+#include <ELFIssue.h>
+
 #include "ELFIssue.h"
 
-ELFIssue::ELFIssue(enum ELFIssueType type, enum ELFIssueSource source, const std::string &message)
-    : type(type), source(source), message(message)
-{
+namespace elf {
 
-}
+ELFIssue::ELFIssue(
+        enum ELFIssueSeverity severity,
+                enum ELFIssueSource source,
+                        enum ELFIssueType type)
+                                : severity(severity),
+                                source(source),
+                                type(type) {
 
-ELFIssueType ELFIssue::get_type() const {
-    return type;
 }
 
 ELFIssueSource ELFIssue::get_source() const {
     return source;
 }
 
-const std::string &ELFIssue::get_message() const {
-    return message;
+ELFIssueSeverity ELFIssue::getSeverity() const {
+    return severity;
 }
+
+ELFIssueType ELFIssue::getType() const {
+    return type;
+}
+
+}  // namespace elf

@@ -7,9 +7,12 @@
 
 #include <string>
 
-enum ELFIssueType {
-    ELF_ERROR,
-    ELF_WARNING
+namespace elf {
+
+enum ELFIssueSeverity {
+    ISEV_CRITICAL,
+    ISEV_ERROR,
+    ISEV_WARNING
 };
 
 enum ELFIssueSource {
@@ -39,21 +42,26 @@ enum ELFIssueSource {
     ISRC_P_FILESZ
 };
 
+enum ELFIssueType {
+    ITYPE_UNEXPECTED_EOF
+};
+
 class ELFIssue {
 public:
-    ELFIssue(enum ELFIssueType type, enum ELFIssueSource source, const std::string &message);
-
-    ELFIssueType get_type() const;
+    ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type);
 
     ELFIssueSource get_source() const;
 
-    const std::string &get_message() const;
+    ELFIssueSeverity getSeverity() const;
+
+    ELFIssueType getType() const;
 
 private:
-    enum ELFIssueType type;
+    enum ELFIssueSeverity severity;
     enum ELFIssueSource source;
-    std::string message;
+    enum ELFIssueType type;
 };
 
+}  // namespace elf
 
 #endif //PROJECTELF_ELFISSUE_H

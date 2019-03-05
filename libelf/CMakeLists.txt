@@ -2,6 +2,8 @@ project(libelf LANGUAGES CXX)
 
 set(PROJECT_NAME_TESTS ${PROJECT_NAME}_tests)
 
+set(CMAKE_CXX_STANDARD 14)
+
 set(SOURCE_FILES
         src/ELF.cpp
         src/ELFReader.cpp

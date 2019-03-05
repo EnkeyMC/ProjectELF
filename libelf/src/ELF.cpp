@@ -3,3 +3,7 @@
 //
 
 #include "ELF.h"
+
+void elf::ELF::clear() {
+
+}
