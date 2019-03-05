@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.11
 import "../singletons"
 
 TabButton {
-    id: control
+    id: tabButton
 
     padding: 0
     width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
@@ -18,28 +18,29 @@ TabButton {
             spacing: 0
             Layout.fillHeight: true
 
-            Item {
+            Spacer {
                 width: 10
             }
 
             Text {
-                text: control.text
-                font: control.font
+                text: tabButton.text
+                font: tabButton.font
                 color: Style._ColorTextDark
 
                 verticalAlignment: Text.AlignVCenter
             }
 
-            Item {
+            Spacer {
                 width: 10
             }
         }
 
-        Item {
+        Spacer {
             Layout.fillWidth: true
         }
 
         Item {
+            id: closeBtnContainer
             width: 20
             height: parent.height
 
@@ -69,6 +70,6 @@ TabButton {
 
     background: Rectangle {
         implicitHeight: Style.tabBar._Height
-        color: !control.checked ? Style._ColorPrimaryLight : Style._ColorSecondaryLight
+        color: !tabButton.checked ? Style._ColorPrimaryLight : Style._ColorSecondaryLight
     }
 }

@@ -14,6 +14,7 @@ ApplicationWindow {
     title: qsTr("ProjectELF")
 
     menuBar: RowLayout {
+        id: menuBarRow
         spacing: 0
 
         MainMenuBar {
@@ -31,6 +32,7 @@ ApplicationWindow {
     }
 
     ColumnLayout {
+        id: mainView
         spacing: 0
         anchors.fill: parent
 
@@ -52,6 +54,7 @@ ApplicationWindow {
         }
 
         StackLayout {
+            id: tabs
             width: parent.width
             Layout.fillHeight: true
             Layout.fillWidth: true

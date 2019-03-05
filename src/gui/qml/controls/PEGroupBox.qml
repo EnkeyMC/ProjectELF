@@ -6,11 +6,11 @@ import "../singletons"
 import "../controls"
 
 GroupBox {
-    id: peGroupBox
+    id: groupBox
 
     label: Label {
-        text: peGroupBox.title
-        width: peGroupBox.availableWidth
+        text: groupBox.title
+        width: groupBox.availableWidth
         elide: Text.ElideRight
         color: Style._ColorTextDark
     }
@@ -19,8 +19,8 @@ GroupBox {
         color: "transparent"
         border.color: Style._ColorSecondaryLight
 
-        y: peGroupBox.topPadding - peGroupBox.bottomPadding
-        width: peGroupBox.width
-        height: peGroupBox.height - peGroupBox.topPadding + peGroupBox.bottomPadding
+        y: groupBox.topPadding - groupBox.bottomPadding
+        width: groupBox.width
+        height: groupBox.height - groupBox.topPadding + groupBox.bottomPadding
     }
 }

@@ -6,6 +6,8 @@ import "../singletons"
 import "../controls"
 
 ColumnLayout {
+    id: basicInfoPane
+
     PEToolBar {
         Layout.fillWidth: true
         
@@ -23,30 +25,32 @@ ColumnLayout {
         
         Column {
             PEGroupBox {
+                id: elfHeaderGroup
                 width: Math.max(130, infoScrollView.availableWidth)
                 title: qsTr("ELF header")
 
                 Column {
+                    id: headerValues
                     spacing: 10
 
-                    PETermDefinition {
-                        term: qsTr("<strong>Class</strong>")
-                        definition: qsTr("64-bit")
+                    PEKeyValue {
+                        key: qsTr("<strong>Class</strong>")
+                        value: qsTr("64-bit")
                     }
 
-                    PETermDefinition {
-                        term: qsTr("<strong>Encoding</strong>")
-                        definition: qsTr("Little Endian")
+                    PEKeyValue {
+                        key: qsTr("<strong>Encoding</strong>")
+                        value: qsTr("Little Endian")
                     }
 
-                    PETermDefinition {
-                        term: qsTr("<strong>Architecture</strong>")
-                        definition: qsTr("ARM")
+                    PEKeyValue {
+                        key: qsTr("<strong>Architecture</strong>")
+                        value: qsTr("ARM")
                     }
 
-                    PETermDefinition {
-                        term: qsTr("<strong>Number of sections</strong>")
-                        definition: qsTr("12")
+                    PEKeyValue {
+                        key: qsTr("<strong>Number of sections</strong>")
+                        value: qsTr("12")
                     }
                 }
             }

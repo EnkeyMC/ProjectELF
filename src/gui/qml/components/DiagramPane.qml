@@ -6,6 +6,8 @@ import "../singletons"
 import "../controls"
 
 ColumnLayout {
+    id: diagramPane
+
     PEToolBar {
         Layout.fillWidth: true
         

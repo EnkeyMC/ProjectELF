@@ -4,14 +4,14 @@ import QtQuick.Controls 2.4
 import "../singletons"
 
 ProgressBar {
-    id: control
+    id: progressBar
 
     property alias color: bgr.color
 
     background: Rectangle {
         id: bgr
         implicitHeight: Style.progressBar._Height
-        color: Style._ColorPrimaryLight
+        color: Qt.darker(Style._ColorPrimaryDark, 1.3)
         radius: Style.progressBar._Height / 2
     }
 
@@ -22,12 +22,12 @@ ProgressBar {
 
         Rectangle {
             id: contentProgress
-            width: control.visualPosition * parent.width
+            width: progressBar.visualPosition * parent.width
             height: parent.height
             radius: Style.progressBar._Height / 2
             color: Style._ColorAccent
 
-            visible: !control.indeterminate
+            visible: !progressBar.indeterminate
         }
 
         Rectangle {
@@ -40,7 +40,7 @@ ProgressBar {
             antialiasing: false
 
 
-            visible: control.indeterminate
+            visible: progressBar.indeterminate
 
             ParallelAnimation {
                 running: true
