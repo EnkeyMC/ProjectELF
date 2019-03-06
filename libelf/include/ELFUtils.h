@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-This file is part of ELFIO project: https://github.com/serge1/ELFIO/blob/master/elfio/elfio.hpp
+This file is taken from ELFIO project with few modifications: https://github.com/serge1/ELFIO/blob/master/elfio/elf_types.hpp
 */
 
 #ifndef PROJECTELF_ELFUTILS_H
@@ -31,23 +31,23 @@ This file is part of ELFIO project: https://github.com/serge1/ELFIO/blob/master/
 #define ELFIO_GET_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const                   \
     {                                         \
-        return (*convertor)( FIELD );         \
+        return convertor( FIELD );         \
     }
 #define ELFIO_SET_ACCESS( TYPE, NAME, FIELD ) \
     void set_##NAME( TYPE value )             \
     {                                         \
         FIELD = value;                        \
-        FIELD = (*convertor)( FIELD );        \
+        FIELD = convertor( FIELD );        \
     }
 #define ELFIO_GET_SET_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const                       \
     {                                             \
-        return (*convertor)( FIELD );             \
+        return convertor( FIELD );             \
     }                                             \
     void set_##NAME( TYPE value )                 \
     {                                             \
         FIELD = value;                            \
-        FIELD = (*convertor)( FIELD );            \
+        FIELD = convertor( FIELD );            \
     }
 
 #define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) \
@@ -63,17 +63,17 @@ This file is part of ELFIO project: https://github.com/serge1/ELFIO/blob/master/
 namespace elf {
 
 //------------------------------------------------------------------------------
-class endianess_convertor {
+class endianess_converter {
 public:
 //------------------------------------------------------------------------------
-    endianess_convertor()
+    endianess_converter()
     {
         need_conversion = false;
     }
 
 //------------------------------------------------------------------------------
     void
-    setup( unsigned char elf_file_encoding )
+    setup( const unsigned char elf_file_encoding )
     {
         need_conversion = ( elf_file_encoding != get_host_encoding() );
     }
@@ -207,6 +207,22 @@ elf_hash( const unsigned char *name )
         h &= ~g;
     }
     return h;
+}
+
+//------------------------------------------------------------------------------
+template <typename T>
+inline std::vector<T>& operator+= (std::vector<T> &lhs, const std::vector<T> &rhs)
+{
+    lhs.insert(lhs.end(), rhs.begin(), rhs.end());
+    return lhs;
+}
+
+//------------------------------------------------------------------------------
+template <typename T>
+inline std::vector<T> operator+ (std::vector<T> lhs, const std::vector<T> &rhs)
+{
+    lhs += rhs;
+    return lhs;
 }
 
 } // namespace elf

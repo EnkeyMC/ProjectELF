@@ -18,21 +18,21 @@ class ELFReader {
 public:
     explicit ELFReader(std::istream &istream, ELF &output);
 
-    vector<ELFIssue> parse_header();
+    ELFIssuesBySeverity parse_header();
 
-    vector<ELFIssue> parse_section_headers();
+    ELFIssuesBySeverity parse_section_headers();
 
-    vector<ELFIssue> parse_program_headers();
+    ELFIssuesBySeverity parse_program_headers();
 
-    vector<ELFIssue> parse_sections();
+    ELFIssuesBySeverity parse_sections();
 
-    vector<ELFIssue> parse_segments();
+    ELFIssuesBySeverity parse_segments();
 
 private:
     std::istream &istream;
     ELF &elf;
 };
 
-}
+}  // namespace elf
 
 #endif //PROJECTELF_ELFREADER_H

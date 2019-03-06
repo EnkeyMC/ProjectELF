@@ -5,21 +5,33 @@
 
 #include "ELFIssue.h"
 #include "ELFTypes.h"
-
-using std::vector;
+#include "ELFUtils.h"
+#include "ELFIssuesBySeverity.h"
 
 namespace elf {
 
 class ELF {
 public:
-
     void clear();
 
-    vector<ELFIssue> set_ei_mag(const char * ei_mag);
+    ELFIssuesBySeverity set_e_ident(const unsigned char e_ident[EI_NIDENT]);
+
+    endianess_converter get_convertor() const;
+
+    const unsigned char *get_e_ident() const;
+
+    unsigned char get_ei_mag0() const;
+    unsigned char get_ei_mag1() const;
+    unsigned char get_ei_mag2() const;
+    unsigned char get_ei_mag3() const;
+    unsigned char get_ei_class() const;
+    unsigned char get_ei_data() const;
 
 protected:
+    endianess_converter convertor;
 
-    char e_ident[EI_NIDENT];
+    unsigned char e_ident[EI_NIDENT];
+
 };
 
 } // namespace elf

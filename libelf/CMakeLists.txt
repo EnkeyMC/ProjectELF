@@ -8,16 +8,16 @@ set(SOURCE_FILES
         src/ELF.cpp
         src/ELFReader.cpp
         src/ELFWriter.cpp
-        src/ELFIssue.cpp)
+        src/ELFIssue.cpp
+        src/ELFHeader.cpp
+        src/ELFIssuesBySeverity.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-
-
 set(TEST_FILES
-        tests/test.cpp
+        tests/ELFTest.cpp
 )
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES} ${SOURCE_FILES})

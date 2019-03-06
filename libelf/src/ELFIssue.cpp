@@ -22,11 +22,11 @@ ELFIssueSource ELFIssue::get_source() const {
     return source;
 }
 
-ELFIssueSeverity ELFIssue::getSeverity() const {
+ELFIssueSeverity ELFIssue::get_severity() const {
     return severity;
 }
 
-ELFIssueType ELFIssue::getType() const {
+ELFIssueType ELFIssue::get_type() const {
     return type;
 }
 

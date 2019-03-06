@@ -11,8 +11,8 @@ ELFReader::ELFReader(std::istream &istream, elf::ELF &output) : istream(istream)
 
 }
 
-vector<ELFIssue> ELFReader::parse_header() {
-    vector<ELFIssue> issues;
+ELFIssuesBySeverity ELFReader::parse_header() {
+    ELFIssuesBySeverity issues;
 
     this->elf.clear();
 
@@ -21,29 +21,29 @@ vector<ELFIssue> ELFReader::parse_header() {
     this->istream.read(reinterpret_cast<char *>(&e_ident), sizeof(e_ident));
 
     if (this->istream.gcount() != sizeof(e_ident)) {
-        issues.emplace_back(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF);
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF);
         return issues;
     }
 
-
+    issues += this->elf.set_e_ident(e_ident);
 
     return issues;
 }
 
-vector<ELFIssue> ELFReader::parse_section_headers() {
-    return vector<ELFIssue>();
+ELFIssuesBySeverity ELFReader::parse_section_headers() {
+    return ELFIssuesBySeverity();
 }
 
-vector<ELFIssue> ELFReader::parse_program_headers() {
-    return vector<ELFIssue>();
+ELFIssuesBySeverity ELFReader::parse_program_headers() {
+    return ELFIssuesBySeverity();
 }
 
-vector<ELFIssue> ELFReader::parse_sections() {
-    return vector<ELFIssue>();
+ELFIssuesBySeverity ELFReader::parse_sections() {
+    return ELFIssuesBySeverity();
 }
 
-vector<ELFIssue> ELFReader::parse_segments() {
-    return vector<ELFIssue>();
+ELFIssuesBySeverity ELFReader::parse_segments() {
+    return ELFIssuesBySeverity();
 }
 
 }  // namespace elf
