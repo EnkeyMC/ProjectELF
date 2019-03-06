@@ -22,7 +22,10 @@ vector<ELFIssue> ELFReader::parse_header() {
 
     if (this->istream.gcount() != sizeof(e_ident)) {
         issues.emplace_back(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF);
+        return issues;
     }
+
+
 
     return issues;
 }
