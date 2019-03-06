@@ -31,23 +31,23 @@ This file is taken from ELFIO project with few modifications: https://github.com
 #define ELFIO_GET_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const                   \
     {                                         \
-        return convertor( FIELD );         \
+        return converter( FIELD );         \
     }
 #define ELFIO_SET_ACCESS( TYPE, NAME, FIELD ) \
     void set_##NAME( TYPE value )             \
     {                                         \
         FIELD = value;                        \
-        FIELD = convertor( FIELD );        \
+        FIELD = converter( FIELD );        \
     }
 #define ELFIO_GET_SET_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const                       \
     {                                             \
-        return convertor( FIELD );             \
+        return converter( FIELD );             \
     }                                             \
     void set_##NAME( TYPE value )                 \
     {                                             \
         FIELD = value;                            \
-        FIELD = convertor( FIELD );            \
+        FIELD = converter( FIELD );            \
     }
 
 #define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) \

@@ -16,91 +16,27 @@ public:
     explicit ELFHeaderImpl(const ELF &elf, const endianess_converter &converter) : ELFHeader(elf, converter) {
     }
 
-    Elf_Half get_e_type() const override {
-        return converter(header.e_type);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_type, header.e_type);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_machine, header.e_machine);
+    ELFIO_GET_SET_ACCESS(Elf_Word, e_version, header.e_version);
+    ELFIO_GET_SET_ACCESS(Elf64_Addr, e_entry, header.e_entry);
+    ELFIO_GET_SET_ACCESS(Elf64_Off, e_phoff, header.e_phoff);
+    ELFIO_GET_SET_ACCESS(Elf64_Off, e_shoff, header.e_shoff);
+    ELFIO_GET_SET_ACCESS(Elf_Word, e_flags, header.e_flags);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_ehsize, header.e_ehsize);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_phentsize, header.e_phentsize);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_phnum, header.e_phnum);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_shentsize, header.e_shentsize);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_shnum, header.e_shnum);
+    ELFIO_GET_SET_ACCESS(Elf_Half, e_shstrndx, header.e_shstrndx);
+
+    void load_from_stream(std::istream &stream) override {
+
     }
 
-    Elf_Half get_e_machine() const override {
-        return converter(header.e_machine);
+    ELFIssuesBySeverity find_issues() override {
+        return nullptr;
     }
-
-    Elf_Word get_e_version() const override {
-        return converter(header.e_version);
-    }
-
-    Elf64_Addr get_e_entry() const override {
-        return converter(header.e_phoff);
-    }
-
-    Elf64_Off get_e_phoff() const override {
-        return converter(header.e_phoff);
-    }
-
-    Elf64_Off get_e_shoff() const override {
-        return converter(header.e_shoff);
-    }
-
-    Elf_Word get_e_flags() const override {
-        return converter(header.e_flags);
-    }
-
-    Elf_Half get_e_ehsize() const override {
-        return converter(header.e_ehsize);
-    }
-
-    Elf_Half get_e_phentsize() const override {
-        return converter(header.e_phentsize);
-    }
-
-    Elf_Half get_e_phnum() const override {
-        return converter(header.e_phnum);
-    }
-
-    Elf_Half get_e_shentsize() const override {
-        return converter(header.e_shentsize);
-    }
-
-    Elf_Half get_e_shnum() const override {
-        return converter(header.e_shnum);
-    }
-
-    Elf_Half get_e_shstrndx() const override {
-        return converter(header.e_shstrndx);
-    }
-
-    void set_e_type(Elf_Half value) override {
-        header.e_type = value;
-        header.e_type = converter(header.e_type);
-    }
-
-    void set_e_machine(Elf_Half value) override {
-        header.e_machine = value;
-        header.e_machine = converter(header.e_machine);
-    }
-
-    void set_e_version(Elf_Word value) override {
-        header.e_version = value;
-        header.e_version = converter(header.e_version);
-    }
-
-    void set_e_entry(Elf64_Addr value) override {
-        header.e_entry = value;
-        header.e_entry = converter(header.e_entry);
-    }
-
-    void set_e_phoff(Elf64_Off value) override {
-        header.e_phoff = value;
-        header.e_entry = converter(header.e_phoff);
-    }
-
-    void set_e_shoff(Elf64_Off value) override;
-    void set_e_flags(Elf_Half value) override;
-    void set_e_ehsize(Elf_Half value) override;
-    void set_e_phentsize(Elf_Half value) override;
-    void set_e_phnum(Elf_Half value) override;
-    void set_e_shentsize(Elf_Half value) override;
-    void set_e_shnum(Elf_Half value) override;
-    void set_e_shstrndx(Elf_Half value) override;
 
 protected:
     T header;
