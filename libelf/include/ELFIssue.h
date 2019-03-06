@@ -57,6 +57,8 @@ public:
 
     ELFIssueType get_type() const;
 
+    bool operator==(const ELFIssue &rhs) const;
+
 private:
     enum ELFIssueSeverity severity;
     enum ELFIssueSource source;

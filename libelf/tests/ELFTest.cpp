@@ -175,7 +175,7 @@ TEST_F(ELFTest, set_e_ident_data_issue) {
     EXPECT_EQ(elf->get_ei_data(), e_ident[EI_DATA]) << "get_ei_data should return the wrong value";
 }
 
-TEST_F(ELFTest, clear) {
+TEST_F(ELFTest, e_ident_clear) {
     unsigned char e_ident[EI_NIDENT];
     e_ident[EI_MAG0] = ELFMAG0;
     e_ident[EI_MAG1] = ELFMAG1;

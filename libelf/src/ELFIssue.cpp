@@ -30,4 +30,8 @@ ELFIssueType ELFIssue::get_type() const {
     return type;
 }
 
+bool ELFIssue::operator==(const ELFIssue &rhs) const {
+    return severity == rhs.severity && source == rhs.source && type == rhs.type;
+}
+
 }  // namespace elf

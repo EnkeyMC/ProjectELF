@@ -13,6 +13,8 @@ namespace elf {
 
 class ELF {
 public:
+    ~ELF();
+
     void clear();
 
     ELFIssuesBySeverity set_e_ident(const unsigned char e_ident[EI_NIDENT]);
@@ -20,6 +22,7 @@ public:
     endianess_converter get_converter() const;
 
     const unsigned char *get_e_ident() const;
+    ELFHeader& get_header();
 
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;
@@ -33,8 +36,8 @@ public:
 protected:
     endianess_converter converter;
 
-    unsigned char e_ident[EI_NIDENT];
-    ELFHeader *header;
+    unsigned char e_ident[EI_NIDENT]{};
+    ELFHeader *header{};
 
 };
 

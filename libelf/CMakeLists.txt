@@ -18,7 +18,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 set(TEST_FILES
         tests/ELFTest.cpp
-)
+        tests/ELFIssuesBySeverityTest.cpp)
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES} ${SOURCE_FILES})
 

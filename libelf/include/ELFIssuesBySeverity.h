@@ -10,8 +10,6 @@
 
 #include "ELFIssue.h"
 
-#define NO_ISSUES ELFIssuesBySeverity()
-
 namespace elf {
 
 class ELFIssuesBySeverity : public std::map<enum ELFIssueSeverity,std::vector<ELFIssue>> {

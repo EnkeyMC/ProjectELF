@@ -6,6 +6,10 @@
 
 namespace elf {
 
+ELF::~ELF() {
+    clear();
+}
+
 void ELF::clear() {
     for (unsigned char &field : e_ident) {
         field = 0;
@@ -71,6 +75,10 @@ unsigned char ELF::get_ei_data() const {
 
 const unsigned char *ELF::get_e_ident() const {
     return e_ident;
+}
+
+ELFHeader &ELF::get_header() {
+    return *header;
 }
 
 }

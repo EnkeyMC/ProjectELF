@@ -24,7 +24,9 @@ ELFIssuesBySeverity &ELFIssuesBySeverity::operator+=(const ELFIssuesBySeverity &
 }
 
 bool ELFIssuesBySeverity::has_critical_issue() const {
-    return !(*this).at(ISEV_CRITICAL).empty();
+    if (this->count(ISEV_CRITICAL))
+        return !this->at(ISEV_CRITICAL).empty();
+    return false;
 }
 
 std::vector<ELFIssue> ELFIssuesBySeverity::get_issues() const {
