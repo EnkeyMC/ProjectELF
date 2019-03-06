@@ -23,14 +23,11 @@ THE SOFTWARE.
 #ifndef PROJECTELF_ELFHEADER_H
 #define PROJECTELF_ELFHEADER_H
 
-#include <vector>
+#include <istream>
 
 #include "ELFUtils.h"
 #include "ELFIssue.h"
 #include "ELFIssuesBySeverity.h"
-#include "ELF.h"
-
-using std::vector;
 
 namespace elf {
 
@@ -46,11 +43,13 @@ template<> struct ELFHeaderImplTypes<Elf64_Ehdr> {
     static const unsigned char file_class = ELFCLASS64;
 };
 
+class ELF;
+
 class ELFHeader {
 public:
     explicit ELFHeader(const ELF &elf, const endianess_converter &convertor);
 
-    virtual void load_from_stream(std::istream &stream) = 0;
+    virtual ELFIssuesBySeverity load_from_stream(std::istream &stream) = 0;
 
     virtual ELFIssuesBySeverity find_issues() = 0;
 

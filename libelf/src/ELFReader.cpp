@@ -2,6 +2,7 @@
 // Created by MOmac on 02.03.2019.
 //
 
+#include <ELFHeaderImpl.h>
 #include "ELFTypes.h"
 #include "ELFReader.h"
 
@@ -26,6 +27,12 @@ ELFIssuesBySeverity ELFReader::parse_header() {
     }
 
     issues += this->elf.set_e_ident(e_ident);
+    if (issues.has_critical_issue())
+        return issues;
+
+    this->elf.header = create_header(e_ident[EI_CLASS]);
+    issues += this->elf.header->load_from_stream(this->istream);
+    issues += this->elf.header->find_issues();
 
     return issues;
 }
@@ -44,6 +51,13 @@ ELFIssuesBySeverity ELFReader::parse_sections() {
 
 ELFIssuesBySeverity ELFReader::parse_segments() {
     return ELFIssuesBySeverity();
+}
+
+ELFHeader* ELFReader::create_header(unsigned char ei_class) const {
+    if (ei_class == ELFCLASS32)
+        return new ELFHeaderImpl<Elf32_Ehdr>(elf, elf.get_converter());
+    else
+        return new ELFHeaderImpl<Elf64_Ehdr>(elf, elf.get_converter());
 }
 
 }  // namespace elf

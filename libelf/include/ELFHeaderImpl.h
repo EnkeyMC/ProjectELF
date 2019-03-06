@@ -6,6 +6,8 @@
 #define PROJECTELF_ELFHEADERIMPL_H
 
 #include <algorithm>
+#include <istream>
+
 #include "ELFHeader.h"
 
 namespace elf {
@@ -30,12 +32,25 @@ public:
     ELFIO_GET_SET_ACCESS(Elf_Half, e_shnum, header.e_shnum);
     ELFIO_GET_SET_ACCESS(Elf_Half, e_shstrndx, header.e_shstrndx);
 
-    void load_from_stream(std::istream &stream) override {
+    ELFIssuesBySeverity load_from_stream(std::istream &stream) override {
+        ELFIssuesBySeverity issues;
 
+        stream.read(reinterpret_cast<char*>(&header), sizeof(header));
+        if (stream.gcount() != sizeof(header))
+            issues += ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF);
+
+        return issues;
     }
 
     ELFIssuesBySeverity find_issues() override {
-        return nullptr;
+        ELFIssuesBySeverity issues;
+
+        if (get_e_version() == 0)
+            issues += ELFIssue(ISEV_WARNING, ISRC_E_VERSION, ITYPE_INVALID);
+        if (get_e_ehsize() != sizeof(header))
+            issues += ELFIssue(ISEV_WARNING, ISRC_E_EHSIZE, ITYPE_INVALID);
+
+        return issues;
     }
 
 protected:

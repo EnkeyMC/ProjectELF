@@ -10,6 +10,8 @@ void ELF::clear() {
     for (unsigned char &field : e_ident) {
         field = 0;
     }
+
+    delete header;
 }
 
 ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
@@ -29,7 +31,7 @@ ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
     if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
     } else {
-        convertor.setup(e_ident[EI_CLASS]);
+        converter.setup(e_ident[EI_CLASS]);
     }
 
     for (int i = 0; i < sizeof(this->e_ident); ++i) {
@@ -39,8 +41,8 @@ ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
     return issues;
 }
 
-endianess_converter ELF::get_convertor() const {
-    return convertor;
+endianess_converter ELF::get_converter() const {
+    return converter;
 }
 
 unsigned char ELF::get_ei_mag0() const {

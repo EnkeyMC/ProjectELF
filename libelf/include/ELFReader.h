@@ -9,6 +9,7 @@
 #include <vector>
 #include "ELF.h"
 #include "ELFIssue.h"
+#include "ELFHeader.h"
 
 using std::vector;
 
@@ -29,6 +30,8 @@ public:
     ELFIssuesBySeverity parse_segments();
 
 private:
+    ELFHeader* create_header(unsigned char ei_class) const;
+
     std::istream &istream;
     ELF &elf;
 };

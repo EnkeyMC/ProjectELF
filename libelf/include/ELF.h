@@ -7,6 +7,7 @@
 #include "ELFTypes.h"
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
+#include "ELFHeader.h"
 
 namespace elf {
 
@@ -16,7 +17,7 @@ public:
 
     ELFIssuesBySeverity set_e_ident(const unsigned char e_ident[EI_NIDENT]);
 
-    endianess_converter get_convertor() const;
+    endianess_converter get_converter() const;
 
     const unsigned char *get_e_ident() const;
 
@@ -27,10 +28,13 @@ public:
     unsigned char get_ei_class() const;
     unsigned char get_ei_data() const;
 
+    friend class ELFReader;
+
 protected:
-    endianess_converter convertor;
+    endianess_converter converter;
 
     unsigned char e_ident[EI_NIDENT];
+    ELFHeader *header;
 
 };
 

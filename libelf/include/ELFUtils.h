@@ -26,6 +26,8 @@ This file is taken from ELFIO project with few modifications: https://github.com
 #ifndef PROJECTELF_ELFUTILS_H
 #define PROJECTELF_ELFUTILS_H
 
+#include <vector>
+
 #include "ELFTypes.h"
 
 #define ELFIO_GET_ACCESS( TYPE, NAME, FIELD ) \
