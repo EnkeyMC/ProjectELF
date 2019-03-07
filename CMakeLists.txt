@@ -6,7 +6,9 @@ set(PROJECT_NAME_TESTS ${PROJECT_NAME}_tests)
 set(SOURCE_FILES
         src/gui/main.cpp
         src/gui/qml.qrc
-)
+        src/gui/diagram/DiagramScene.cpp
+        include/gui/diagram/DiagramScene.h
+        src/gui/diagram/DiagramModel.cpp include/gui/diagram/DiagramModel.h)
 
 # Google Tests
 add_subdirectory(ext/gtest)

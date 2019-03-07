@@ -2,7 +2,13 @@
 #include <QQmlApplicationEngine>
 #include <iostream>
 
+#include <gui/diagram/DiagramScene.h>
 #include "version.h"
+
+void registerCustomQMLTypes() {
+    qmlRegisterType<DiagramScene>("projectelf.diagram", 1, 0, "DiagramScene");
+    qmlRegisterType<DiagramModel>("projectelf.diagram", 1, 0, "DiagramModel");
+}
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +20,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+
+    registerCustomQMLTypes();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
