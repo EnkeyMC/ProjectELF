@@ -1,0 +1,43 @@
+//
+// Created by MOmac on 09.03.2019.
+//
+
+#include <include/gui/diagram/DiagramNode.h>
+
+#include "gui/diagram/DiagramNode.h"
+#include "gui/diagram/DiagramScene.h"
+
+DiagramNode::DiagramNode(DiagramScene *diagram) {
+    this->diagram = diagram;
+    this->colspan = 1;
+}
+
+DiagramNode::~DiagramNode() = default;
+
+int DiagramNode::getColspan() const {
+    return colspan;
+}
+
+bool DiagramNode::operator<(const DiagramNode &rhs) const {
+    return this->getProportionalPosition() < rhs.getProportionalPosition();
+}
+
+const QRect &DiagramNode::getNodeRect() const {
+    return nodeRect;
+}
+
+void DiagramNode::setNodeRect(const QRect &nodeRect) {
+    this->nodeRect = nodeRect;
+}
+
+void DiagramNode::setHeight(int height) {
+    this->nodeRect.setHeight(height);
+}
+
+void DiagramNode::moveTop(int y) {
+    this->nodeRect.moveTop(y);
+}
+
+void DiagramNode::setBottom(int y) {
+    this->nodeRect.setBottom(y);
+}

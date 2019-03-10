@@ -8,7 +8,7 @@ set(SOURCE_FILES
         src/gui/qml.qrc
         src/gui/diagram/DiagramScene.cpp
         include/gui/diagram/DiagramScene.h
-        src/gui/diagram/DiagramModel.cpp include/gui/diagram/DiagramModel.h)
+        src/gui/diagram/DiagramModel.cpp include/gui/diagram/DiagramModel.h src/gui/diagram/DiagramNode.cpp include/gui/diagram/DiagramNode.h src/gui/diagram/DiagramHeaderNode.cpp include/gui/diagram/DiagramHeaderNode.h src/gui/diagram/DiagramLayout.cpp include/gui/diagram/DiagramLayout.h src/gui/diagram/CondensedDiagramLayout.cpp include/gui/diagram/CondensedDiagramLayout.h src/gui/diagram/DiagramSectionHeadersNode.cpp include/gui/diagram/DiagramSectionHeadersNode.h)
 
 # Google Tests
 add_subdirectory(ext/gtest)

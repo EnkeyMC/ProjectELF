@@ -9,6 +9,7 @@ import "../controls"
 
 ColumnLayout {
     id: diagramPane
+    spacing: 0
 
     PEToolBar {
         Layout.fillWidth: true
