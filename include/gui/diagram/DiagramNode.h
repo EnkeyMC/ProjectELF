@@ -35,6 +35,8 @@ public:
 
     void setBottom(int y);
 
+    void strech(double factor);
+
     bool operator<(const DiagramNode &rhs) const;
 protected:
     DiagramScene *diagram;

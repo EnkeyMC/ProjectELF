@@ -7,6 +7,8 @@
 
 #include "DiagramLayout.h"
 
+// NOT IMPLEMENTED YET
+
 class CondensedDiagramLayout : public DiagramLayout {
     Q_OBJECT
 

@@ -41,3 +41,8 @@ void DiagramNode::moveTop(int y) {
 void DiagramNode::setBottom(int y) {
     this->nodeRect.setBottom(y);
 }
+
+void DiagramNode::strech(double factor) {
+    this->nodeRect.setTop(static_cast<int>(this->nodeRect.top() * factor));
+    this->nodeRect.setBottom(static_cast<int>(this->nodeRect.bottom() * factor));
+}
