@@ -43,6 +43,8 @@ protected:
     DiagramScene *diagram;
     std::set<DiagramNode *> m_linkColumnSortedNodes;
     std::set<DiagramNode *> m_execColumnSortedNodes;
+
+    int contentsHeight;
 };
 
 

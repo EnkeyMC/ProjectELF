@@ -10,6 +10,7 @@ DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram) : DiagramNode(diagra
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {
+    painter->setBrush(QBrush(QColor(255, 255, 255)));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "ELF Header");
 }

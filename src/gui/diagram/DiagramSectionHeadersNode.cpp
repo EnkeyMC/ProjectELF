@@ -16,6 +16,7 @@ DiagramSectionHeadersNode::DiagramSectionHeadersNode(DiagramScene *diagram, doub
 }
 
 void DiagramSectionHeadersNode::paint(QPainter *painter) const {
+    painter->setBrush(QBrush(QColor(255, 255, 255)));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "Section headers");
 }

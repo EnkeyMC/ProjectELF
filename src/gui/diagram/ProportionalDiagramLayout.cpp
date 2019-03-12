@@ -57,6 +57,7 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->drawLine(240, 0, 240, 70);
 
     painter->setPen(QColor(0, 0, 0));
+    painter->drawRect(ARROW_SPACE_WIDTH, 71, 2 * COLUMN_WIDTH, this->contentsHeight);
 
     painter->translate(0, 70);
     for (const auto &linkNode : m_linkColumnSortedNodes)
@@ -76,4 +77,7 @@ void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height
     rect.setWidth(COLUMN_WIDTH * node.getColspan());
 
     node.setNodeRect(rect);
+
+    if (rect.bottom() > this->contentsHeight)
+        this->contentsHeight = rect.bottom();
 }
