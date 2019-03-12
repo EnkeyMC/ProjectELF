@@ -9,6 +9,7 @@
 #include <QPointer>
 #include <QObject>
 #include <set>
+#include <functional>
 
 #include "DiagramNode.h"
 
@@ -31,6 +32,14 @@ public:
     void addExecNode(DiagramNode *node);
 
 protected:
+    typedef std::function<void(DiagramNode &)> NodeCallback;
+
+    void forEachLinkNode(const NodeCallback &callback);
+
+    void forEachExecNode(const NodeCallback &callback);
+
+    void forEachNode(const NodeCallback &callback);
+
     DiagramScene *diagram;
     std::set<DiagramNode *> m_linkColumnSortedNodes;
     std::set<DiagramNode *> m_execColumnSortedNodes;

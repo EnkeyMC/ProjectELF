@@ -31,11 +31,15 @@ public:
 
     void setHeight(int height);
 
+    void setColumn(int column);
+
+    int getColumn() const;
+
     void moveTop(int y);
 
     void setBottom(int y);
 
-    void strech(double factor);
+    void stretch(double factor);
 
     bool operator<(const DiagramNode &rhs) const;
 protected:
@@ -44,6 +48,7 @@ protected:
     QRect nodeRect;
 
     int colspan;
+    int column;
 };
 
 

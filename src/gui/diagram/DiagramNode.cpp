@@ -42,7 +42,15 @@ void DiagramNode::setBottom(int y) {
     this->nodeRect.setBottom(y);
 }
 
-void DiagramNode::strech(double factor) {
+void DiagramNode::stretch(double factor) {
     this->nodeRect.setTop(static_cast<int>(this->nodeRect.top() * factor));
     this->nodeRect.setBottom(static_cast<int>(this->nodeRect.bottom() * factor));
+}
+
+void DiagramNode::setColumn(int column) {
+    this->column = column;
+}
+
+int DiagramNode::getColumn() const {
+    return column;
 }
