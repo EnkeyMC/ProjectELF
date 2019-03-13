@@ -6,12 +6,21 @@
 #define PROJECTELF_DIAGRAMMODEL_H
 
 #include <QObject>
+#include "gui/diagram/DiagramModelItem.h"
 
 class DiagramModel : public QObject {
-Q_OBJECT
-
+    Q_OBJECT
 public:
+    explicit DiagramModel(QObject *parent = nullptr);
 
+    ~DiagramModel() override;
+
+    void addItem(DiagramModelItem *item);
+
+    const std::vector<DiagramModelItem *> &getItems() const;
+
+protected:
+    std::vector<DiagramModelItem *> items;
 };
 
 

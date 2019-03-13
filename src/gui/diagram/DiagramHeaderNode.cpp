@@ -5,7 +5,7 @@
 #include "gui/diagram/DiagramHeaderNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram) : DiagramNode(diagram) {
+DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram) : DiagramELFNode(diagram, 0, 0.2) {
     this->colspan = 2;
 }
 
@@ -13,14 +13,6 @@ void DiagramHeaderNode::paint(QPainter *painter) const {
     painter->setBrush(QBrush(QColor(255, 255, 255)));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "ELF Header");
-}
-
-double DiagramHeaderNode::getProportionalPosition() const {
-    return 0;
-}
-
-double DiagramHeaderNode::getProportionalSize() const {
-    return 0.2;
 }
 
 int DiagramHeaderNode::getMinHeight() const {

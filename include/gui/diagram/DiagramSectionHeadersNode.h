@@ -5,23 +5,15 @@
 #ifndef PROJECTELF_DIAGRAMSECTIONHEADERSNODE_H
 #define PROJECTELF_DIAGRAMSECTIONHEADERSNODE_H
 
-#include "gui/diagram/DiagramNode.h"
+#include "gui/diagram/DiagramELFNode.h"
 
-class DiagramSectionHeadersNode : public DiagramNode {
+class DiagramSectionHeadersNode : public DiagramELFNode {
 public:
     DiagramSectionHeadersNode(DiagramScene *diagram, double proportionalPosition, double proportionalSize);
 
     void paint(QPainter *painter) const override;
 
-    double getProportionalPosition() const override;
-
-    double getProportionalSize() const override;
-
     int getMinHeight() const override;
-
-protected:
-    double proportionalPosition;
-    double proportionalSize;
 };
 
 
