@@ -8,12 +8,14 @@
 
 const int ProportionalDiagramLayout::ARROW_SPACE_WIDTH = 50;
 const int ProportionalDiagramLayout::COLUMN_WIDTH = 200;
+const int ProportionalDiagramLayout::HEADER_HEIGHT = 70;
 const int ProportionalDiagramLayout::MIN_HEIGHT = 500;
 const int ProportionalDiagramLayout::MAX_HEIGHT = 4000;
 
 
 ProportionalDiagramLayout::ProportionalDiagramLayout(DiagramScene *diagram) : DiagramLayout(diagram) {
-
+    this->contentsSize.setWidth(2*COLUMN_WIDTH);
+    this->minWidth = getSize().width();
 }
 
 void ProportionalDiagramLayout::layoutNodes() {
@@ -50,22 +52,22 @@ void ProportionalDiagramLayout::layoutNodes() {
 
 void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0));
-    painter->drawText(QRect(QPoint(40, 0), QSize(200, 70)), Qt::AlignCenter, "Linking view");
-    painter->drawText(QRect(QPoint(240, 0), QSize(200, 70)), Qt::AlignCenter, "Execution view");
+    painter->drawText(QRect(QPoint(ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH, HEADER_HEIGHT)), Qt::AlignCenter, "Linking view");
+    painter->drawText(QRect(QPoint(COLUMN_WIDTH + ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH, HEADER_HEIGHT)), Qt::AlignCenter, "Execution view");
 
     painter->setPen(QPen(QBrush(QColor(0, 0, 0)), 1, Qt::DashLine));
-    painter->drawLine(240, 0, 240, 70);
+    painter->drawLine(COLUMN_WIDTH + ARROW_SPACE_WIDTH, 0, COLUMN_WIDTH + ARROW_SPACE_WIDTH, HEADER_HEIGHT);
 
     painter->setPen(QColor(0, 0, 0));
-    painter->drawRect(ARROW_SPACE_WIDTH, 71, 2 * COLUMN_WIDTH, this->contentsHeight);
+    painter->drawRect(ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->contentsSize.height());
 
-    painter->translate(0, 70);
+    painter->translate(0, HEADER_HEIGHT);
     for (const auto &linkNode : m_linkColumnSortedNodes)
         linkNode->paint(painter);
 
     for (const auto &execNode : m_execColumnSortedNodes)
         execNode->paint(painter);
-    painter->translate(0, -70);
+    painter->translate(0, -HEADER_HEIGHT);
 }
 
 void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height) {
@@ -78,6 +80,10 @@ void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height
 
     node.setNodeRect(rect);
 
-    if (rect.bottom() > this->contentsHeight)
-        this->contentsHeight = rect.bottom();
+    if (rect.bottom() > this->contentsSize.height())
+        this->contentsSize.setHeight(rect.bottom());
+}
+
+QSize ProportionalDiagramLayout::getSize() const {
+    return this->contentsSize + QSize(2*ARROW_SPACE_WIDTH, HEADER_HEIGHT);
 }

@@ -27,6 +27,10 @@ public:
 
     virtual void paint(QPainter *painter) const = 0;
 
+    virtual QSize getSize() const;
+
+    int getMinWidth() const;
+
     void addLinkNode(DiagramNode *node);
 
     void addExecNode(DiagramNode *node);
@@ -44,7 +48,8 @@ protected:
     std::set<DiagramNode *> m_linkColumnSortedNodes;
     std::set<DiagramNode *> m_execColumnSortedNodes;
 
-    int contentsHeight;
+    QSize contentsSize;
+    int minWidth;
 };
 
 

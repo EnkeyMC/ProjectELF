@@ -10,6 +10,7 @@
 
 DiagramLayout::DiagramLayout(DiagramScene *diagram) : QObject(diagram) {
     this->diagram = diagram;
+    this->minWidth = 0;
 }
 
 void DiagramLayout::addLinkNode(DiagramNode *node) {
@@ -35,4 +36,12 @@ void DiagramLayout::forEachExecNode(const NodeCallback &callback) {
 void DiagramLayout::forEachNode(const NodeCallback &callback) {
     forEachLinkNode(callback);
     forEachExecNode(callback);
+}
+
+QSize DiagramLayout::getSize() const {
+    return contentsSize;
+}
+
+int DiagramLayout::getMinWidth() const {
+    return minWidth;
 }

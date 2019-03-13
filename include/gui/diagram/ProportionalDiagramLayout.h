@@ -16,15 +16,16 @@ public:
 
     void paint(QPainter *painter) const override;
 
+    QSize getSize() const override;
+
 protected:
     void layoutNodeInHeight(DiagramNode &node, int height);
 
     static const int ARROW_SPACE_WIDTH;
     static const int COLUMN_WIDTH;
+    static const int HEADER_HEIGHT;
     static const int MIN_HEIGHT;
     static const int MAX_HEIGHT;
-
-private:
 };
 
 

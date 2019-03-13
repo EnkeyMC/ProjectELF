@@ -24,8 +24,11 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         clip: true
+        ScrollBar.horizontal.snapMode: ScrollBar.SnapAlways
+        ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
 
         DiagramScene {
+            implicitWidth: Math.max(minWidth, scroll.availableWidth)
             model: DiagramModel {
 
             }
