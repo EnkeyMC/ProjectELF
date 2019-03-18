@@ -2,11 +2,12 @@
 // Created by MOmac on 09.03.2019.
 //
 
-#include "gui/diagram/DiagramHeaderNode.h"
+#include "gui/diagram/nodes/DiagramHeaderNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram) : DiagramELFNode(diagram, 0, 0.2) {
+DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *modelItem) : DiagramELFNode(diagram, modelItem) {
     this->colspan = 2;
+    this->headerModelItem = modelItem;
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {

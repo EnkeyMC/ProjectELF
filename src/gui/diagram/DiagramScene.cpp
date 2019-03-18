@@ -6,23 +6,19 @@
 
 #include "gui/diagram/DiagramScene.h"
 #include "gui/diagram/ProportionalDiagramLayout.h"
-#include "gui/diagram/DiagramHeaderNode.h"
-#include "gui/diagram/DiagramSectionHeadersNode.h"
+#include "gui/diagram/nodes/DiagramHeaderNode.h"
+#include "gui/diagram/nodes/DiagramProgramHeaderTableNode.h"
+
 
 DiagramScene::DiagramScene(QQuickItem *parent) : QQuickPaintedItem(parent) {
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
-    this->m_model = nullptr;
+    this->m_model = new ELFModel(std::make_shared<elf::ELF>());
     this->m_layout = new ProportionalDiagramLayout(this);
     this->setPadding(20);
 
     // Test nodes
-    this->m_layout->addLinkNode(new DiagramHeaderNode(this));
-    this->m_layout->addLinkNode(new DiagramSectionHeadersNode(this, 0.2, 0.1));
-    this->m_layout->addLinkNode(new DiagramSectionHeadersNode(this, 0.3, 0.3));
-    this->m_layout->addLinkNode(new DiagramSectionHeadersNode(this, 0.6, 0.2));
-
-    this->m_layout->addExecNode(new DiagramSectionHeadersNode(this, 0.34, 0.4));
-    this->m_layout->addExecNode(new DiagramSectionHeadersNode(this, 0.8, 0.2));
+    this->m_layout->addLinkNode(new DiagramHeaderNode(this, new ELFHeaderModelItem(this->m_model)));
+    this->m_layout->addLinkNode(new DiagramProgramHeaderTableNode(this, new ELFProgramHeaderTableModelItem(this->m_model)));
 
     this->m_layout->layoutNodes();
     this->setImplicitHeight(this->m_layout->getSize().height() + 2*getPadding());
@@ -49,7 +45,7 @@ void DiagramScene::paint(QPainter *painter) {
     painter->translate(-paddingRect.left(), -paddingRect.top());
 }
 
-void DiagramScene::setModel(DiagramModel *model) {
+void DiagramScene::setModel(ELFModel *model) {
     if (model != this->m_model) {
         delete this->m_model;
 
@@ -61,7 +57,7 @@ void DiagramScene::setModel(DiagramModel *model) {
     }
 }
 
-DiagramModel *DiagramScene::getModel() const {
+ELFModel *DiagramScene::getModel() const {
     return this->m_model;
 }
 

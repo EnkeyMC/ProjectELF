@@ -7,7 +7,6 @@
 
 void registerCustomQMLTypes() {
     qmlRegisterType<DiagramScene>("projectelf.diagram", 1, 0, "DiagramScene");
-    qmlRegisterType<DiagramModel>("projectelf.diagram", 1, 0, "DiagramModel");
 }
 
 int main(int argc, char *argv[])

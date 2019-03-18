@@ -29,9 +29,6 @@ ColumnLayout {
 
         DiagramScene {
             implicitWidth: Math.max(minWidth, scroll.availableWidth)
-            model: DiagramModel {
-
-            }
         }
     }
 }

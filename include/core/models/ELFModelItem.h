@@ -7,17 +7,19 @@
 
 #include <QObject>
 
-class DiagramModel;
+class ELFModel;
 
-class DiagramModelItem : public QObject {
+class ELFModelItem : public QObject {
     Q_OBJECT
 
 public:
-    explicit DiagramModelItem(DiagramModel *parent);
+    explicit ELFModelItem(ELFModel *parent);
 
     uint64_t getAddressInFile() const;
 
     uint64_t getSizeInFile() const;
+
+    ELFModel * getModel() const;
 
 protected:
     uint64_t addressInFile;

@@ -6,10 +6,11 @@
 #define PROJECTELF_DIAGRAMELFNODE_H
 
 #include "gui/diagram/DiagramNode.h"
+#include "include/core/models/ELFModelItem.h"
 
 class DiagramELFNode : public DiagramNode {
 public:
-    explicit DiagramELFNode(DiagramScene *diagram, double proportionalPosition = 0, double proportionalSize = 0);
+    explicit DiagramELFNode(DiagramScene *diagram, ELFModelItem *modelItem);
 
     double getProportionalPosition() const override;
 
@@ -18,6 +19,8 @@ public:
 protected:
     double proportionalPosition;
     double proportionalSize;
+
+    ELFModelItem *modelItem;
 };
 
 
