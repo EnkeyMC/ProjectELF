@@ -2,9 +2,13 @@
 // Created by MOmac on 02.03.2019.
 //
 
+#include <ELF.h>
+
 #include "ELF.h"
 
 namespace elf {
+
+ELF::ELF() : header(nullptr) {}
 
 ELF::~ELF() {
     clear();
@@ -45,8 +49,24 @@ ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
     return issues;
 }
 
-endianess_converter ELF::get_converter() const {
+const endianess_converter & ELF::get_converter() const {
     return converter;
+}
+
+size_t ELF::getFile_size() const {
+    return file_size;
+}
+
+void ELF::set_file_size(size_t file_size) {
+    ELF::file_size = file_size;
+}
+
+void ELF::add_section_header(ELFSectionHeader *section_header) {
+    section_headers.push_back(section_header);
+}
+
+vector<ELFSectionHeader *> ELF::get_section_headers() const {
+    return section_headers;
 }
 
 unsigned char ELF::get_ei_mag0() const {

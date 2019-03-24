@@ -28,30 +28,19 @@ THE SOFTWARE.
 #include "ELFUtils.h"
 #include "ELFIssue.h"
 #include "ELFIssuesBySeverity.h"
+#include "IRawParsable.h"
 
 namespace elf {
 
-template< class T > struct ELFHeaderImplTypes;
-template<> struct ELFHeaderImplTypes<Elf32_Ehdr> {
-    typedef Elf32_Phdr Phdr_type;
-    typedef Elf32_Shdr Shdr_type;
-    static const unsigned char file_class = ELFCLASS32;
-};
-template<> struct ELFHeaderImplTypes<Elf64_Ehdr> {
-    typedef Elf64_Phdr Phdr_type;
-    typedef Elf64_Shdr Shdr_type;
-    static const unsigned char file_class = ELFCLASS64;
-};
-
 class ELF;
 
-class ELFHeader {
+class ELFHeader : public IRawParsable {
 public:
-    explicit ELFHeader(const ELF &elf, const endianess_converter &convertor);
+    explicit ELFHeader(const ELF &elf);
 
-    virtual ELFIssuesBySeverity load_from_stream(std::istream &stream) = 0;
+    virtual ~ELFHeader();
 
-    virtual ELFIssuesBySeverity find_issues() = 0;
+    virtual ELFIssuesBySeverity find_issues() const = 0;
 
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_type);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_machine);
@@ -68,7 +57,6 @@ public:
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shstrndx);
 
 protected:
-    const endianess_converter &converter;
     const ELF &elf;
 };
 

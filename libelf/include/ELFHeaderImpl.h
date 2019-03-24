@@ -9,13 +9,14 @@
 #include <istream>
 
 #include "ELFHeader.h"
+#include "ELF.h"
 
 namespace elf {
 
 template <typename T>
 class ELFHeaderImpl : public ELFHeader {
 public:
-    explicit ELFHeaderImpl(const ELF &elf, const endianess_converter &converter) : ELFHeader(elf, converter) {
+    explicit ELFHeaderImpl(const ELF &elf) : ELFHeader(elf) {
     }
 
     ELFIO_GET_SET_ACCESS(Elf_Half, e_type, header.e_type);
@@ -32,17 +33,15 @@ public:
     ELFIO_GET_SET_ACCESS(Elf_Half, e_shnum, header.e_shnum);
     ELFIO_GET_SET_ACCESS(Elf_Half, e_shstrndx, header.e_shstrndx);
 
-    ELFIssuesBySeverity load_from_stream(std::istream &stream) override {
-        ELFIssuesBySeverity issues;
-
-        stream.read(reinterpret_cast<char*>(&header), sizeof(header));
-        if (stream.gcount() != sizeof(header))
-            issues += ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF);
-
-        return issues;
+    size_t get_size() const override {
+        return sizeof(header);
     }
 
-    ELFIssuesBySeverity find_issues() override {
+    char *get_bytes() override {
+        return reinterpret_cast<char *>(&header);
+    }
+
+    ELFIssuesBySeverity find_issues() const override {
         ELFIssuesBySeverity issues;
 
         if (get_e_version() == 0)

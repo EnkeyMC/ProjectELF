@@ -8,21 +8,33 @@
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
 #include "ELFHeader.h"
+#include "ELFSectionHeader.h"
+
+using std::vector;
 
 namespace elf {
 
 class ELF {
 public:
+    ELF();
+
     ~ELF();
 
     void clear();
 
     ELFIssuesBySeverity set_e_ident(const unsigned char e_ident[EI_NIDENT]);
 
-    endianess_converter get_converter() const;
+    const endianess_converter & get_converter() const;
+
+    size_t getFile_size() const;
+
+    void set_file_size(size_t file_size);
 
     const unsigned char *get_e_ident() const;
     ELFHeader& get_header();
+
+    void add_section_header(ELFSectionHeader *section_header);
+    vector<ELFSectionHeader *> get_section_headers() const;
 
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;
@@ -36,9 +48,11 @@ public:
 protected:
     endianess_converter converter;
 
-    unsigned char e_ident[EI_NIDENT]{};
-    ELFHeader *header{};
+    size_t file_size;
 
+    unsigned char e_ident[EI_NIDENT]{};
+    ELFHeader *header;
+    vector<ELFSectionHeader *> section_headers;
 };
 
 } // namespace elf

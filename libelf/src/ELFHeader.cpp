@@ -3,8 +3,14 @@
 //
 
 #include "ELFHeader.h"
+#include "ELF.h"
 
 namespace elf {
 
-ELFHeader::ELFHeader(const ELF &elf, const endianess_converter &convertor) : converter(convertor), elf(elf) {}
+ELFHeader::ELFHeader(const ELF &elf) : elf(elf) {}
+
+ELFHeader::~ELFHeader() {
+
+}
+
 }

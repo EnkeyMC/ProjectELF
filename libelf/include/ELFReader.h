@@ -6,12 +6,11 @@
 #define PROJECTELF_ELFREADER_H
 
 #include <istream>
-#include <vector>
 #include "ELF.h"
 #include "ELFIssue.h"
 #include "ELFHeader.h"
+#include "ELFSectionHeader.h"
 
-using std::vector;
 
 namespace elf {
 
@@ -30,7 +29,11 @@ public:
     ELFIssuesBySeverity parse_segments();
 
 private:
+    ELFIssuesBySeverity parse_raw(IRawParsable &parsable, ELFIssueSource issueSource);
+
     ELFHeader* create_header(unsigned char ei_class) const;
+
+    ELFSectionHeader* create_section_header() const;
 
     std::istream &istream;
     ELF &elf;

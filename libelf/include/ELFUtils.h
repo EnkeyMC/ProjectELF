@@ -44,12 +44,12 @@ This file is taken from ELFIO project with few modifications: https://github.com
 #define ELFIO_GET_SET_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const                       \
     {                                             \
-        return converter( FIELD );             \
+        return elf.get_converter()( FIELD );      \
     }                                             \
     void set_##NAME( TYPE value )                 \
     {                                             \
         FIELD = value;                            \
-        FIELD = converter( FIELD );            \
+        FIELD = elf.get_converter()( FIELD );     \
     }
 
 #define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) \

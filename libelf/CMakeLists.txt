@@ -10,7 +10,8 @@ set(SOURCE_FILES
         src/ELFWriter.cpp
         src/ELFIssue.cpp
         src/ELFHeader.cpp
-        src/ELFIssuesBySeverity.cpp)
+        src/ELFIssuesBySeverity.cpp
+        src/ELFSectionHeader.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
