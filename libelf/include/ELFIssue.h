@@ -49,7 +49,7 @@ enum ELFIssueType {
 
 class ELFIssue {
 public:
-    ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type);
+    ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type, unsigned index = 0);
 
     ELFIssueSource get_source() const;
 
@@ -57,12 +57,15 @@ public:
 
     ELFIssueType get_type() const;
 
+    unsigned int getIndex() const;
+
     bool operator==(const ELFIssue &rhs) const;
 
 private:
     enum ELFIssueSeverity severity;
     enum ELFIssueSource source;
     enum ELFIssueType type;
+    unsigned index;
 };
 
 }  // namespace elf

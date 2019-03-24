@@ -29,7 +29,7 @@ public:
     ELFIssuesBySeverity parse_segments();
 
 private:
-    ELFIssuesBySeverity parse_raw(IRawParsable &parsable, ELFIssueSource issueSource);
+    ELFIssuesBySeverity parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index = 0);
 
     ELFHeader* create_header(unsigned char ei_class) const;
 

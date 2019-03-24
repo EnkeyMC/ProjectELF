@@ -8,13 +8,11 @@
 
 namespace elf {
 
-ELFIssue::ELFIssue(
-        enum ELFIssueSeverity severity,
-                enum ELFIssueSource source,
-                        enum ELFIssueType type)
+ELFIssue::ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type, unsigned index)
                                 : severity(severity),
                                 source(source),
-                                type(type) {
+                                type(type),
+                                index(index) {
 
 }
 
@@ -31,7 +29,11 @@ ELFIssueType ELFIssue::get_type() const {
 }
 
 bool ELFIssue::operator==(const ELFIssue &rhs) const {
-    return severity == rhs.severity && source == rhs.source && type == rhs.type;
+    return severity == rhs.severity && source == rhs.source && type == rhs.type && index == rhs.index;
+}
+
+unsigned int ELFIssue::getIndex() const {
+    return index;
 }
 
 }  // namespace elf

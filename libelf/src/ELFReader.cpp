@@ -57,7 +57,7 @@ ELFIssuesBySeverity ELFReader::parse_section_headers() {
     for (int i = 0; i < shnum; ++i) {
         istream.seekg(shoff + shentsize * i);
         section_header = create_section_header();
-        issues += parse_raw(*section_header, ISRC_SECTIONS_HEADER);
+        issues += parse_raw(*section_header, ISRC_SECTIONS_HEADER, i);
         elf.add_section_header(section_header);
     }
 
@@ -90,11 +90,11 @@ ELFSectionHeader* ELFReader::create_section_header() const {
         return new ELFSectionHeaderImpl<Elf64_Shdr>(elf);
 }
 
-ELFIssuesBySeverity ELFReader::parse_raw(IRawParsable &parsable, ELFIssueSource issueSource) {
+ELFIssuesBySeverity ELFReader::parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index) {
     ELFIssuesBySeverity issues;
     istream.read(parsable.get_bytes(), parsable.get_size());
     if (istream.gcount() != parsable.get_size())
-        issues += ELFIssue(ISEV_CRITICAL, issueSource, ITYPE_UNEXPECTED_EOF);
+        issues += ELFIssue(ISEV_CRITICAL, issue_source, ITYPE_UNEXPECTED_EOF, issue_index);
 
     return issues;
 }
