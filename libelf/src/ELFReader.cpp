@@ -92,6 +92,8 @@ ELFSectionHeader* ELFReader::create_section_header() const {
 
 ELFIssuesBySeverity ELFReader::parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index) {
     ELFIssuesBySeverity issues;
+
+    std::fill_n(parsable.get_bytes(), parsable.get_size(), '\0');
     istream.read(parsable.get_bytes(), parsable.get_size());
     if (istream.gcount() != parsable.get_size())
         issues += ELFIssue(ISEV_CRITICAL, issue_source, ITYPE_UNEXPECTED_EOF, issue_index);

@@ -13,8 +13,8 @@ ELFIssuesBySeverity &ELFIssuesBySeverity::operator+=(const ELFIssue &rhs) {
 
 ELFIssuesBySeverity &ELFIssuesBySeverity::operator+=(const ELFIssuesBySeverity &rhs) {
     for (auto &severity_issues : rhs) {
-        this->at(severity_issues.first).insert(
-                this->at(severity_issues.first).end(),
+        this->operator[](severity_issues.first).insert(
+                this->operator[](severity_issues.first).end(),
                 severity_issues.second.begin(),
                 severity_issues.second.end()
         );
