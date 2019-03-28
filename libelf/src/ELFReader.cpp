@@ -2,27 +2,26 @@
 // Created by MOmac on 02.03.2019.
 //
 
-#include <assert.h>
+#include <cassert>
 #include <ELFReader.h>
+#include <iostream>
 
-#include "ELFTypes.h"
-#include "ELFReader.h"
 #include "ELFHeaderImpl.h"
 #include "ELFSectionHeaderImpl.h"
 
 namespace elf {
 
 ELFReader::ELFReader(std::istream &istream, elf::ELF &output) : istream(istream), elf(output) {
-    auto stream_beginning = istream.tellg();
     istream.seekg(0, std::istream::end);
-    elf.set_file_size(istream.tellg() - stream_beginning);
-    istream.seekg(stream_beginning);
+    elf.set_file_size(static_cast<size_t>(istream.tellg()));
+    istream.seekg(0);
 }
 
 ELFIssuesBySeverity ELFReader::parse_header() {
     ELFIssuesBySeverity issues;
 
     this->elf.clear();
+    this->istream.seekg(0);
 
     unsigned char e_ident[EI_NIDENT];
 

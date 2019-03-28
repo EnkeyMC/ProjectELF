@@ -12,12 +12,27 @@
 
 class membuf : public std::basic_streambuf<char> {
 public:
-    membuf(const char *p, size_t l) {
-        setg((char*)p, (char*)p, (char*)p + l);
+    membuf(const char *p, size_t size) {
+        setg(const_cast<char*>(p), const_cast<char*>(p), const_cast<char*>(p) + size);
     }
 
-    void set_data(const char *p, size_t l) {
-        setg((char*)p, (char*)p, (char*)p + l);
+    void set_data(const char *p, size_t size) {
+        setg(const_cast<char*>(p), const_cast<char*>(p), const_cast<char*>(p) + size);
+    }
+
+protected:
+    pos_type seekoff(long long int off, std::ios_base::seekdir dir, std::ios_base::openmode openmode) override {
+        if (dir == std::ios_base::cur)
+            gbump(static_cast<int>(off));
+        else if (dir == std::ios_base::end)
+            setg(eback(), egptr() + off, egptr());
+        else if (dir == std::ios_base::beg)
+            setg(eback(), eback() + off, egptr());
+        return gptr() - eback();
+    }
+
+    pos_type seekpos(pos_type pos, std::ios_base::openmode openmode) override {
+        return seekoff(pos - pos_type(off_type(0)), std::ios_base::beg, openmode);
     }
 };
 

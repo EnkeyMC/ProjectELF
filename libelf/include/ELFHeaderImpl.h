@@ -46,7 +46,7 @@ public:
 
         if (get_e_version() == 0)
             issues += ELFIssue(ISEV_WARNING, ISRC_E_VERSION, ITYPE_INVALID);
-        if (get_e_ehsize() != sizeof(header))
+        if (get_e_ehsize() != sizeof(header) + EI_NIDENT)
             issues += ELFIssue(ISEV_WARNING, ISRC_E_EHSIZE, ITYPE_INVALID);
 
         return issues;

@@ -24,6 +24,10 @@ set(TEST_FILES
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES} ${SOURCE_FILES})
 
+add_custom_command(TARGET ${PROJECT_NAME_TESTS} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_SOURCE_DIR}/tests/resources ${PROJECT_BINARY_DIR}/resources)
+
 target_include_directories(${PROJECT_NAME_TESTS} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME_TESTS} GTest::GTest GTest::Main)
 

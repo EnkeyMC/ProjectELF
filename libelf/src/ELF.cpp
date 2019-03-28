@@ -39,7 +39,7 @@ ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
     if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
     } else {
-        converter.setup(e_ident[EI_CLASS]);
+        converter.setup(e_ident[EI_DATA]);
     }
 
     for (int i = 0; i < sizeof(this->e_ident); ++i) {
