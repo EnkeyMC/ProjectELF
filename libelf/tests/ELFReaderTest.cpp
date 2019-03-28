@@ -2,9 +2,9 @@
 // Created by MOmac on 24.03.2019.
 //
 
-#include <gtest/gtest.h>
 #include <fstream>
 
+#include "gtest/gtest.h"
 #include "ELFReader.h"
 #include "Memstream.h"
 
