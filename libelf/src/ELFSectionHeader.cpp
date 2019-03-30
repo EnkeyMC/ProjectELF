@@ -7,10 +7,8 @@
 
 namespace elf {
 
-ELFSectionHeader::ELFSectionHeader(ELF &elf) : elf(elf) {
+ELFSectionHeader::ELFSectionHeader(ELF &elf) : ELFStructureBase(elf) {
 
 }
-
-ELFSectionHeader::~ELFSectionHeader() = default;
 
 }

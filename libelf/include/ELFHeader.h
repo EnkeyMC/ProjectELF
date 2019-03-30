@@ -29,18 +29,15 @@ THE SOFTWARE.
 #include "ELFIssue.h"
 #include "ELFIssuesBySeverity.h"
 #include "IRawParsable.h"
+#include "ELFStructureBase.h"
 
 namespace elf {
 
 class ELF;
 
-class ELFHeader : public IRawParsable {
+class ELFHeader : public IRawParsable, public ELFStructureBase {
 public:
-    explicit ELFHeader(const ELF &elf);
-
-    virtual ~ELFHeader();
-
-    virtual ELFIssuesBySeverity find_issues() const = 0;
+    explicit ELFHeader(ELF &elf);
 
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_type);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_machine);
@@ -55,9 +52,6 @@ public:
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shentsize);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shnum);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shstrndx);
-
-protected:
-    const ELF &elf;
 };
 
 }

@@ -12,7 +12,8 @@ set(SOURCE_FILES
         src/ELFHeader.cpp
         src/ELFIssuesBySeverity.cpp
         src/ELFSectionHeader.cpp
-        src/ELFProgramHeader.cpp)
+        src/ELFProgramHeader.cpp
+        src/ELFStructureBase.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 

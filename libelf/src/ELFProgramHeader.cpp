@@ -6,8 +6,4 @@
 
 #include "ELFProgramHeader.h"
 
-elf::ELFProgramHeader::ELFProgramHeader(elf::ELF &elf) : elf(elf) {
-
-}
-
-elf::ELFProgramHeader::~ELFProgramHeader() = default;
+elf::ELFProgramHeader::ELFProgramHeader(elf::ELF &elf) : ELFStructureBase(elf) {}

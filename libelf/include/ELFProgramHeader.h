@@ -8,18 +8,15 @@
 #include "IRawParsable.h"
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
+#include "ELFStructureBase.h"
 
 namespace elf {
 
 class ELF;
 
-class ELFProgramHeader : public IRawParsable {
+class ELFProgramHeader : public IRawParsable, public ELFStructureBase {
 public:
     explicit ELFProgramHeader(ELF &elf);
-
-    virtual ~ELFProgramHeader();
-
-    virtual ELFIssuesBySeverity find_issues() const = 0;
 
     ELFIO_GET_SET_ACCESS_DECL(Elf_Word, p_type);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Word, p_flags);
@@ -29,8 +26,6 @@ public:
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_filesz);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_memsz);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_align);
-protected:
-    ELF &elf;
 };
 
 } // namespace elf

@@ -7,6 +7,7 @@
 
 #include "ELFProgramHeader.h"
 #include "ELF.h"
+#include "ELFStructureBase.h"
 
 namespace elf {
 

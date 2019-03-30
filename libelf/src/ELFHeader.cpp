@@ -7,10 +7,6 @@
 
 namespace elf {
 
-ELFHeader::ELFHeader(const ELF &elf) : elf(elf) {}
-
-ELFHeader::~ELFHeader() {
-
-}
+ELFHeader::ELFHeader(ELF &elf) : ELFStructureBase(elf) {}
 
 }
