@@ -16,7 +16,7 @@ namespace elf {
 template <typename T>
 class ELFHeaderImpl : public ELFHeader {
 public:
-    explicit ELFHeaderImpl(const ELF &elf) : ELFHeader(elf) {
+    explicit ELFHeaderImpl(ELF &elf) : ELFHeader(elf) {
     }
 
     ELFIO_GET_SET_ACCESS(Elf_Half, e_type, header.e_type);

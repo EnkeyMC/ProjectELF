@@ -21,7 +21,7 @@ public:
     }
 
 protected:
-    pos_type seekoff(long long int off, std::ios_base::seekdir dir, std::ios_base::openmode openmode) override {
+    pos_type seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode openmode) override {
         if (dir == std::ios_base::cur)
             gbump(static_cast<int>(off));
         else if (dir == std::ios_base::end)
