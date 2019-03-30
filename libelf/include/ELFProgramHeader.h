@@ -26,6 +26,13 @@ public:
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_filesz);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_memsz);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_align);
+
+    char *get_segment_data() const;
+
+    void set_segment_data(const char *raw_data, Elf_Word size);
+
+protected:
+    char *segment_data;
 };
 
 } // namespace elf

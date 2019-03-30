@@ -29,6 +29,13 @@ public:
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_addralign);
     ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_entsize);
 
+    char *get_section_data() const;
+
+    void set_section_data(const char *raw_data, Elf_Word size);
+
+protected:
+    char *section_data;
+
 };
 
 }

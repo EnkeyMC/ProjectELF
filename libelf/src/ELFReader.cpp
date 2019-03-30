@@ -84,11 +84,33 @@ ELFIssuesBySeverity ELFReader::parse_program_headers() {
 }
 
 ELFIssuesBySeverity ELFReader::parse_sections() {
-    return ELFIssuesBySeverity();
+    assert(this->elf.header != nullptr);
+    ELFIssuesBySeverity issues{};
+
+    for (auto section_header : elf.section_headers) {
+        istream.seekg(section_header->get_sh_offset());
+
+        char buffer[section_header->get_sh_size()];
+        istream.read(buffer, sizeof(buffer));
+        section_header->set_section_data(buffer, sizeof(buffer));
+    }
+
+    return issues;
 }
 
 ELFIssuesBySeverity ELFReader::parse_segments() {
-    return ELFIssuesBySeverity();
+    assert(this->elf.header != nullptr);
+    ELFIssuesBySeverity issues{};
+
+    for (auto program_header : elf.program_headers) {
+        istream.seekg(program_header->get_p_offset());
+
+        char buffer[program_header->get_p_filesz()];
+        istream.read(buffer, sizeof(buffer));
+        program_header->set_segment_data(buffer, sizeof(buffer));
+    }
+
+    return issues;
 }
 
 ELFHeader* ELFReader::create_header(unsigned char ei_class) const {
