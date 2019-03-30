@@ -20,6 +20,19 @@ void ELF::clear() {
     }
 
     delete header;
+    header = nullptr;
+
+    for (auto pheader : program_headers) {
+        delete pheader;
+    }
+
+    program_headers.clear();
+
+    for (auto sheader : section_headers) {
+        delete sheader;
+    }
+
+    section_headers.clear();
 }
 
 ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
@@ -99,6 +112,14 @@ const unsigned char *ELF::get_e_ident() const {
 
 ELFHeader &ELF::get_header() {
     return *header;
+}
+
+const vector<ELFProgramHeader *> &ELF::getProgram_headers() const {
+    return program_headers;
+}
+
+void ELF::add_program_header(ELFProgramHeader *program_header) {
+    this->program_headers.push_back(program_header);
 }
 
 }

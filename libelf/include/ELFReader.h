@@ -35,6 +35,8 @@ private:
 
     ELFSectionHeader* create_section_header() const;
 
+    ELFProgramHeader* create_program_header() const;
+
     std::istream &istream;
     ELF &elf;
 };

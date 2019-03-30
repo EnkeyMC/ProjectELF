@@ -8,6 +8,7 @@
 
 #include "ELFHeaderImpl.h"
 #include "ELFSectionHeaderImpl.h"
+#include "ELFProgramHeaderImpl.h"
 
 namespace elf {
 
@@ -64,7 +65,22 @@ ELFIssuesBySeverity ELFReader::parse_section_headers() {
 }
 
 ELFIssuesBySeverity ELFReader::parse_program_headers() {
-    return ELFIssuesBySeverity();
+    assert(elf.header != nullptr);
+
+    ELFIssuesBySeverity issues{};
+    Elf64_Off phoff = elf.header->get_e_phoff();
+    Elf_Half phentsize = elf.header->get_e_phentsize();
+    Elf_Half phnum = elf.header->get_e_phnum();
+    ELFProgramHeader *program_header;
+
+    for (int i = 0; i < phnum; ++i) {
+        istream.seekg(phoff + phentsize * i);
+        program_header = create_program_header();
+        issues += parse_raw(*program_header, ISRC_PROGRAM_HEADER, i);
+        elf.add_program_header(program_header);
+    }
+
+    return issues;
 }
 
 ELFIssuesBySeverity ELFReader::parse_sections() {
@@ -87,6 +103,13 @@ ELFSectionHeader* ELFReader::create_section_header() const {
         return new ELFSectionHeaderImpl<Elf32_Shdr>(elf);
     else
         return new ELFSectionHeaderImpl<Elf64_Shdr>(elf);
+}
+
+ELFProgramHeader* ELFReader::create_program_header() const {
+    if (elf.get_ei_class() == ELFCLASS32)
+        return new ELFProgramHeaderImpl<Elf32_Phdr>(elf);
+    else
+        return new ELFProgramHeaderImpl<Elf64_Phdr>(elf);
 }
 
 ELFIssuesBySeverity ELFReader::parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index) {

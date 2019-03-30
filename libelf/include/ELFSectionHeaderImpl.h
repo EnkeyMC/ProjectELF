@@ -24,7 +24,7 @@ public:
     }
 
     ELFIssuesBySeverity find_issues() const override {
-        return ELFIssuesBySeverity();
+        return ELFIssuesBySeverity();  // TODO
     }
 
     ELFIO_GET_SET_ACCESS(Elf_Word, sh_name, header.sh_name);

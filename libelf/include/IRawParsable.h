@@ -5,6 +5,8 @@
 #ifndef PROJECTELF_IRAWPARSABLE_H
 #define PROJECTELF_IRAWPARSABLE_H
 
+#include <cstddef>
+
 namespace elf {
 
 class IRawParsable {

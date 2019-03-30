@@ -9,6 +9,7 @@
 #include "ELFIssuesBySeverity.h"
 #include "ELFHeader.h"
 #include "ELFSectionHeader.h"
+#include "ELFProgramHeader.h"
 
 using std::vector;
 
@@ -36,6 +37,9 @@ public:
     void add_section_header(ELFSectionHeader *section_header);
     vector<ELFSectionHeader *> get_section_headers() const;
 
+    void add_program_header(ELFProgramHeader *program_header);
+    const vector<ELFProgramHeader *> &getProgram_headers() const;
+
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;
     unsigned char get_ei_mag2() const;
@@ -53,6 +57,7 @@ protected:
     unsigned char e_ident[EI_NIDENT]{};
     ELFHeader *header;
     vector<ELFSectionHeader *> section_headers;
+    vector<ELFProgramHeader *> program_headers;
 };
 
 } // namespace elf
