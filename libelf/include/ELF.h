@@ -38,7 +38,7 @@ public:
     vector<ELFSectionHeader *> get_section_headers() const;
 
     void add_program_header(ELFProgramHeader *program_header);
-    const vector<ELFProgramHeader *> &getProgram_headers() const;
+    const vector<ELFProgramHeader *> &get_program_headers() const;
 
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;

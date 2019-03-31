@@ -231,7 +231,7 @@ TEST_F(ELFReaderTest, parse_header_valid_32bit_lsb) {
 
 
 
-TEST(ELFReaderTestNoFixture, parse_header_valid_32bit_msb_from_file) {
+TEST(ELFReaderTestFromFile, parse_header_valid_32bit_msb) {
     elf::ELF elf{};
     std::ifstream in("resources/elf_header.bin", std::ios::binary);
     elf::ELFReader reader{in, elf};
@@ -260,4 +260,111 @@ TEST(ELFReaderTestNoFixture, parse_header_valid_32bit_msb_from_file) {
     EXPECT_EQ(elf.get_header().get_e_shentsize(), 0);
     EXPECT_EQ(elf.get_header().get_e_shnum(), 0);
     EXPECT_EQ(elf.get_header().get_e_shstrndx(), 0);
+}
+
+TEST(ELFReaderTestFromFile, parse_helloworld_file) {
+    // ARRANGE
+    elf::ELF elf{};
+    std::ifstream in("resources/helloworld", std::ios::binary);
+    elf::ELFReader reader(in, elf);
+
+    // ACT
+    auto issues = reader.parse_header();
+    issues += reader.parse_section_headers();
+    issues += reader.parse_program_headers();
+    issues += reader.parse_sections();
+    issues += reader.parse_segments();
+
+    // ASSERT
+    EXPECT_TRUE(issues.empty());
+
+    EXPECT_EQ(elf.get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf.get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf.get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf.get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf.get_ei_class(), ELFCLASS64);
+    EXPECT_EQ(elf.get_ei_data(), ELFDATA2LSB);
+
+    EXPECT_EQ(elf.get_header().get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf.get_header().get_e_machine(), EM_X86_64);
+    EXPECT_EQ(elf.get_header().get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf.get_header().get_e_entry(), 0x400430);
+    EXPECT_EQ(elf.get_header().get_e_phoff(), 64);
+    EXPECT_EQ(elf.get_header().get_e_shoff(), 6624);
+    EXPECT_EQ(elf.get_header().get_e_flags(), 0);
+    EXPECT_EQ(elf.get_header().get_e_ehsize(), 64);
+    EXPECT_EQ(elf.get_header().get_e_phentsize(), 56);
+    EXPECT_EQ(elf.get_header().get_e_phnum(), 9);
+    EXPECT_EQ(elf.get_header().get_e_shentsize(), 64);
+    EXPECT_EQ(elf.get_header().get_e_shnum(), 31);
+    EXPECT_EQ(elf.get_header().get_e_shstrndx(), 28);
+
+    auto sections = elf.get_section_headers();
+
+    ASSERT_EQ(sections.size(), elf.get_header().get_e_shnum());
+
+    EXPECT_EQ(sections[0]->get_sh_name(), 0);
+    EXPECT_EQ(sections[0]->get_sh_type(), SHT_NULL);
+    EXPECT_EQ(sections[0]->get_sh_addr(), 0);
+    EXPECT_EQ(sections[0]->get_sh_offset(), 0);
+    EXPECT_EQ(sections[0]->get_sh_size(), 0);
+    EXPECT_EQ(sections[0]->get_sh_entsize(), 0);
+    EXPECT_EQ(sections[0]->get_sh_flags(), 0);
+    EXPECT_EQ(sections[0]->get_sh_link(), 0);
+    EXPECT_EQ(sections[0]->get_sh_info(), 0);
+    EXPECT_EQ(sections[0]->get_sh_addralign(), 0);
+
+    EXPECT_EQ(sections[1]->get_sh_name(), 0x1B);
+    EXPECT_EQ(sections[1]->get_sh_type(), SHT_PROGBITS);
+    EXPECT_EQ(sections[1]->get_sh_addr(), 0x400238);
+    EXPECT_EQ(sections[1]->get_sh_offset(), 0x238);
+    EXPECT_EQ(sections[1]->get_sh_size(), 0x1C);
+    EXPECT_EQ(sections[1]->get_sh_entsize(), 0);
+    EXPECT_TRUE(sections[1]->get_sh_flags() & SHF_ALLOC);
+    EXPECT_EQ(sections[1]->get_sh_link(), 0);
+    EXPECT_EQ(sections[1]->get_sh_info(), 0);
+    EXPECT_EQ(sections[1]->get_sh_addralign(), 1);
+
+    EXPECT_EQ(sections[2]->get_sh_name(), 0x23);
+    EXPECT_EQ(sections[2]->get_sh_type(), SHT_NOTE);
+    EXPECT_EQ(sections[2]->get_sh_addr(), 0x400254);
+    EXPECT_EQ(sections[2]->get_sh_offset(), 0x254);
+    EXPECT_EQ(sections[2]->get_sh_size(), 0x20);
+    EXPECT_EQ(sections[2]->get_sh_entsize(), 0);
+    EXPECT_TRUE(sections[2]->get_sh_flags() & SHF_ALLOC);
+    EXPECT_EQ(sections[2]->get_sh_link(), 0);
+    EXPECT_EQ(sections[2]->get_sh_info(), 0);
+    EXPECT_EQ(sections[2]->get_sh_addralign(), 4);
+
+    // ... not gonna do all section headers
+
+    ASSERT_LT(elf.get_header().get_e_shstrndx(), sections.size());
+    auto string_section = sections[elf.get_header().get_e_shstrndx()];
+    const char * section_data = string_section->get_section_data();
+
+    EXPECT_EQ(section_data[0], 0);
+    EXPECT_STREQ(section_data + 1, ".symtab");
+    EXPECT_STREQ(section_data + 9, ".strtab");
+    EXPECT_STREQ(section_data + 0x103, ".comment");
+
+    auto segments = elf.get_program_headers();
+
+    ASSERT_EQ(segments.size(), elf.get_header().get_e_phnum());
+
+    EXPECT_EQ(segments[0]->get_p_type(), PT_PHDR);
+    EXPECT_EQ(segments[0]->get_p_offset(), 0x40);
+    EXPECT_EQ(segments[0]->get_p_vaddr(), 0x400040);
+    EXPECT_EQ(segments[0]->get_p_paddr(), 0x400040);
+    EXPECT_EQ(segments[0]->get_p_filesz(), 0x1F8);
+    EXPECT_EQ(segments[0]->get_p_memsz(), 0x1F8);
+    EXPECT_TRUE(segments[0]->get_p_flags() & (PF_R | PF_X));
+    EXPECT_EQ(segments[0]->get_p_align(), 8);
+
+    // test if segment contains the first program header
+    const char * segment_data = segments[0]->get_segment_data();
+    const char * raw_program_header = segments[0]->get_bytes();
+
+    for (int i = 0; i < segments[0]->get_size(); ++i) {
+        EXPECT_EQ(segment_data[i], raw_program_header[i]);
+    }
 }

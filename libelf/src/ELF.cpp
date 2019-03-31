@@ -114,7 +114,7 @@ ELFHeader &ELF::get_header() {
     return *header;
 }
 
-const vector<ELFProgramHeader *> &ELF::getProgram_headers() const {
+const vector<ELFProgramHeader *> &ELF::get_program_headers() const {
     return program_headers;
 }
 
