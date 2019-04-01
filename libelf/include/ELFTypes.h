@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-This file is part of ELFIO project: https://github.com/serge1/ELFIO/blob/master/elfio/elf_types.hpp
+This file is taken from ELFIO project with few modifications: https://github.com/serge1/ELFIO/blob/master/elfio/elf_types.hpp
 */
 
 #ifndef PROJECTELF_ELFTYPES_H
@@ -687,7 +687,6 @@ typedef uint64_t Elf64_Off;
 
 // ELF file header
 struct Elf32_Ehdr {
-    unsigned char e_ident[EI_NIDENT];
     Elf_Half    e_type;
     Elf_Half    e_machine;
     Elf_Word    e_version;
@@ -704,7 +703,6 @@ struct Elf32_Ehdr {
 };
 
 struct Elf64_Ehdr {
-    unsigned char e_ident[EI_NIDENT];
     Elf_Half    e_type;
     Elf_Half    e_machine;
     Elf_Word    e_version;

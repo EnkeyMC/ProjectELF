@@ -10,9 +10,9 @@
 namespace elf {
 
 enum ELFIssueSeverity {
-    ISEV_CRITICAL,
-    ISEV_ERROR,
-    ISEV_WARNING
+    ISEV_CRITICAL,  /// Cannot continue parsing
+    ISEV_ERROR,  /// Partially parsable, contains errors
+    ISEV_WARNING  /// Fully parsed, but contains unknown or invalid values
 };
 
 enum ELFIssueSource {
@@ -43,23 +43,29 @@ enum ELFIssueSource {
 };
 
 enum ELFIssueType {
-    ITYPE_UNEXPECTED_EOF
+    ITYPE_UNEXPECTED_EOF,
+    ITYPE_INVALID
 };
 
 class ELFIssue {
 public:
-    ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type);
+    ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type, unsigned index = 0);
 
     ELFIssueSource get_source() const;
 
-    ELFIssueSeverity getSeverity() const;
+    ELFIssueSeverity get_severity() const;
 
-    ELFIssueType getType() const;
+    ELFIssueType get_type() const;
+
+    unsigned int getIndex() const;
+
+    bool operator==(const ELFIssue &rhs) const;
 
 private:
     enum ELFIssueSeverity severity;
     enum ELFIssueSource source;
     enum ELFIssueType type;
+    unsigned index;
 };
 
 }  // namespace elf
