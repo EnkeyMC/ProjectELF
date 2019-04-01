@@ -19,19 +19,19 @@ public:
     explicit ELFHeaderImpl(ELF &elf) : ELFHeader(elf) {
     }
 
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_type, header.e_type);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_machine, header.e_machine);
-    ELFIO_GET_SET_ACCESS(Elf_Word, e_version, header.e_version);
-    ELFIO_GET_SET_ACCESS(Elf64_Addr, e_entry, header.e_entry);
-    ELFIO_GET_SET_ACCESS(Elf64_Off, e_phoff, header.e_phoff);
-    ELFIO_GET_SET_ACCESS(Elf64_Off, e_shoff, header.e_shoff);
-    ELFIO_GET_SET_ACCESS(Elf_Word, e_flags, header.e_flags);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_ehsize, header.e_ehsize);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_phentsize, header.e_phentsize);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_phnum, header.e_phnum);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_shentsize, header.e_shentsize);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_shnum, header.e_shnum);
-    ELFIO_GET_SET_ACCESS(Elf_Half, e_shstrndx, header.e_shstrndx);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_type, header.e_type);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_machine, header.e_machine);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Word, e_version, header.e_version);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Addr, e_entry, header.e_entry);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Off, e_phoff, header.e_phoff);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Off, e_shoff, header.e_shoff);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Word, e_flags, header.e_flags);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_ehsize, header.e_ehsize);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_phentsize, header.e_phentsize);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_phnum, header.e_phnum);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_shentsize, header.e_shentsize);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_shnum, header.e_shnum);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Half, e_shstrndx, header.e_shstrndx);
 
     size_t get_size() const override {
         return sizeof(header);

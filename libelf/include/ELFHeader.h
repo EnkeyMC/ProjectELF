@@ -39,19 +39,19 @@ class ELFHeader : public IRawParsable, public ELFStructureBase {
 public:
     explicit ELFHeader(ELF &elf);
 
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_type);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_machine);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, e_version);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Addr, e_entry);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Off, e_phoff);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Off, e_shoff);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, e_flags);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_ehsize);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_phentsize);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_phnum);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shentsize);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shnum);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Half, e_shstrndx);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_type);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_machine);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, e_version);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Addr, e_entry);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Off, e_phoff);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Off, e_shoff);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, e_flags);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_ehsize);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_phentsize);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_phnum);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shentsize);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shnum);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shstrndx);
 };
 
 }

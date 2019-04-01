@@ -18,16 +18,16 @@ class ELFSectionHeader : public IRawParsable, public ELFStructureBase {
 public:
     explicit ELFSectionHeader(ELF &elf);
 
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, sh_name);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, sh_type);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_flags);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Addr, sh_addr);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Off, sh_offset);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_size);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, sh_link);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, sh_info);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_addralign);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword, sh_entsize);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, sh_name);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, sh_type);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_flags);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Addr, sh_addr);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Off, sh_offset);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_size);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, sh_link);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, sh_info);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_addralign);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_entsize);
 
     char *get_section_data() const;
 

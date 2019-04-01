@@ -54,7 +54,7 @@ ELFIssuesBySeverity ELFReader::parse_section_headers() {
     Elf_Half shnum = elf.header->get_e_shnum();
     ELFSectionHeader *section_header;
 
-    for (int i = 0; i < shnum; ++i) {
+    for (unsigned int i = 0; i < shnum; ++i) {
         istream.seekg(shoff + shentsize * i);
         section_header = create_section_header();
         issues += parse_raw(*section_header, ISRC_SECTIONS_HEADER, i);
@@ -73,7 +73,7 @@ ELFIssuesBySeverity ELFReader::parse_program_headers() {
     Elf_Half phnum = elf.header->get_e_phnum();
     ELFProgramHeader *program_header;
 
-    for (int i = 0; i < phnum; ++i) {
+    for (unsigned int i = 0; i < phnum; ++i) {
         istream.seekg(phoff + phentsize * i);
         program_header = create_program_header();
         issues += parse_raw(*program_header, ISRC_PROGRAM_HEADER, i);

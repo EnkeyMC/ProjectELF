@@ -18,14 +18,14 @@ class ELFProgramHeader : public IRawParsable, public ELFStructureBase {
 public:
     explicit ELFProgramHeader(ELF &elf);
 
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, p_type);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Word, p_flags);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Off , p_offset);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Addr , p_vaddr);
-    ELFIO_GET_SET_ACCESS_DECL(Elf64_Addr , p_paddr);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_filesz);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_memsz);
-    ELFIO_GET_SET_ACCESS_DECL(Elf_Xword , p_align);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, p_type);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Word, p_flags);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Off , p_offset);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Addr , p_vaddr);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf64_Addr , p_paddr);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword , p_filesz);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword , p_memsz);
+    ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword , p_align);
 
     char *get_segment_data() const;
 

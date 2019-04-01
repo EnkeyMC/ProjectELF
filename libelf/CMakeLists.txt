@@ -23,7 +23,8 @@ set(TEST_FILES
         tests/ELFTest.cpp
         tests/ELFIssuesBySeverityTest.cpp
         tests/ELFReaderTest.cpp
-        tests/Memstream.h tests/MemstreamTest.cpp)
+        tests/Memstream.h
+        tests/MemstreamTest.cpp)
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES} ${SOURCE_FILES})
 
