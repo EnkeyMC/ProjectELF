@@ -11,6 +11,8 @@ ColumnLayout {
     id: diagramPane
     spacing: 0
 
+    property alias elfModel: diagramScene.model
+
     PEToolBar {
         Layout.fillWidth: true
         
@@ -28,6 +30,7 @@ ColumnLayout {
         ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
 
         DiagramScene {
+            id: diagramScene
             implicitWidth: Math.max(minWidth, scroll.availableWidth)
         }
     }

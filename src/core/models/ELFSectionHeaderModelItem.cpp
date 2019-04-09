@@ -4,7 +4,10 @@
 
 #include "core/models/ELFSectionHeaderModelItem.h"
 
-ELFSectionHeaderModelItem::ELFSectionHeaderModelItem(ELFModel *parent) : ELFModelItem(parent) {}
+ELFSectionHeaderModelItem::ELFSectionHeaderModelItem(ELFModel *parent)
+    : ELFModelItem(parent),
+      sectionModelItem(nullptr)
+{}
 
 ELFSectionHeaderModelItem::~ELFSectionHeaderModelItem() {
     delete sectionModelItem;

@@ -1,12 +1,15 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import projectelf.models 1.0
 
 import "../singletons"
 import "../controls"
 
 ColumnLayout {
     id: basicInfoPane
+
+    property ELFModel elfModel: ELFModel {}
 
     PEToolBar {
         Layout.fillWidth: true
@@ -35,12 +38,12 @@ ColumnLayout {
 
                     PEKeyValue {
                         key: qsTr("<strong>Class</strong>")
-                        value: qsTr("64-bit")
+                        value: basicInfoPane.elfModel.dispFileClass
                     }
 
                     PEKeyValue {
                         key: qsTr("<strong>Encoding</strong>")
-                        value: qsTr("Little Endian")
+                        value: basicInfoPane.elfModel.dispDataEncoding
                     }
 
                     PEKeyValue {

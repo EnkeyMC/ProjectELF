@@ -66,7 +66,7 @@ const endianess_converter & ELF::get_converter() const {
     return converter;
 }
 
-size_t ELF::getFile_size() const {
+size_t ELF::get_file_size() const {
     return file_size;
 }
 
@@ -120,6 +120,30 @@ const vector<ELFProgramHeader *> &ELF::get_program_headers() const {
 
 void ELF::add_program_header(ELFProgramHeader *program_header) {
     this->program_headers.push_back(program_header);
+}
+
+void ELF::set_ei_mag0(unsigned char value) {
+    e_ident[EI_MAG0] = value;
+}
+
+void ELF::set_ei_mag1(unsigned char value) {
+    e_ident[EI_MAG1] = value;
+}
+
+void ELF::set_ei_mag2(unsigned char value) {
+    e_ident[EI_MAG2] = value;
+}
+
+void ELF::set_ei_mag3(unsigned char value) {
+    e_ident[EI_MAG3] = value;
+}
+
+void ELF::set_ei_class(unsigned char value) {
+    e_ident[EI_CLASS] = value;
+}
+
+void ELF::set_ei_data(unsigned char value) {
+    e_ident[EI_DATA] = value;
 }
 
 }

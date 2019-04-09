@@ -9,6 +9,8 @@ PESplitView {
     id: viewEdit
     orientation: Qt.Horizontal
 
+    property QtObject elfModel
+
     ColumnLayout {
         id: elfHeaderColumn
         Layout.fillHeight: true

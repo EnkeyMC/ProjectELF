@@ -5,8 +5,23 @@ import "../singletons"
 
 Rectangle {
     id: tabBar
-    default property alias content: control.contentChildren
+    default property alias content: control.contentData
     property alias currentIndex: control.currentIndex
+
+    signal tabClosed(int index)
+
+    signal tabCreated(int index)
+
+    onTabClosed: {
+        if (currentIndex == index) {
+            if (index - 1 < 0)
+                currentIndex = index + 1
+            else
+                currentIndex = index - 1
+        }
+    }
+
+    onTabCreated: currentIndex = index
 
     color: Style._ColorSecondaryDark
     height: Style.tabBar._Height + Style.tabBar._TopPadding

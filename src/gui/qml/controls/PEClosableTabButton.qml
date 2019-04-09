@@ -10,6 +10,8 @@ TabButton {
     padding: 0
     width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
 
+    signal closeTab
+
     contentItem: RowLayout {
         spacing: 0
         id: layout
@@ -52,6 +54,8 @@ TabButton {
                 anchors.bottom: parent.bottom
                 width: parent.width
                 text: "×"
+
+                onClicked: tabButton.closeTab();
 
                 contentItem: Text {
                     text: closeBtn.text

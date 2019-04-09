@@ -27,7 +27,7 @@ public:
 
     const endianess_converter & get_converter() const;
 
-    size_t getFile_size() const;
+    size_t get_file_size() const;
 
     void set_file_size(size_t file_size);
 
@@ -46,6 +46,13 @@ public:
     unsigned char get_ei_mag3() const;
     unsigned char get_ei_class() const;
     unsigned char get_ei_data() const;
+
+    void set_ei_mag0(unsigned char value);
+    void set_ei_mag1(unsigned char value);
+    void set_ei_mag2(unsigned char value);
+    void set_ei_mag3(unsigned char value);
+    void set_ei_class(unsigned char value);
+    void set_ei_data(unsigned char value);
 
     friend class ELFReader;
 

@@ -47,8 +47,6 @@ void DiagramScene::paint(QPainter *painter) {
 
 void DiagramScene::setModel(ELFModel *model) {
     if (model != this->m_model) {
-        delete this->m_model;
-
         if (model != nullptr)
             model->setParent(this);
 

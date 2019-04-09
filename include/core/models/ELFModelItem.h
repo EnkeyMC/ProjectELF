@@ -7,6 +7,8 @@
 
 #include <QObject>
 
+#define HEX 16
+
 class ELFModel;
 
 class ELFModelItem : public QObject {

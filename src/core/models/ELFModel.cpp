@@ -4,8 +4,15 @@
 
 #include "core/models/ELFModel.h"
 
-ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(parent), elf(std::move(elf)) {
+#define DEFAULT(x) if (elf == nullptr) return x
 
+ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr)
+{
+
+}
+
+ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(parent), elf(std::move(elf)) {
+    this->headerModelItem = new ELFHeaderModelItem(this);
 }
 
 ELFModel::~ELFModel() {
@@ -13,9 +20,134 @@ ELFModel::~ELFModel() {
 }
 
 uint64_t ELFModel::getFileSize() const {
-    return fileSize;
+    DEFAULT(0);
+    return elf->get_file_size();
 }
 
-void ELFModel::setFileSize(uint64_t fileSize) {
-    ELFModel::fileSize = fileSize;
+QString ELFModel::getMag0() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_mag0(), HEX);
+}
+
+QString ELFModel::getMag1() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_mag1(), HEX);
+}
+
+QString ELFModel::getMag2() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_mag2(), HEX);
+}
+
+QString ELFModel::getMag3() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_mag3(), HEX);
+}
+
+QString ELFModel::getFileClass() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_class(), HEX);
+}
+
+QString ELFModel::getDataEncoding() const {
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_data(), HEX);
+}
+
+ELFHeaderModelItem *ELFModel::getHeader() const
+{
+    return this->headerModelItem;
+}
+
+QString ELFModel::getDispMag0() const
+{
+    DEFAULT(QString());
+    if (std::isgraph(elf->get_ei_mag0()))
+        return QString(elf->get_ei_mag0());
+    else
+        return QString();
+}
+
+QString ELFModel::getDispMag1() const
+{
+    DEFAULT(QString());
+    if (std::isgraph(elf->get_ei_mag1()))
+        return QString(elf->get_ei_mag1());
+    else
+        return QString();
+}
+
+QString ELFModel::getDispMag2() const
+{
+    DEFAULT(QString());
+    if (std::isgraph(elf->get_ei_mag2()))
+        return QString(elf->get_ei_mag2());
+    else
+        return QString();
+}
+
+QString ELFModel::getDispMag3() const
+{
+    DEFAULT(QString());
+    if (std::isgraph(elf->get_ei_mag3()))
+        return QString(elf->get_ei_mag3());
+    else
+        return QString();
+}
+
+QString ELFModel::getDispFileClass() const
+{
+    DEFAULT(QString());
+    switch (elf->get_ei_class()) {
+    case ELFCLASS32:
+        return "32-bit";
+    case ELFCLASS64:
+        return "64-bit";
+    default:
+        return QString(tr("Unkown (")) + this->getFileClass() + ")";
+    }
+}
+
+QString ELFModel::getDispDataEncoding() const
+{
+    DEFAULT(QString());
+
+    switch (elf->get_ei_data()) {
+    case ELFDATA2LSB:
+        return tr("LSB, 2's complement");
+    case ELFDATA2MSB:
+        return tr("MSB, 2's complement");
+    default:
+        return QString(tr("Unkown (")) + this->getDataEncoding() + ")";
+    }
+}
+
+void ELFModel::setMag0(const QString &value) {
+    elf->set_ei_mag0(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit mag0Changed(value);
+}
+
+void ELFModel::setMag1(const QString &value) {
+    elf->set_ei_mag1(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit mag1Changed(value);
+}
+
+void ELFModel::setMag2(const QString &value) {
+    elf->set_ei_mag2(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit mag2Changed(value);
+}
+
+void ELFModel::setMag3(const QString &value) {
+    elf->set_ei_mag3(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit mag3Changed(value);
+}
+
+void ELFModel::setFileClass(const QString &value) {
+    elf->set_ei_class(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit fileClassChanged(value);
+}
+
+void ELFModel::setDataEncoding(const QString &value) {
+    elf->set_ei_data(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
+    emit dataEncodingChanged(value);
 }

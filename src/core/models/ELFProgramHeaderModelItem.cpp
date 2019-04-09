@@ -4,7 +4,10 @@
 
 #include "core/models/ELFProgramHeaderModelItem.h"
 
-ELFProgramHeaderModelItem::ELFProgramHeaderModelItem(ELFModel *parent) : ELFModelItem(parent) {}
+ELFProgramHeaderModelItem::ELFProgramHeaderModelItem(ELFModel *parent)
+    : ELFModelItem(parent),
+      segmentModelItem(nullptr)
+{}
 
 ELFProgramHeaderModelItem::~ELFProgramHeaderModelItem() {
     delete segmentModelItem;
