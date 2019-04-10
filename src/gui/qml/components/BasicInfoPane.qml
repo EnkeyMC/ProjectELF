@@ -46,6 +46,21 @@ ColumnLayout {
                         key: qsTr("<strong>Encoding</strong>")
                         value: basicInfoPane.elfModel.dispDataEncoding
                     }
+
+                    PEKeyValue {
+                        key: qsTr("<strong>Version</strong>")
+                        value: basicInfoPane.elfModel.dispVersion
+                    }
+
+                    PEKeyValue {
+                        key: qsTr("<strong>OS ABI</strong>")
+                        value: basicInfoPane.elfModel.dispOsabi
+                    }
+
+                    PEKeyValue {
+                        key: qsTr("<strong>ABI Version</strong>")
+                        value: basicInfoPane.elfModel.dispAbiversion
+                    }
                 }
             }
 

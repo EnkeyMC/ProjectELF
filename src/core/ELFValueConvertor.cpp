@@ -16,9 +16,47 @@ QString ELFValueConvertor::eiDataToDisp(unsigned char value)
 {
     switch (value) {
     case ELFDATA2LSB:
-        return QObject::tr("LSB, 2's complement");
+        return tr("LSB, 2's complement");
     case ELFDATA2MSB:
-        return QObject::tr("MSB, 2's complement");
+        return tr("MSB, 2's complement");
+    default:
+        return unkownValue(value);
+    }
+}
+
+QString ELFValueConvertor::eiOsabiToDisp(unsigned char value)
+{
+    switch (value) {
+    case ELFOSABI_NONE:
+        return tr("Unspecified (0x0)");
+    case ELFOSABI_HPUX:
+        return tr("Hewlett-Packard HP-UX");
+    case ELFOSABI_NETBSD:
+        return tr("NetBSD");
+    case ELFOSABI_LINUX:
+        return tr("Linux");
+    case ELFOSABI_SOLARIS:
+        return tr("Sun Solaris");
+    case ELFOSABI_AIX:
+        return tr("AIX");
+    case ELFOSABI_IRIX:
+        return tr("IRIX");
+    case ELFOSABI_FREEBSD:
+        return tr("FreeBSD");
+    case ELFOSABI_TRU64:
+        return tr("Compaq TRU64 UNIX");
+    case ELFOSABI_MODESTO:
+        return tr("Novell Modesto");
+    case ELFOSABI_OPENBSD:
+        return tr("Open BSD");
+    case ELFOSABI_OPENVMS:
+        return tr("Open VMS");
+    case ELFOSABI_NSK:
+        return tr("Hewlett-Packard Non-Stop Kernel");
+    case ELFOSABI_AROS:
+        return tr("Amiga Research OS");
+    case ELFOSABI_FENIXOS:
+        return tr("FenixOS");
     default:
         return unkownValue(value);
     }
@@ -28,15 +66,15 @@ QString ELFValueConvertor::eTypeToDisp(elf::Elf_Half value)
 {
     switch (value) {
     case ET_NONE:
-        return QObject::tr("None (ET_NONE)");
+        return tr("None (ET_NONE)");
     case ET_REL:
-        return QObject::tr("Relocatable (ET_REL)");
+        return tr("Relocatable (ET_REL)");
     case ET_EXEC:
-        return QObject::tr("Executable (ET_EXEC)");
+        return tr("Executable (ET_EXEC)");
     case ET_DYN:
-        return QObject::tr("Shared (ET_DYN)");
+        return tr("Shared (ET_DYN)");
     case ET_CORE:
-        return QObject::tr("Core (ET_CORE)");
+        return tr("Core (ET_CORE)");
     default:
         return unkownValue(value);
     }
@@ -46,97 +84,97 @@ QString ELFValueConvertor::eMachineToDisp(elf::Elf_Half value)
 {
     switch (value) {
     case EM_NONE:
-        return QObject::tr("No machine");
+        return tr("No machine");
     case EM_M32:
-        return QObject::tr("AT&T WE 32100");
+        return tr("AT&T WE 32100");
     case EM_SPARC:
-        return QObject::tr("SPARC");
+        return tr("SPARC");
     case EM_386:
-        return QObject::tr("Intel 80386");
+        return tr("Intel 80386");
     case EM_68K:
-        return QObject::tr("Motorola m68k family");
+        return tr("Motorola m68k family");
     case EM_88K:
-        return QObject::tr("Motorola m88k family");
+        return tr("Motorola m88k family");
     case EM_486:
-        return QObject::tr("Intel 80486");
+        return tr("Intel 80486");
     case EM_860:
-        return QObject::tr("Intel 80860");
+        return tr("Intel 80860");
     case EM_MIPS:
-        return QObject::tr("MIPS R3000");
+        return tr("MIPS R3000");
     case EM_S370:
-        return QObject::tr("IBM System/370");
+        return tr("IBM System/370");
     case EM_MIPS_RS3_LE:
-        return QObject::tr("MIPS R3000 little-endian");
+        return tr("MIPS R3000 little-endian");
     case EM_PARISC:
-        return QObject::tr("HPPA");
+        return tr("HPPA");
     case EM_960:
-        return QObject::tr("Intel 80960");
+        return tr("Intel 80960");
     case EM_PPC:
-        return QObject::tr("PowerPC");
+        return tr("PowerPC");
     case EM_PPC64:
-        return QObject::tr("64-bit PowerPC");
+        return tr("64-bit PowerPC");
     case EM_S390:
-        return QObject::tr("IBM S/390");
+        return tr("IBM S/390");
     case EM_SPU:
-        return QObject::tr("Sony/Toshiba/IBM SPU");
+        return tr("Sony/Toshiba/IBM SPU");
     case EM_V800:
-        return QObject::tr("NEC V800 series");
+        return tr("NEC V800 series");
     case EM_FR20:
-        return QObject::tr("Fujitsu FR20");
+        return tr("Fujitsu FR20");
     case EM_RH32:
-        return QObject::tr("TRW RH32");
+        return tr("TRW RH32");
     case EM_MCORE:
-        return QObject::tr("Motorola MCore");
+        return tr("Motorola MCore");
     case EM_ARM:
-        return QObject::tr("ARM");
+        return tr("ARM");
     case EM_OLD_ALPHA:
-        return QObject::tr("Digital Alpha");
+        return tr("Digital Alpha");
     case EM_SH:
-        return QObject::tr("Renesas SuperH");
+        return tr("Renesas SuperH");
     case EM_SPARCV9:
-        return QObject::tr("SPARC v9 64-bit");
+        return tr("SPARC v9 64-bit");
     case EM_TRICORE:
-        return QObject::tr("Siemens Tricore");
+        return tr("Siemens Tricore");
     case EM_ARC:
-        return QObject::tr("ARC Cores");
+        return tr("ARC Cores");
     case EM_H8_300:
-        return QObject::tr("Renesas H8/300");
+        return tr("Renesas H8/300");
     case EM_H8_300H:
-        return QObject::tr("Renesas H8/300H");
+        return tr("Renesas H8/300H");
     case EM_H8S:
-        return QObject::tr("Renesas H8S");
+        return tr("Renesas H8S");
     case EM_H8_500:
-        return QObject::tr("Renesas H8/500");
+        return tr("Renesas H8/500");
     case EM_IA_64:
-        return QObject::tr("Intel IA-64 ");
+        return tr("Intel IA-64 ");
     case EM_MIPS_X:
-        return QObject::tr("Stanford MIPS-X");
+        return tr("Stanford MIPS-X");
     case EM_COLDFIRE:
-        return QObject::tr("Motorola Coldfire");
+        return tr("Motorola Coldfire");
     case EM_68HC12:
-        return QObject::tr("Motorola M68HC12");
+        return tr("Motorola M68HC12");
     case EM_MMA:
-        return QObject::tr("Fujitsu Multimedia Accelerator");
+        return tr("Fujitsu Multimedia Accelerator");
     case EM_PCP:
-        return QObject::tr("Siemens PCP");
+        return tr("Siemens PCP");
     case EM_NCPU:
-        return QObject::tr("Sony nCPU embedded RISC processor");
+        return tr("Sony nCPU embedded RISC processor");
     case EM_NDR1:
-        return QObject::tr("Denso NDR1");
+        return tr("Denso NDR1");
     case EM_STARCORE:
-        return QObject::tr("Motorola StarCore");
+        return tr("Motorola StarCore");
     case EM_ME16:
-        return QObject::tr("Toyota ME16");
+        return tr("Toyota ME16");
     case EM_ST100:
-        return QObject::tr("STMicroelectronics ST100");
+        return tr("STMicroelectronics ST100");
     case EM_TINYJ:
-        return QObject::tr("Advanced Logic Corp. Tiny3");
+        return tr("Advanced Logic Corp. Tiny3");
     case EM_X86_64:
-        return QObject::tr("AMD x86-64");
+        return tr("AMD x86-64");
     case EM_PDSP:
-        return QObject::tr("Sony DSP");
+        return tr("Sony DSP");
     case EM_PDP10:
-        return QObject::tr("Digital Equipment Corp. PDP-10");
+        return tr("Digital Equipment Corp. PDP-10");
     default:
         return unkownValue(value);
     }
@@ -146,12 +184,17 @@ QString ELFValueConvertor::eVersionToDisp(elf::Elf_Word value)
 {
     switch (value) {
     case EV_NONE:
-        return QObject::tr("Invalid (0x0)");
+        return tr("Invalid (0x0)");
     case EV_CURRENT:
-        return QObject::tr("Current (0x1)");
+        return tr("Current (0x1)");
     default:
         return unkownValue(value);
     }
+}
+
+QString ELFValueConvertor::tr(const char *s)
+{
+    return QObject::tr(s);
 }
 
 ELFValueConvertor::ELFValueConvertor() = default;

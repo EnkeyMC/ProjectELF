@@ -20,6 +20,9 @@ class ELFModel : public ModelBase {
     Q_PROPERTY(QString mag3 READ getMag3 WRITE setMag3 NOTIFY mag3Changed)
     Q_PROPERTY(QString fileClass READ getFileClass WRITE setFileClass NOTIFY fileClassChanged)
     Q_PROPERTY(QString dataEncoding READ getDataEncoding WRITE setDataEncoding NOTIFY dataEncodingChanged)
+    Q_PROPERTY(QString version READ getVersion WRITE setVersion NOTIFY versionChanged)
+    Q_PROPERTY(QString osabi READ getOsabi WRITE setOsabi NOTIFY osabiChanged)
+    Q_PROPERTY(QString abiversion READ getAbiversion WRITE setAbiversion NOTIFY abiversionChanged)
     Q_PROPERTY(ELFHeaderModelItem* header READ getHeader NOTIFY headerChanged)
 
     Q_PROPERTY(QString dispMag0 READ getDispMag0 NOTIFY mag0Changed)
@@ -28,6 +31,9 @@ class ELFModel : public ModelBase {
     Q_PROPERTY(QString dispMag3 READ getDispMag3 NOTIFY mag3Changed)
     Q_PROPERTY(QString dispFileClass READ getDispFileClass NOTIFY fileClassChanged)
     Q_PROPERTY(QString dispDataEncoding READ getDispDataEncoding NOTIFY dataEncodingChanged)
+    Q_PROPERTY(QString dispVersion READ getDispVersion NOTIFY versionChanged)
+    Q_PROPERTY(QString dispOsabi READ getDispOsabi NOTIFY osabiChanged)
+    Q_PROPERTY(QString dispAbiversion READ getDispAbiversion NOTIFY abiversionChanged)
 public:
 
     ELFModel(QObject *parent = nullptr);
@@ -44,6 +50,9 @@ public:
     QString getMag3() const;
     QString getFileClass() const;
     QString getDataEncoding() const;
+    QString getVersion() const;
+    QString getOsabi() const;
+    QString getAbiversion() const;
     ELFHeaderModelItem *getHeader() const;
 
     QString getDispMag0() const;
@@ -52,13 +61,19 @@ public:
     QString getDispMag3() const;
     QString getDispFileClass() const;
     QString getDispDataEncoding() const;
+    QString getDispVersion() const;
+    QString getDispOsabi() const;
+    QString getDispAbiversion() const;
 
-    void setMag0(const QString &value);
-    void setMag1(const QString &value);
-    void setMag2(const QString &value);
-    void setMag3(const QString &value);
-    void setFileClass(const QString &value);
-    void setDataEncoding(const QString &value);
+    void setMag0(const QString &hexValue);
+    void setMag1(const QString &hexValue);
+    void setMag2(const QString &hexValue);
+    void setMag3(const QString &hexValue);
+    void setFileClass(const QString &hexValue);
+    void setDataEncoding(const QString &hexValue);
+    void setVersion(const QString &hexValue);
+    void setOsabi(const QString &hexValue);
+    void setAbiversion(const QString &hexValue);
 
 signals:
     void mag0Changed(QString);
@@ -67,6 +82,9 @@ signals:
     void mag3Changed(QString);
     void fileClassChanged(QString);
     void dataEncodingChanged(QString);
+    void versionChanged(QString);
+    void osabiChanged(QString);
+    void abiversionChanged(QString);
     void headerChanged(ELFHeaderModelItem *);
 
 protected:

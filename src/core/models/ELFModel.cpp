@@ -55,6 +55,24 @@ QString ELFModel::getDataEncoding() const {
     return QString::number(elf->get_ei_data(), HEX);
 }
 
+QString ELFModel::getVersion() const
+{
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_version(), HEX);
+}
+
+QString ELFModel::getOsabi() const
+{
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_osabi(), HEX);
+}
+
+QString ELFModel::getAbiversion() const
+{
+    DEFAULT(QString());
+    return QString::number(elf->get_ei_abiversion(), HEX);
+}
+
 ELFHeaderModelItem *ELFModel::getHeader() const
 {
     return this->headerModelItem;
@@ -108,32 +126,66 @@ QString ELFModel::getDispDataEncoding() const
     return ELFValueConvertor::eiDataToDisp(elf->get_ei_data());
 }
 
-void ELFModel::setMag0(const QString &value) {
-    elf->set_ei_mag0(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit mag0Changed(value);
+QString ELFModel::getDispVersion() const
+{
+    return QString("0x") + this->getVersion();
 }
 
-void ELFModel::setMag1(const QString &value) {
-    elf->set_ei_mag1(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit mag1Changed(value);
+QString ELFModel::getDispOsabi() const
+{
+    DEFAULT(QString());
+    return ELFValueConvertor::eiOsabiToDisp(elf->get_ei_osabi());
 }
 
-void ELFModel::setMag2(const QString &value) {
-    elf->set_ei_mag2(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit mag2Changed(value);
+QString ELFModel::getDispAbiversion() const
+{
+    return QString("0x") + this->getAbiversion();
 }
 
-void ELFModel::setMag3(const QString &value) {
-    elf->set_ei_mag3(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit mag3Changed(value);
+void ELFModel::setMag0(const QString &hexValue) {
+    elf->set_ei_mag0(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit mag0Changed(hexValue);
 }
 
-void ELFModel::setFileClass(const QString &value) {
-    elf->set_ei_class(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit fileClassChanged(value);
+void ELFModel::setMag1(const QString &hexValue) {
+    elf->set_ei_mag1(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit mag1Changed(hexValue);
 }
 
-void ELFModel::setDataEncoding(const QString &value) {
-    elf->set_ei_data(static_cast<unsigned char>(value.toUInt(nullptr, HEX)));
-    emit dataEncodingChanged(value);
+void ELFModel::setMag2(const QString &hexValue) {
+    elf->set_ei_mag2(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit mag2Changed(hexValue);
+}
+
+void ELFModel::setMag3(const QString &hexValue) {
+    elf->set_ei_mag3(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit mag3Changed(hexValue);
+}
+
+void ELFModel::setFileClass(const QString &hexValue) {
+    elf->set_ei_class(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit fileClassChanged(hexValue);
+}
+
+void ELFModel::setDataEncoding(const QString &hexValue) {
+    elf->set_ei_data(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit dataEncodingChanged(hexValue);
+}
+
+void ELFModel::setVersion(const QString &hexValue)
+{
+    elf->set_ei_version(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit versionChanged(hexValue);
+}
+
+void ELFModel::setOsabi(const QString &hexValue)
+{
+    elf->set_ei_osabi(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit osabiChanged(hexValue);
+}
+
+void ELFModel::setAbiversion(const QString &hexValue)
+{
+    elf->set_ei_abiversion(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
+    emit abiversionChanged(hexValue);
 }

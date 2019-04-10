@@ -106,6 +106,21 @@ unsigned char ELF::get_ei_data() const {
     return e_ident[EI_DATA];
 }
 
+unsigned char ELF::get_ei_version() const
+{
+    return e_ident[EI_VERSION];
+}
+
+unsigned char ELF::get_ei_osabi() const
+{
+    return e_ident[EI_OSABI];
+}
+
+unsigned char ELF::get_ei_abiversion() const
+{
+    return e_ident[EI_ABIVERSION];
+}
+
 const unsigned char *ELF::get_e_ident() const {
     return e_ident;
 }
@@ -144,6 +159,21 @@ void ELF::set_ei_class(unsigned char value) {
 
 void ELF::set_ei_data(unsigned char value) {
     e_ident[EI_DATA] = value;
+}
+
+void ELF::set_ei_version(unsigned char value)
+{
+    e_ident[EI_VERSION] = value;
+}
+
+void ELF::set_ei_osabi(unsigned char value)
+{
+    e_ident[EI_OSABI] = value;
+}
+
+void ELF::set_ei_abiversion(unsigned char value)
+{
+    e_ident[EI_ABIVERSION] = value;
 }
 
 }

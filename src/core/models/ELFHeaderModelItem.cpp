@@ -195,65 +195,65 @@ void ELFHeaderModelItem::setMachine(QString hexValue)
 void ELFHeaderModelItem::setVersion(QString hexValue)
 {
     header->set_e_version(static_cast<elf::Elf_Word>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit versionChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setEntry(QString hexValue)
 {
     header->set_e_entry(static_cast<elf::Elf64_Addr>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit entryChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setPhoff(QString hexValue)
 {
     header->set_e_phoff(static_cast<elf::Elf64_Off>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit phoffChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setShoff(QString hexValue)
 {
     header->set_e_shoff(static_cast<elf::Elf64_Off>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit shoffChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setFlags(QString hexValue)
 {
     header->set_e_flags(static_cast<elf::Elf_Word>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit flagsChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setEhsize(QString hexValue)
 {
     header->set_e_ehsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit ehsizeChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setPhentsize(QString hexValue)
 {
     header->set_e_phentsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit phentsizeChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setPhnum(QString hexValue)
 {
     header->set_e_phnum(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit phnumChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setShentsize(QString hexValue)
 {
     header->set_e_shentsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit shentsizeChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setShnum(QString hexValue)
 {
     header->set_e_shnum(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit shnumChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setShstrndx(QString hexValue)
 {
     header->set_e_shstrndx(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
+    emit shstrndxChanged(hexValue);
 }

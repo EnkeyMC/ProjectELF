@@ -46,6 +46,9 @@ public:
     unsigned char get_ei_mag3() const;
     unsigned char get_ei_class() const;
     unsigned char get_ei_data() const;
+    unsigned char get_ei_version() const;
+    unsigned char get_ei_osabi() const;
+    unsigned char get_ei_abiversion() const;
 
     void set_ei_mag0(unsigned char value);
     void set_ei_mag1(unsigned char value);
@@ -53,6 +56,9 @@ public:
     void set_ei_mag3(unsigned char value);
     void set_ei_class(unsigned char value);
     void set_ei_data(unsigned char value);
+    void set_ei_version(unsigned char value);
+    void set_ei_osabi(unsigned char value);
+    void set_ei_abiversion(unsigned char value);
 
     friend class ELFReader;
 
