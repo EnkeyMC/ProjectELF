@@ -64,19 +64,19 @@ TEST_F(ELFReaderTest, parse_header_valid_32bit_msb) {
     EXPECT_EQ(elf->get_ei_class(), ELFCLASS32);
     EXPECT_EQ(elf->get_ei_data(), ELFDATA2MSB);
 
-    EXPECT_EQ(elf->get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf->get_header().get_e_machine(), EM_860);
-    EXPECT_EQ(elf->get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf->get_header().get_e_entry(), 0xFFFF);
-    EXPECT_EQ(elf->get_header().get_e_phoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf->get_header().get_e_ehsize(), 0x34);
-    EXPECT_EQ(elf->get_header().get_e_phentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_phnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shstrndx(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
 TEST_F(ELFReaderTest, parse_header_valid_64bit_msb) {
@@ -114,19 +114,19 @@ TEST_F(ELFReaderTest, parse_header_valid_64bit_msb) {
     EXPECT_EQ(elf->get_ei_class(), ELFCLASS64);
     EXPECT_EQ(elf->get_ei_data(), ELFDATA2MSB);
 
-    EXPECT_EQ(elf->get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf->get_header().get_e_machine(), EM_860);
-    EXPECT_EQ(elf->get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf->get_header().get_e_entry(), 0xFFFF);
-    EXPECT_EQ(elf->get_header().get_e_phoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf->get_header().get_e_ehsize(), 0x40);
-    EXPECT_EQ(elf->get_header().get_e_phentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_phnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shstrndx(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x40);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
 TEST_F(ELFReaderTest, parse_header_valid_64bit_lsb) {
@@ -164,19 +164,19 @@ TEST_F(ELFReaderTest, parse_header_valid_64bit_lsb) {
     EXPECT_EQ(elf->get_ei_class(), ELFCLASS64);
     EXPECT_EQ(elf->get_ei_data(), ELFDATA2LSB);
 
-    EXPECT_EQ(elf->get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf->get_header().get_e_machine(), EM_860);
-    EXPECT_EQ(elf->get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf->get_header().get_e_entry(), 0xFFFF);
-    EXPECT_EQ(elf->get_header().get_e_phoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf->get_header().get_e_ehsize(), 0x40);
-    EXPECT_EQ(elf->get_header().get_e_phentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_phnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shstrndx(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x40);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
 TEST_F(ELFReaderTest, parse_header_valid_32bit_lsb) {
@@ -214,19 +214,19 @@ TEST_F(ELFReaderTest, parse_header_valid_32bit_lsb) {
     EXPECT_EQ(elf->get_ei_class(), ELFCLASS32);
     EXPECT_EQ(elf->get_ei_data(), ELFDATA2LSB);
 
-    EXPECT_EQ(elf->get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf->get_header().get_e_machine(), EM_860);
-    EXPECT_EQ(elf->get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf->get_header().get_e_entry(), 0xFFFF);
-    EXPECT_EQ(elf->get_header().get_e_phoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shoff(), 0);
-    EXPECT_EQ(elf->get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf->get_header().get_e_ehsize(), 0x34);
-    EXPECT_EQ(elf->get_header().get_e_phentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_phnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shentsize(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shnum(), 0);
-    EXPECT_EQ(elf->get_header().get_e_shstrndx(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
 
@@ -247,19 +247,19 @@ TEST(ELFReaderTestFromFile, parse_header_valid_32bit_msb) {
     EXPECT_EQ(elf.get_ei_class(), ELFCLASS32);
     EXPECT_EQ(elf.get_ei_data(), ELFDATA2MSB);
 
-    EXPECT_EQ(elf.get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf.get_header().get_e_machine(), EM_860);
-    EXPECT_EQ(elf.get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf.get_header().get_e_entry(), 0xFFFF);
-    EXPECT_EQ(elf.get_header().get_e_phoff(), 0);
-    EXPECT_EQ(elf.get_header().get_e_shoff(), 0);
-    EXPECT_EQ(elf.get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf.get_header().get_e_ehsize(), 0x34);
-    EXPECT_EQ(elf.get_header().get_e_phentsize(), 0);
-    EXPECT_EQ(elf.get_header().get_e_phnum(), 0);
-    EXPECT_EQ(elf.get_header().get_e_shentsize(), 0);
-    EXPECT_EQ(elf.get_header().get_e_shnum(), 0);
-    EXPECT_EQ(elf.get_header().get_e_shstrndx(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf.get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf.get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf.get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf.get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf.get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shstrndx(), 0);
 }
 
 TEST(ELFReaderTestFromFile, parse_helloworld_file) {
@@ -285,23 +285,23 @@ TEST(ELFReaderTestFromFile, parse_helloworld_file) {
     EXPECT_EQ(elf.get_ei_class(), ELFCLASS64);
     EXPECT_EQ(elf.get_ei_data(), ELFDATA2LSB);
 
-    EXPECT_EQ(elf.get_header().get_e_type(), ET_EXEC);
-    EXPECT_EQ(elf.get_header().get_e_machine(), EM_X86_64);
-    EXPECT_EQ(elf.get_header().get_e_version(), EV_CURRENT);
-    EXPECT_EQ(elf.get_header().get_e_entry(), 0x400430);
-    EXPECT_EQ(elf.get_header().get_e_phoff(), 64);
-    EXPECT_EQ(elf.get_header().get_e_shoff(), 6624);
-    EXPECT_EQ(elf.get_header().get_e_flags(), 0);
-    EXPECT_EQ(elf.get_header().get_e_ehsize(), 64);
-    EXPECT_EQ(elf.get_header().get_e_phentsize(), 56);
-    EXPECT_EQ(elf.get_header().get_e_phnum(), 9);
-    EXPECT_EQ(elf.get_header().get_e_shentsize(), 64);
-    EXPECT_EQ(elf.get_header().get_e_shnum(), 31);
-    EXPECT_EQ(elf.get_header().get_e_shstrndx(), 28);
+    EXPECT_EQ(elf.get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf.get_header()->get_e_machine(), EM_X86_64);
+    EXPECT_EQ(elf.get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf.get_header()->get_e_entry(), 0x400430);
+    EXPECT_EQ(elf.get_header()->get_e_phoff(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_shoff(), 6624);
+    EXPECT_EQ(elf.get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_ehsize(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_phentsize(), 56);
+    EXPECT_EQ(elf.get_header()->get_e_phnum(), 9);
+    EXPECT_EQ(elf.get_header()->get_e_shentsize(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_shnum(), 31);
+    EXPECT_EQ(elf.get_header()->get_e_shstrndx(), 28);
 
     auto sections = elf.get_section_headers();
 
-    ASSERT_EQ(sections.size(), elf.get_header().get_e_shnum());
+    ASSERT_EQ(sections.size(), elf.get_header()->get_e_shnum());
 
     EXPECT_EQ(sections[0]->get_sh_name(), 0);
     EXPECT_EQ(sections[0]->get_sh_type(), SHT_NULL);
@@ -338,8 +338,8 @@ TEST(ELFReaderTestFromFile, parse_helloworld_file) {
 
     // ... not gonna do all section headers
 
-    ASSERT_LT(elf.get_header().get_e_shstrndx(), sections.size());
-    auto string_section = sections[elf.get_header().get_e_shstrndx()];
+    ASSERT_LT(elf.get_header()->get_e_shstrndx(), sections.size());
+    auto string_section = sections[elf.get_header()->get_e_shstrndx()];
     const char * section_data = string_section->get_section_data();
 
     EXPECT_EQ(section_data[0], 0);
@@ -349,7 +349,7 @@ TEST(ELFReaderTestFromFile, parse_helloworld_file) {
 
     auto segments = elf.get_program_headers();
 
-    ASSERT_EQ(segments.size(), elf.get_header().get_e_phnum());
+    ASSERT_EQ(segments.size(), elf.get_header()->get_e_phnum());
 
     EXPECT_EQ(segments[0]->get_p_type(), PT_PHDR);
     EXPECT_EQ(segments[0]->get_p_offset(), 0x40);

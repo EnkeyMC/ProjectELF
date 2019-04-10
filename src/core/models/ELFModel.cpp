@@ -3,6 +3,7 @@
 //
 
 #include "core/models/ELFModel.h"
+#include "core/ELFValueConvertor.h"
 
 #define DEFAULT(x) if (elf == nullptr) return x
 
@@ -12,7 +13,7 @@ ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr
 }
 
 ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(parent), elf(std::move(elf)) {
-    this->headerModelItem = new ELFHeaderModelItem(this);
+    this->headerModelItem = new ELFHeaderModelItem(this, this->elf->get_header());
 }
 
 ELFModel::~ELFModel() {
@@ -98,28 +99,13 @@ QString ELFModel::getDispMag3() const
 QString ELFModel::getDispFileClass() const
 {
     DEFAULT(QString());
-    switch (elf->get_ei_class()) {
-    case ELFCLASS32:
-        return "32-bit";
-    case ELFCLASS64:
-        return "64-bit";
-    default:
-        return QString(tr("Unkown (")) + this->getFileClass() + ")";
-    }
+    return ELFValueConvertor::eiClassToDisp(elf->get_ei_class());
 }
 
 QString ELFModel::getDispDataEncoding() const
 {
     DEFAULT(QString());
-
-    switch (elf->get_ei_data()) {
-    case ELFDATA2LSB:
-        return tr("LSB, 2's complement");
-    case ELFDATA2MSB:
-        return tr("MSB, 2's complement");
-    default:
-        return QString(tr("Unkown (")) + this->getDataEncoding() + ")";
-    }
+    return ELFValueConvertor::eiDataToDisp(elf->get_ei_data());
 }
 
 void ELFModel::setMag0(const QString &value) {

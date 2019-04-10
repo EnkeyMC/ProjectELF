@@ -27,13 +27,14 @@ ColumnLayout {
         padding: 10
         
         Column {
+            spacing: 10
             PEGroupBox {
-                id: elfHeaderGroup
+                id: elfIdentGroup
                 width: Math.max(130, infoScrollView.availableWidth)
-                title: qsTr("ELF header")
+                title: qsTr("ELF identification")
 
                 Column {
-                    id: headerValues
+                    id: identValues
                     spacing: 10
 
                     PEKeyValue {
@@ -45,15 +46,56 @@ ColumnLayout {
                         key: qsTr("<strong>Encoding</strong>")
                         value: basicInfoPane.elfModel.dispDataEncoding
                     }
+                }
+            }
 
-                    PEKeyValue {
-                        key: qsTr("<strong>Architecture</strong>")
-                        value: qsTr("ARM")
-                    }
+            Loader {
+                id: elfHeaderGroupLoader
+                sourceComponent: elfHeaderGroupComponent
+                active: elfModel.header != undefined
+            }
 
-                    PEKeyValue {
-                        key: qsTr("<strong>Number of sections</strong>")
-                        value: qsTr("12")
+            Component {
+                id: elfHeaderGroupComponent
+
+                PEGroupBox {
+                    id: elfHeaderGroup
+                    width: Math.max(130, infoScrollView.availableWidth)
+                    title: qsTr("ELF header")
+
+                    Column {
+                        id: headerValues
+                        spacing: 10
+
+                        PEKeyValue {
+                            key: qsTr("<strong>File type</strong>")
+                            value: elfModel.header.dispType
+                        }
+
+                        PEKeyValue {
+                            key: qsTr("<strong>Architecture</strong>")
+                            value: elfModel.header.dispMachine
+                        }
+
+                        PEKeyValue {
+                            key: qsTr("<strong>Version</strong>")
+                            value: elfModel.header.dispVersion
+                        }
+
+                        PEKeyValue {
+                            key: qsTr("<strong>Entry point</strong>")
+                            value: elfModel.header.dispEntry
+                        }
+
+                        PEKeyValue {
+                            key: qsTr("<strong>Number of segments</strong>")
+                            value: elfModel.header.dispPhnum
+                        }
+
+                        PEKeyValue {
+                            key: qsTr("<strong>Number of sections</strong>")
+                            value: elfModel.header.dispShnum
+                        }
                     }
                 }
             }

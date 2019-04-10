@@ -32,7 +32,7 @@ public:
     void set_file_size(size_t file_size);
 
     const unsigned char *get_e_ident() const;
-    ELFHeader& get_header();
+    ELFHeader *get_header();
 
     void add_section_header(ELFSectionHeader *section_header);
     vector<ELFSectionHeader *> get_section_headers() const;

@@ -45,7 +45,9 @@ set(SOURCE_FILES
         src/core/models/ELFSegmentModelItem.cpp
         include/core/models/ELFSegmentModelItem.h
         src/core/models/OpenFilesModel.cpp
-        include/core/models/OpenFilesModel.h)
+        include/core/models/OpenFilesModel.h
+        src/core/ELFValueConvertor.cpp
+        include/core/ELFValueConvertor.h)
 
 # Google Tests
 add_subdirectory(ext/gtest)

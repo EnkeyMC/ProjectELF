@@ -110,8 +110,8 @@ const unsigned char *ELF::get_e_ident() const {
     return e_ident;
 }
 
-ELFHeader &ELF::get_header() {
-    return *header;
+ELFHeader *ELF::get_header() {
+    return header;
 }
 
 const vector<ELFProgramHeader *> &ELF::get_program_headers() const {
