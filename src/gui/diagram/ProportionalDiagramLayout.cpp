@@ -25,25 +25,15 @@ void ProportionalDiagramLayout::layoutNodes() {
 
     double maxStretchRatio = 0;
 
-    for (auto &linkNode : m_linkColumnSortedNodes) {
-        if (linkNode->getNodeRect().height() < linkNode->getMinHeight()
-                && linkNode->getNodeRect().height() > 0)
+    this->forEachNode([&maxStretchRatio](DiagramNode &node) {
+        if (node.getNodeRect().height() < node.getMinHeight()
+                && node.getNodeRect().height() > 0)
         {
-            if (linkNode->getMinHeight() / static_cast<double>(linkNode->getNodeRect().height()) > maxStretchRatio) {
-                maxStretchRatio = static_cast<double>(linkNode->getMinHeight()) / linkNode->getNodeRect().height();
+            if (node.getMinHeight() / static_cast<double>(node.getNodeRect().height()) > maxStretchRatio) {
+                maxStretchRatio = static_cast<double>(node.getMinHeight()) / node.getNodeRect().height();
             }
         }
-    }
-
-    for (auto &execNode : m_execColumnSortedNodes) {
-        if (execNode->getNodeRect().height() < execNode->getMinHeight()
-             && execNode->getNodeRect().height() > 0)
-        {
-            if (execNode->getMinHeight() / static_cast<double>(execNode->getNodeRect().height()) > maxStretchRatio) {
-                maxStretchRatio = static_cast<double>(execNode->getMinHeight()) / execNode->getNodeRect().height();
-            }
-        }
-    }
+    });
 
     this->forEachNode([this, maxStretchRatio](DiagramNode &node) {
         this->layoutNodeInHeight(node, static_cast<int>(MIN_HEIGHT * maxStretchRatio));
@@ -62,10 +52,10 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->drawRect(ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->contentsSize.height());
 
     painter->translate(0, HEADER_HEIGHT);
-    for (const auto &linkNode : m_linkColumnSortedNodes)
+    for (const auto &linkNode : linkColumnSortedNodes)
         linkNode->paint(painter);
 
-    for (const auto &execNode : m_execColumnSortedNodes)
+    for (const auto &execNode : execColumnSortedNodes)
         execNode->paint(painter);
     painter->translate(0, -HEADER_HEIGHT);
 }

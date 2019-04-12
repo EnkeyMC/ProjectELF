@@ -14,7 +14,7 @@ CondensedDiagramLayout::CondensedDiagramLayout(DiagramScene *diagram) : DiagramL
 }
 
 void CondensedDiagramLayout::layoutNodes() {
-    for (auto &linkNode : m_linkColumnSortedNodes) {
+    for (auto &linkNode : linkColumnSortedNodes) {
         linkNode->setNodeRect(
                 QRect(
                         0 + ARROW_SPACE_WIDTH,
@@ -25,7 +25,7 @@ void CondensedDiagramLayout::layoutNodes() {
         );
     }
 
-    for (auto &execNode : m_execColumnSortedNodes) {
+    for (auto &execNode : execColumnSortedNodes) {
         execNode->setNodeRect(
                 QRect(
                         COLUMN_WIDTH + ARROW_SPACE_WIDTH,
@@ -36,8 +36,8 @@ void CondensedDiagramLayout::layoutNodes() {
         );
     }
 
-    auto linkNodeIterator = m_linkColumnSortedNodes.begin();
-    auto execNodeIterator = m_execColumnSortedNodes.begin();
+    auto linkNodeIterator = linkColumnSortedNodes.begin();
+    auto execNodeIterator = execColumnSortedNodes.begin();
     int heightCompensation = 0, currentY = 0;
     DiagramNode *linkNode, *execNode;
 
@@ -92,10 +92,10 @@ void CondensedDiagramLayout::layoutNodes() {
 }
 
 void CondensedDiagramLayout::paint(QPainter *painter) const {
-    for (const auto &linkNode : m_linkColumnSortedNodes)
+    for (const auto &linkNode : linkColumnSortedNodes)
         linkNode->paint(painter);
 
-    for (const auto &execNode : m_execColumnSortedNodes)
+    for (const auto &execNode : execColumnSortedNodes)
         execNode->paint(painter);
 }
 

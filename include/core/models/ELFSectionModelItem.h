@@ -5,12 +5,16 @@
 #ifndef PROJECTELF_ELFSECTIONMODELITEM_H
 #define PROJECTELF_ELFSECTIONMODELITEM_H
 
+#include <ELFSectionHeader.h>
+
 #include "core/models/ELFModelItem.h"
 
 class ELFSectionModelItem : public ELFModelItem {
 public:
-    explicit ELFSectionModelItem(ELFModel *parent);
+    ELFSectionModelItem(ELFModel *parent, elf::ELFSectionHeader *sectionHeader);
 
+private:
+    elf::ELFSectionHeader *sectionHeader;
 };
 
 

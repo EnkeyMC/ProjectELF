@@ -42,6 +42,10 @@ public:
     void stretch(double factor);
 
     bool operator<(const DiagramNode &rhs) const;
+
+signals:
+    void nodeRectChanged(const QRect &nodeRect);
+
 protected:
     DiagramScene *diagram;
 

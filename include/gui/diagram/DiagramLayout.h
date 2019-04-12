@@ -35,6 +35,8 @@ public:
 
     void addExecNode(DiagramNode *node);
 
+    void clearNodes();
+
 protected:
     typedef std::function<void(DiagramNode &)> NodeCallback;
 
@@ -45,8 +47,8 @@ protected:
     void forEachNode(const NodeCallback &callback);
 
     DiagramScene *diagram;
-    std::set<DiagramNode *> m_linkColumnSortedNodes;
-    std::set<DiagramNode *> m_execColumnSortedNodes;
+    std::set<DiagramNode *> linkColumnSortedNodes;
+    std::set<DiagramNode *> execColumnSortedNodes;
 
     QSize contentsSize;
     int minWidth;

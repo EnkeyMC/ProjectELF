@@ -5,6 +5,7 @@
 #ifndef PROJECTELF_DIAGRAMHEADERMODELITEM_H
 #define PROJECTELF_DIAGRAMHEADERMODELITEM_H
 
+#include <bits/shared_ptr.h>
 #include <ELFHeader.h>
 
 #include "core/models/ELFModelItem.h"
@@ -41,8 +42,11 @@ class ELFHeaderModelItem : public ELFModelItem {
     Q_PROPERTY(QString dispShentsize READ getDispShentsize NOTIFY shentsizeChanged)
     Q_PROPERTY(QString dispShnum READ getDispShnum NOTIFY shnumChanged)
     Q_PROPERTY(QString dispShstrndx READ getDispShstrndx NOTIFY shstrndxChanged)
+
+    Q_PROPERTY(ELFSectionHeaderTableModelItem *sectionHeaderTable READ getSectionHeaderTable NOTIFY sectionHeaderTableChanged)
+    Q_PROPERTY(ELFProgramHeaderTableModelItem *programHeaderTable READ getProgramHeaderTable NOTIFY programHeaderTableChanged)
 public:
-    explicit ELFHeaderModelItem(ELFModel *parent, elf::ELFHeader *header = nullptr);
+    explicit ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
     ~ELFHeaderModelItem() override;
 
@@ -88,6 +92,9 @@ public:
     void setShnum(QString hexValue);
     void setShstrndx(QString hexValue);
 
+    ELFSectionHeaderTableModelItem *getSectionHeaderTable() const;
+    ELFProgramHeaderTableModelItem *getProgramHeaderTable() const;
+
 signals:
     void typeChanged(QString hexValue);
     void machineChanged(QString hexValue);
@@ -103,8 +110,11 @@ signals:
     void shnumChanged(QString hexValue);
     void shstrndxChanged(QString hexValue);
 
+    void sectionHeaderTableChanged(ELFSectionHeaderTableModelItem *value);
+    void programHeaderTableChanged(ELFProgramHeaderTableModelItem *value);
+
 private:
-    elf::ELFHeader *header;
+    std::shared_ptr<elf::ELF> elf;
 
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;
     ELFProgramHeaderTableModelItem *programHeaderTableModelItem;

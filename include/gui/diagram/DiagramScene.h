@@ -16,8 +16,8 @@
 class DiagramScene : public QQuickPaintedItem {
     Q_OBJECT
     Q_PROPERTY(ELFModel * model READ getModel WRITE setModel NOTIFY modelChanged)
-    Q_PROPERTY(int padding READ getPadding WRITE setPadding NOTIFY paddingChanged);
-    Q_PROPERTY(int minWidth READ getMinWidth NOTIFY minWidthChanged);
+    Q_PROPERTY(int padding READ getPadding WRITE setPadding NOTIFY paddingChanged)
+    Q_PROPERTY(int minWidth READ getMinWidth NOTIFY minWidthChanged)
 
 public:
     explicit DiagramScene(QQuickItem *parent = nullptr);
@@ -39,14 +39,17 @@ signals:
     void paddingChanged(int padding);
     void minWidthChanged(int minWidth);
 
+private slots:
+    void onModelChanged();
+
 protected:
     void setMinWidth(int minWidth);
 
-    QPointer<ELFModel> m_model;
-    QPointer<DiagramLayout> m_layout;
+    QPointer<ELFModel> model;
+    QPointer<DiagramLayout> layout;
 
-    int m_padding;
-    int m_minWidth;
+    int padding;
+    int minWidth;
 };
 
 

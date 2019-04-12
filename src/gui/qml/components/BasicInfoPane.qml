@@ -18,7 +18,7 @@ ColumnLayout {
             text: qsTr("Basic information")
         }
     }
-    
+
     ScrollView {
         id: infoScrollView
         Layout.fillWidth: true
@@ -67,7 +67,7 @@ ColumnLayout {
             Loader {
                 id: elfHeaderGroupLoader
                 sourceComponent: elfHeaderGroupComponent
-                active: elfModel.header != undefined
+                active: elfModel.header !== undefined
             }
 
             Component {
