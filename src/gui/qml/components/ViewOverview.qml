@@ -9,7 +9,10 @@ PESplitView {
     id: viewOverview
     orientation: Qt.Horizontal
 
+    property alias elfModel: diagramPane.elfModel
+
     DiagramPane {
+        id: diagramPane
         Layout.fillWidth: true
         Layout.minimumWidth: 200
     }
@@ -17,5 +20,7 @@ PESplitView {
     BasicInfoPane {
         Layout.minimumWidth: 150
         width: 200
+
+        elfModel: viewOverview.elfModel
     }
 }

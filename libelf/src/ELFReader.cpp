@@ -90,9 +90,9 @@ ELFIssuesBySeverity ELFReader::parse_sections() {
     for (auto section_header : elf.section_headers) {
         istream.seekg(section_header->get_sh_offset());
 
-        char buffer[section_header->get_sh_size()];
-        istream.read(buffer, sizeof(buffer));
-        section_header->set_section_data(buffer, sizeof(buffer));
+        char *buffer = new char[section_header->get_sh_size()];
+        istream.read(buffer, section_header->get_sh_size());
+        section_header->set_copy_of_section_data(buffer, section_header->get_sh_size());
     }
 
     return issues;
@@ -105,9 +105,9 @@ ELFIssuesBySeverity ELFReader::parse_segments() {
     for (auto program_header : elf.program_headers) {
         istream.seekg(program_header->get_p_offset());
 
-        char buffer[program_header->get_p_filesz()];
-        istream.read(buffer, sizeof(buffer));
-        program_header->set_segment_data(buffer, sizeof(buffer));
+        char *buffer = new char[program_header->get_p_filesz()];
+        istream.read(buffer, program_header->get_p_filesz());
+        program_header->set_segment_data(buffer, program_header->get_p_filesz());
     }
 
     return issues;

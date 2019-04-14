@@ -27,12 +27,12 @@ public:
 
     const endianess_converter & get_converter() const;
 
-    size_t getFile_size() const;
+    size_t get_file_size() const;
 
     void set_file_size(size_t file_size);
 
     const unsigned char *get_e_ident() const;
-    ELFHeader& get_header();
+    ELFHeader *get_header();
 
     void add_section_header(ELFSectionHeader *section_header);
     vector<ELFSectionHeader *> get_section_headers() const;
@@ -46,6 +46,19 @@ public:
     unsigned char get_ei_mag3() const;
     unsigned char get_ei_class() const;
     unsigned char get_ei_data() const;
+    unsigned char get_ei_version() const;
+    unsigned char get_ei_osabi() const;
+    unsigned char get_ei_abiversion() const;
+
+    void set_ei_mag0(unsigned char value);
+    void set_ei_mag1(unsigned char value);
+    void set_ei_mag2(unsigned char value);
+    void set_ei_mag3(unsigned char value);
+    void set_ei_class(unsigned char value);
+    void set_ei_data(unsigned char value);
+    void set_ei_version(unsigned char value);
+    void set_ei_osabi(unsigned char value);
+    void set_ei_abiversion(unsigned char value);
 
     friend class ELFReader;
 
