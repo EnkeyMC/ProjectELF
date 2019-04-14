@@ -5,26 +5,27 @@
 #include <QDebug>
 
 #include "core/models/ELFHeaderModelItem.h"
-#include "core/ELFValueConvertor.h"
+#include "core/ELFValueConverter.h"
 
 #define DEFAULT(x) if (elf->get_header() == nullptr) return x
 
 ELFHeaderModelItem::ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
-    : ELFModelItem(parent), elf(std::move(elf)),
+    : ELFModelItem(parent, std::move(elf)),
       sectionHeaderTableModelItem(nullptr),
       programHeaderTableModelItem(nullptr)
 {
     addressInFile = 0;
-    if (this->elf->get_header() == nullptr) {
+    auto header = this->elf->get_header();
+    if (header == nullptr) {
         sizeInFile = 0;
         return;
     }
 
-    sizeInFile = this->elf->get_header()->get_size();
+    sizeInFile = header->get_size();
 
-    if (this->elf->get_header()->get_e_shoff() != 0)
+    if (header->get_e_shoff() != 0)
         sectionHeaderTableModelItem = new ELFSectionHeaderTableModelItem(parent, this->elf);
-    if (this->elf->get_header()->get_e_phoff() != 0)
+    if (header->get_e_phoff() != 0)
         programHeaderTableModelItem = new ELFProgramHeaderTableModelItem(parent, this->elf);
 }
 
@@ -114,19 +115,19 @@ QString ELFHeaderModelItem::getShstrndx() const
 QString ELFHeaderModelItem::getDispType() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eTypeToDisp(elf->get_header()->get_e_type());
+    return ELFValueConverter::eTypeToDisp(elf->get_header()->get_e_type());
 }
 
 QString ELFHeaderModelItem::getDispMachine() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eMachineToDisp(elf->get_header()->get_e_machine());
+    return ELFValueConverter::eMachineToDisp(elf->get_header()->get_e_machine());
 }
 
 QString ELFHeaderModelItem::getDispVersion() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eVersionToDisp(elf->get_header()->get_e_version());
+    return ELFValueConverter::eVersionToDisp(elf->get_header()->get_e_version());
 }
 
 QString ELFHeaderModelItem::getDispEntry() const

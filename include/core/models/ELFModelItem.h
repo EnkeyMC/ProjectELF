@@ -6,6 +6,8 @@
 #define PROJECTELF_DIAGRAMMODELITEM_H
 
 #include <QObject>
+#include <ELF.h>
+#include <memory>
 
 #define HEX 16
 
@@ -15,7 +17,7 @@ class ELFModelItem : public QObject {
     Q_OBJECT
 
 public:
-    explicit ELFModelItem(ELFModel *parent);
+    explicit ELFModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
     uint64_t getAddressInFile() const;
 
@@ -24,6 +26,8 @@ public:
     ELFModel * getModel() const;
 
 protected:
+    std::shared_ptr<elf::ELF> elf;
+
     uint64_t addressInFile;
     uint64_t sizeInFile;
 

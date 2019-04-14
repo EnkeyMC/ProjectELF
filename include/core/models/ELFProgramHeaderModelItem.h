@@ -5,14 +5,16 @@
 #ifndef PROJECTELF_ELFPROGRAMHEADERMODELITEM_H
 #define PROJECTELF_ELFPROGRAMHEADERMODELITEM_H
 
-#include "core/models/ELFModelItem.h"
+#include "core/models/ELFIndexedModelItem.h"
 #include "core/models/ELFSegmentModelItem.h"
 
-class ELFProgramHeaderModelItem : public ELFModelItem {
+class ELFProgramHeaderModelItem : public ELFIndexedModelItem {
 public:
-    explicit ELFProgramHeaderModelItem(ELFModel *parent);
+    explicit ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 
     virtual ~ELFProgramHeaderModelItem();
+
+    ELFSegmentModelItem *getSegmentModelItem() const;
 
 private:
     ELFSegmentModelItem *segmentModelItem;

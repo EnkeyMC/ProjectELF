@@ -5,7 +5,7 @@
 #ifndef PROJECTELF_DIAGRAMHEADERMODELITEM_H
 #define PROJECTELF_DIAGRAMHEADERMODELITEM_H
 
-#include <bits/shared_ptr.h>
+#include <memory>
 #include <ELFHeader.h>
 
 #include "core/models/ELFModelItem.h"
@@ -15,33 +15,33 @@
 class ELFHeaderModelItem : public ELFModelItem {
     Q_OBJECT
 
-    Q_PROPERTY(QString type READ getType WRITE setType NOTIFY typeChanged)
-    Q_PROPERTY(QString machine READ getMachine WRITE setMachine NOTIFY machineChanged)
-    Q_PROPERTY(QString version READ getVersion WRITE setVersion NOTIFY versionChanged)
-    Q_PROPERTY(QString entry READ getEntry WRITE setEntry NOTIFY entryChanged)
-    Q_PROPERTY(QString phoff READ getPhoff WRITE setPhoff NOTIFY phoffChanged)
-    Q_PROPERTY(QString shoff READ getShoff WRITE setShoff NOTIFY shoffChanged)
-    Q_PROPERTY(QString flags READ getFlags WRITE setFlags NOTIFY flagsChanged)
-    Q_PROPERTY(QString ehsize READ getEhsize WRITE setEhsize NOTIFY ehsizeChanged)
-    Q_PROPERTY(QString phentsize READ getPhentsize WRITE setPhentsize NOTIFY phentsizeChanged)
-    Q_PROPERTY(QString phnum READ getPhnum WRITE setPhnum NOTIFY phnumChanged)
-    Q_PROPERTY(QString shentsize READ getShentsize WRITE setShentsize NOTIFY shentsizeChanged)
-    Q_PROPERTY(QString shnum READ getShnum WRITE setShnum NOTIFY shnumChanged)
-    Q_PROPERTY(QString shstrndx READ getShstrndx WRITE setShstrndx NOTIFY shstrndxChanged)
+    Q_PROPERTY(QString type         READ getType        WRITE setType       NOTIFY typeChanged)
+    Q_PROPERTY(QString machine      READ getMachine     WRITE setMachine    NOTIFY machineChanged)
+    Q_PROPERTY(QString version      READ getVersion     WRITE setVersion    NOTIFY versionChanged)
+    Q_PROPERTY(QString entry        READ getEntry       WRITE setEntry      NOTIFY entryChanged)
+    Q_PROPERTY(QString phoff        READ getPhoff       WRITE setPhoff      NOTIFY phoffChanged)
+    Q_PROPERTY(QString shoff        READ getShoff       WRITE setShoff      NOTIFY shoffChanged)
+    Q_PROPERTY(QString flags        READ getFlags       WRITE setFlags      NOTIFY flagsChanged)
+    Q_PROPERTY(QString ehsize       READ getEhsize      WRITE setEhsize     NOTIFY ehsizeChanged)
+    Q_PROPERTY(QString phentsize    READ getPhentsize   WRITE setPhentsize  NOTIFY phentsizeChanged)
+    Q_PROPERTY(QString phnum        READ getPhnum       WRITE setPhnum      NOTIFY phnumChanged)
+    Q_PROPERTY(QString shentsize    READ getShentsize   WRITE setShentsize  NOTIFY shentsizeChanged)
+    Q_PROPERTY(QString shnum        READ getShnum       WRITE setShnum      NOTIFY shnumChanged)
+    Q_PROPERTY(QString shstrndx     READ getShstrndx    WRITE setShstrndx   NOTIFY shstrndxChanged)
 
-    Q_PROPERTY(QString dispType READ getDispType NOTIFY typeChanged)
-    Q_PROPERTY(QString dispMachine READ getDispMachine NOTIFY machineChanged)
-    Q_PROPERTY(QString dispVersion READ getDispVersion NOTIFY versionChanged)
-    Q_PROPERTY(QString dispEntry READ getDispEntry NOTIFY entryChanged)
-    Q_PROPERTY(QString dispPhoff READ getDispPhoff NOTIFY phoffChanged)
-    Q_PROPERTY(QString dispShoff READ getDispShoff NOTIFY shoffChanged)
-    Q_PROPERTY(QString dispFlags READ getDispFlags NOTIFY flagsChanged)
-    Q_PROPERTY(QString dispEhsize READ getDispEhsize NOTIFY ehsizeChanged)
-    Q_PROPERTY(QString dispPhentsize READ getDispPhentsize NOTIFY phentsizeChanged)
-    Q_PROPERTY(QString dispPhnum READ getDispPhnum NOTIFY phnumChanged)
-    Q_PROPERTY(QString dispShentsize READ getDispShentsize NOTIFY shentsizeChanged)
-    Q_PROPERTY(QString dispShnum READ getDispShnum NOTIFY shnumChanged)
-    Q_PROPERTY(QString dispShstrndx READ getDispShstrndx NOTIFY shstrndxChanged)
+    Q_PROPERTY(QString dispType         READ getDispType        NOTIFY typeChanged)
+    Q_PROPERTY(QString dispMachine      READ getDispMachine     NOTIFY machineChanged)
+    Q_PROPERTY(QString dispVersion      READ getDispVersion     NOTIFY versionChanged)
+    Q_PROPERTY(QString dispEntry        READ getDispEntry       NOTIFY entryChanged)
+    Q_PROPERTY(QString dispPhoff        READ getDispPhoff       NOTIFY phoffChanged)
+    Q_PROPERTY(QString dispShoff        READ getDispShoff       NOTIFY shoffChanged)
+    Q_PROPERTY(QString dispFlags        READ getDispFlags       NOTIFY flagsChanged)
+    Q_PROPERTY(QString dispEhsize       READ getDispEhsize      NOTIFY ehsizeChanged)
+    Q_PROPERTY(QString dispPhentsize    READ getDispPhentsize   NOTIFY phentsizeChanged)
+    Q_PROPERTY(QString dispPhnum        READ getDispPhnum       NOTIFY phnumChanged)
+    Q_PROPERTY(QString dispShentsize    READ getDispShentsize   NOTIFY shentsizeChanged)
+    Q_PROPERTY(QString dispShnum        READ getDispShnum       NOTIFY shnumChanged)
+    Q_PROPERTY(QString dispShstrndx     READ getDispShstrndx    NOTIFY shstrndxChanged)
 
     Q_PROPERTY(ELFSectionHeaderTableModelItem *sectionHeaderTable READ getSectionHeaderTable NOTIFY sectionHeaderTableChanged)
     Q_PROPERTY(ELFProgramHeaderTableModelItem *programHeaderTable READ getProgramHeaderTable NOTIFY programHeaderTableChanged)
@@ -114,8 +114,6 @@ signals:
     void programHeaderTableChanged(ELFProgramHeaderTableModelItem *value);
 
 private:
-    std::shared_ptr<elf::ELF> elf;
-
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;
     ELFProgramHeaderTableModelItem *programHeaderTableModelItem;
 };

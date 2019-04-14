@@ -9,7 +9,8 @@
 
 class DiagramScene;
 
-class DiagramNode {
+class DiagramNode : public QObject {
+    Q_OBJECT
 public:
     explicit DiagramNode(DiagramScene *diagram);
 

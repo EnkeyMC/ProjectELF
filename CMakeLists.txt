@@ -46,10 +46,12 @@ set(SOURCE_FILES
         include/core/models/ELFSegmentModelItem.h
         src/core/models/OpenFilesModel.cpp
         include/core/models/OpenFilesModel.h
-        src/core/ELFValueConvertor.cpp
-        include/core/ELFValueConvertor.h
+        src/core/ELFValueConverter.cpp
+        include/core/ELFValueConverter.h
         src/gui/diagram/nodes/DiagramSectionHeaderNode.cpp
-        include/gui/diagram/nodes/DiagramSectionHeaderNode.h)
+        include/gui/diagram/nodes/DiagramSectionHeaderNode.h
+        src/core/models/ELFIndexedModelItem.cpp
+        include/core/models/ELFIndexedModelItem.h src/gui/diagram/nodes/DiagramProgramHeaderNode.cpp include/gui/diagram/nodes/DiagramProgramHeaderNode.h src/gui/diagram/nodes/DiagramSectionNode.cpp include/gui/diagram/nodes/DiagramSectionNode.h src/gui/diagram/nodes/DiagramSegmentNode.cpp include/gui/diagram/nodes/DiagramSegmentNode.h)
 
 # Google Tests
 add_subdirectory(ext/gtest)

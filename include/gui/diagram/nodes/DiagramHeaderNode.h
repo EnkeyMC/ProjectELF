@@ -9,6 +9,7 @@
 #include "include/core/models/ELFHeaderModelItem.h"
 
 class DiagramHeaderNode : public DiagramELFNode {
+    Q_OBJECT
 public:
     explicit DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *modelItem);
 

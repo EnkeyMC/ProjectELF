@@ -1,6 +1,6 @@
-#include "core/ELFValueConvertor.h"
+#include "core/ELFValueConverter.h"
 
-QString ELFValueConvertor::eiClassToDisp(unsigned char value)
+QString ELFValueConverter::eiClassToDisp(unsigned char value)
 {
     switch (value) {
     case ELFCLASS32:
@@ -8,11 +8,11 @@ QString ELFValueConvertor::eiClassToDisp(unsigned char value)
     case ELFCLASS64:
         return "64-bit";
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::eiDataToDisp(unsigned char value)
+QString ELFValueConverter::eiDataToDisp(unsigned char value)
 {
     switch (value) {
     case ELFDATA2LSB:
@@ -20,11 +20,11 @@ QString ELFValueConvertor::eiDataToDisp(unsigned char value)
     case ELFDATA2MSB:
         return tr("MSB, 2's complement");
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::eiOsabiToDisp(unsigned char value)
+QString ELFValueConverter::eiOsabiToDisp(unsigned char value)
 {
     switch (value) {
     case ELFOSABI_NONE:
@@ -58,11 +58,11 @@ QString ELFValueConvertor::eiOsabiToDisp(unsigned char value)
     case ELFOSABI_FENIXOS:
         return tr("FenixOS");
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::eTypeToDisp(elf::Elf_Half value)
+QString ELFValueConverter::eTypeToDisp(elf::Elf_Half value)
 {
     switch (value) {
     case ET_NONE:
@@ -76,11 +76,11 @@ QString ELFValueConvertor::eTypeToDisp(elf::Elf_Half value)
     case ET_CORE:
         return tr("Core (ET_CORE)");
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::eMachineToDisp(elf::Elf_Half value)
+QString ELFValueConverter::eMachineToDisp(elf::Elf_Half value)
 {
     switch (value) {
     case EM_NONE:
@@ -176,11 +176,11 @@ QString ELFValueConvertor::eMachineToDisp(elf::Elf_Half value)
     case EM_PDP10:
         return tr("Digital Equipment Corp. PDP-10");
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::eVersionToDisp(elf::Elf_Word value)
+QString ELFValueConverter::eVersionToDisp(elf::Elf_Word value)
 {
     switch (value) {
     case EV_NONE:
@@ -188,13 +188,13 @@ QString ELFValueConvertor::eVersionToDisp(elf::Elf_Word value)
     case EV_CURRENT:
         return tr("Current (0x1)");
     default:
-        return unkownValue(value);
+        return unknownValue(value);
     }
 }
 
-QString ELFValueConvertor::tr(const char *s)
+QString ELFValueConverter::tr(const char *s)
 {
     return QObject::tr(s);
 }
 
-ELFValueConvertor::ELFValueConvertor() = default;
+ELFValueConverter::ELFValueConverter() = default;

@@ -6,20 +6,20 @@
 #define PROJECTELF_ELFPROGRAMHEADERTABLE_H
 
 #include <vector>
-#include <ELFHeader.h>
+#include <ELF.h>
 
 #include "core/models/ELFModelItem.h"
 #include "core/models/ELFProgramHeaderModelItem.h"
 
 class ELFProgramHeaderTableModelItem : public ELFModelItem {
 public:
-    explicit ELFProgramHeaderTableModelItem(ELFModel *parent, elf::ELFHeader *header);
+    explicit ELFProgramHeaderTableModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
     virtual ~ELFProgramHeaderTableModelItem();
 
-private:
-    elf::ELFHeader *header;
+    const std::vector<ELFProgramHeaderModelItem *> &getProgramHeaders() const;
 
+private:
     std::vector<ELFProgramHeaderModelItem *> programHeaderModelItems;
 };
 

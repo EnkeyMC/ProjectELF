@@ -23,7 +23,7 @@ void ProportionalDiagramLayout::layoutNodes() {
         this->layoutNodeInHeight(node, MIN_HEIGHT);
     });
 
-    double maxStretchRatio = 0;
+    double maxStretchRatio = 1;
 
     this->forEachNode([&maxStretchRatio](DiagramNode &node) {
         if (node.getNodeRect().height() < node.getMinHeight()

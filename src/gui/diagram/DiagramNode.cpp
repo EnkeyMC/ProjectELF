@@ -2,12 +2,10 @@
 // Created by MOmac on 09.03.2019.
 //
 
-#include <include/gui/diagram/DiagramNode.h>
-
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramNode::DiagramNode(DiagramScene *diagram) {
+DiagramNode::DiagramNode(DiagramScene *diagram) : QObject () {
     this->diagram = diagram;
     this->colspan = 1;
 }

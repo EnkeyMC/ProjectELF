@@ -1,11 +1,11 @@
-#ifndef ELFVALUECONVERTOR_H
-#define ELFVALUECONVERTOR_H
+#ifndef ELFVALUECONVERTER_H
+#define ELFVALUECONVERTER_H
 
 #include <QString>
 #include <QObject>
 #include <ELFTypes.h>
 
-class ELFValueConvertor
+class ELFValueConverter
 {
 public:
     static QString eiClassToDisp(unsigned char value);
@@ -17,13 +17,13 @@ public:
 
 private:
     template<typename TInt>
-    static QString unkownValue(TInt value) {
-        return QString(QObject::tr("Unkown (0x")) + QString::number(value, 16) + ")";
+    static QString unknownValue(TInt value) {
+        return QString(QObject::tr("Unknown (0x")) + QString::number(value, 16) + ")";
     }
 
     static QString tr(const char *s);
 
-    ELFValueConvertor();
+    ELFValueConverter();
 };
 
-#endif // ELFVALUECONVERTOR_H
+#endif // ELFVALUECONVERTER_H

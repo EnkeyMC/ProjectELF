@@ -5,16 +5,13 @@
 #ifndef PROJECTELF_ELFSECTIONMODELITEM_H
 #define PROJECTELF_ELFSECTIONMODELITEM_H
 
-#include <ELFSectionHeader.h>
+#include <ELF.h>
 
-#include "core/models/ELFModelItem.h"
+#include "core/models/ELFIndexedModelItem.h"
 
-class ELFSectionModelItem : public ELFModelItem {
+class ELFSectionModelItem : public ELFIndexedModelItem {
 public:
-    ELFSectionModelItem(ELFModel *parent, elf::ELFSectionHeader *sectionHeader);
-
-private:
-    elf::ELFSectionHeader *sectionHeader;
+    ELFSectionModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 };
 
 

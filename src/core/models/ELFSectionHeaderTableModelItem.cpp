@@ -6,15 +6,16 @@
 
 #include "core/models/ELFSectionHeaderTableModelItem.h"
 
-ELFSectionHeaderTableModelItem::ELFSectionHeaderTableModelItem(ELFModel *parent, elf::ELF *elf)
-    : ELFModelItem(parent), elf(elf)
+ELFSectionHeaderTableModelItem::ELFSectionHeaderTableModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
+    : ELFModelItem(parent, std::move(elf))
 {
-    auto sectionCount = elf->get_header()->get_e_shnum();
-    sizeInFile = sectionCount * elf->get_header()->get_e_shentsize();
-    addressInFile = elf->get_header()->get_e_shoff();
+    auto header = this->elf->get_header();
+    auto sectionCount = header->get_e_shnum();
+    sizeInFile = sectionCount * header->get_e_shentsize();
+    addressInFile = header->get_e_shoff();
 
     for (unsigned int i = 0; i < sectionCount; i++) {
-        sectionHeaderModelItems.push_back(new ELFSectionHeaderModelItem(parent, elf->get_section_headers()[i]));
+        sectionHeaderModelItems.push_back(new ELFSectionHeaderModelItem(parent, this->elf, i));
     }
 }
 

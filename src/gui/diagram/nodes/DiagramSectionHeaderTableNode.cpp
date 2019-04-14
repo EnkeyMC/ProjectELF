@@ -27,7 +27,8 @@ DiagramSectionHeaderTableNode::~DiagramSectionHeaderTableNode()
 }
 
 void DiagramSectionHeaderTableNode::paint(QPainter *painter) const {
-    painter->setBrush(QBrush(QColor(255, 255, 255)));
+    painter->setBrush(QBrush(QColor(255, 100, 100)));
+    painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);
 
     for (auto headerNode : sectionHeaderNodes) {
@@ -35,20 +36,14 @@ void DiagramSectionHeaderTableNode::paint(QPainter *painter) const {
     }
 }
 
-double DiagramSectionHeaderTableNode::getProportionalPosition() const
-{
-    return sectionHeaderTableModelItem->getAddressInFile()
-            /
-            static_cast<double>(sectionHeaderTableModelItem->getModel()->getFileSize());
-}
-
-double DiagramSectionHeaderTableNode::getProportionalSize() const
-{
-    return sectionHeaderTableModelItem->getSizeInFile()
-            /
-            static_cast<double>(sectionHeaderTableModelItem->getModel()->getFileSize());
-}
-
 int DiagramSectionHeaderTableNode::getMinHeight() const {
-    return 100;
+    int sum = 0;
+    for (auto sectionHeaderNode : sectionHeaderNodes)
+        sum += sectionHeaderNode->getMinHeight();
+    return sum;
+}
+
+DiagramSectionHeaderNode *DiagramSectionHeaderTableNode::getSectionHeaderNode(unsigned index)
+{
+    return sectionHeaderNodes[index];
 }

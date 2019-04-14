@@ -9,18 +9,22 @@
 #include "gui/diagram/nodes/DiagramHeaderNode.h"
 #include "gui/diagram/nodes/DiagramProgramHeaderTableNode.h"
 #include "gui/diagram/nodes/DiagramSectionHeaderTableNode.h"
+#include "gui/diagram/nodes/DiagramSectionNode.h"
+#include "gui/diagram/nodes/DiagramSegmentNode.h"
 
 
-DiagramScene::DiagramScene(QQuickItem *parent) : QQuickPaintedItem(parent), model(nullptr) {
+DiagramScene::DiagramScene(QQuickItem *parent)
+    : QQuickPaintedItem(parent), model(nullptr),
+    padding(20), minWidth(0)
+{
     connect(this, &DiagramScene::modelChanged, this, &DiagramScene::onModelChanged);
 
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
     this->layout = new ProportionalDiagramLayout(this);
-    this->setPadding(20);
 
-    this->layout->layoutNodes();
-    this->setImplicitHeight(this->layout->getSize().height() + 2*getPadding());
     this->setMinWidth(this->layout->getMinWidth() + 2*this->padding);
+
+    emit modelChanged(this->model);
 }
 
 DiagramScene::~DiagramScene() {
@@ -76,26 +80,41 @@ void DiagramScene::setMinWidth(int minWidth) {
 void DiagramScene::onModelChanged() {
     this->layout->clearNodes();
 
-    if (this->model == nullptr)
+    if (this->model == nullptr) {
+        this->setImplicitHeight(2*getPadding());
         return;
+    }
 
     auto header = this->model->getHeader();
-    if (header == nullptr)
+    if (header == nullptr) {
+        this->setImplicitHeight(2*getPadding());
         return;
+    }
 
     this->layout->addLinkNode(new DiagramHeaderNode(this, header));
 
     auto sectionHeaderTable = header->getSectionHeaderTable();
     if (sectionHeaderTable != nullptr) {
-        this->layout->addLinkNode(new DiagramSectionHeaderTableNode(this, sectionHeaderTable));
+        auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
+        this->layout->addLinkNode(sectionHeaderTableNode);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
-//            this->layout->addLinkNode()
+            auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
+            this->layout->addLinkNode(sectionNode);
         }
     }
 
     auto programHeaderTable = header->getProgramHeaderTable();
     if (programHeaderTable != nullptr) {
-        this->layout->addExecNode(new DiagramProgramHeaderTableNode(this, programHeaderTable));
+        auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
+        this->layout->addExecNode(programHeaderTableNode);
+
+        for (auto programHeader : programHeaderTable->getProgramHeaders()) {
+            auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
+            this->layout->addExecNode(segmentNode);
+        }
     }
+
+    this->layout->layoutNodes();
+    this->setImplicitHeight(this->layout->getSize().height() + 2*getPadding());
 }

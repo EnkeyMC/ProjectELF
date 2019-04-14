@@ -6,21 +6,20 @@
 #define PROJECTELF_ELFSECTIONHEADERTABLEMODELITEM_H
 
 #include <vector>
-#include <ELFHeader.h>
+#include <ELF.h>
 
 #include "core/models/ELFModelItem.h"
 #include "core/models/ELFSectionHeaderModelItem.h"
 
 class ELFSectionHeaderTableModelItem : public ELFModelItem {
 public:
-    explicit ELFSectionHeaderTableModelItem(ELFModel *parent, elf::ELF *elf);
+    explicit ELFSectionHeaderTableModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
     virtual ~ELFSectionHeaderTableModelItem();
 
     const std::vector<ELFSectionHeaderModelItem *> &getSectionHeaders() const;
 
 private:
-    elf::ELF *elf;
 
     std::vector<ELFSectionHeaderModelItem *> sectionHeaderModelItems;
 };

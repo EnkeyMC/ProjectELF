@@ -4,16 +4,12 @@
 #include "gui/diagram/nodes/DiagramELFNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-class DiagramSectionHeaderNode : public DiagramELFNode
-{
+class DiagramSectionHeaderNode : public DiagramELFNode {
+    Q_OBJECT
 public:
     DiagramSectionHeaderNode(DiagramScene *diagram, ELFSectionHeaderModelItem *sectionHeaderModelItem);
 
     void paint(QPainter *painter) const override;
-
-    double getProportionalPosition() const override;
-
-    double getProportionalSize() const override;
 
     int getMinHeight() const override;
 

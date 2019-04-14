@@ -10,6 +10,7 @@
 #include "core/models/ELFSectionHeaderTableModelItem.h"
 
 class DiagramSectionHeaderTableNode : public DiagramELFNode {
+    Q_OBJECT
 public:
     DiagramSectionHeaderTableNode(DiagramScene *diagram, ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem);
 
@@ -17,11 +18,9 @@ public:
 
     void paint(QPainter *painter) const override;
 
-    double getProportionalPosition() const override;
-
-    double getProportionalSize() const override;
-
     int getMinHeight() const override;
+
+    DiagramSectionHeaderNode *getSectionHeaderNode(unsigned index);
 
 private:
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;

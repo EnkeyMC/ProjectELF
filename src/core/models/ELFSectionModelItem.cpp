@@ -4,9 +4,10 @@
 
 #include "core/models/ELFSectionModelItem.h"
 
-ELFSectionModelItem::ELFSectionModelItem(ELFModel *parent, elf::ELFSectionHeader *sectionHeader)
-    : ELFModelItem(parent), sectionHeader(sectionHeader)
+ELFSectionModelItem::ELFSectionModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
+    : ELFIndexedModelItem(parent, std::move(elf), index)
 {
+    auto sectionHeader = this->elf->get_section_headers()[this->index];
     this->sizeInFile = sectionHeader->get_sh_size();
     this->addressInFile = sectionHeader->get_sh_offset();
 }

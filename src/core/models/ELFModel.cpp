@@ -3,7 +3,7 @@
 //
 
 #include "core/models/ELFModel.h"
-#include "core/ELFValueConvertor.h"
+#include "core/ELFValueConverter.h"
 
 #define DEFAULT(x) if (elf == nullptr) return x
 
@@ -13,7 +13,7 @@ ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr
 }
 
 ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(parent), elf(std::move(elf)) {
-    this->headerModelItem = new ELFHeaderModelItem(this, this->elf->get_header());
+    this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
 }
 
 ELFModel::~ELFModel() {
@@ -117,13 +117,13 @@ QString ELFModel::getDispMag3() const
 QString ELFModel::getDispFileClass() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eiClassToDisp(elf->get_ei_class());
+    return ELFValueConverter::eiClassToDisp(elf->get_ei_class());
 }
 
 QString ELFModel::getDispDataEncoding() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eiDataToDisp(elf->get_ei_data());
+    return ELFValueConverter::eiDataToDisp(elf->get_ei_data());
 }
 
 QString ELFModel::getDispVersion() const
@@ -134,7 +134,7 @@ QString ELFModel::getDispVersion() const
 QString ELFModel::getDispOsabi() const
 {
     DEFAULT(QString());
-    return ELFValueConvertor::eiOsabiToDisp(elf->get_ei_osabi());
+    return ELFValueConverter::eiOsabiToDisp(elf->get_ei_osabi());
 }
 
 QString ELFModel::getDispAbiversion() const

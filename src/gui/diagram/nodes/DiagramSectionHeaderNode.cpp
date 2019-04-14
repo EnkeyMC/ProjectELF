@@ -12,23 +12,10 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
 
 void DiagramSectionHeaderNode::paint(QPainter *painter) const
 {
-    painter->setBrush(QBrush(QColor(255, 255, 255)));
+    painter->setBrush(QBrush(QColor(255, 255, 100)));
+    painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "Section header");
-}
-
-double DiagramSectionHeaderNode::getProportionalPosition() const
-{
-    return static_cast<double>(sectionHeaderModelItem->getAddressInFile())
-            /
-            sectionHeaderModelItem->getModel()->getFileSize();
-}
-
-double DiagramSectionHeaderNode::getProportionalSize() const
-{
-    return static_cast<double>(sectionHeaderModelItem->getSizeInFile())
-            /
-            sectionHeaderModelItem->getModel()->getFileSize();
 }
 
 int DiagramSectionHeaderNode::getMinHeight() const
