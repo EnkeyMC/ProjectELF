@@ -31,7 +31,9 @@ public:
 
     char *get_section_data() const;
 
-    void set_section_data(const char *raw_data, Elf_Word size);
+    void set_copy_of_section_data(const char *raw_data, Elf_Word size);
+
+    void set_section_data(char *raw_data, Elf_Word size);
 
 protected:
     char *section_data;

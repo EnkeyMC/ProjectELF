@@ -10,7 +10,7 @@ char *elf::ELFProgramHeader::get_segment_data() const {
     return segment_data;
 }
 
-void elf::ELFProgramHeader::set_segment_data(const char *raw_data, Elf_Word size) {
+void elf::ELFProgramHeader::set_copy_of_segment_data(const char *raw_data, Elf_Word size) {
     delete[] this->segment_data;
     this->segment_data = nullptr;
 
@@ -21,4 +21,10 @@ void elf::ELFProgramHeader::set_segment_data(const char *raw_data, Elf_Word size
 
     this->segment_data = new char[size];
     std::copy(raw_data, raw_data + size, this->segment_data);
+}
+
+void elf::ELFProgramHeader::set_segment_data(char *raw_data, elf::Elf_Word size) {
+    delete[] this->segment_data;
+    this->segment_data = raw_data;
+    this->set_p_filesz(size);
 }

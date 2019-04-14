@@ -29,7 +29,9 @@ public:
 
     char *get_segment_data() const;
 
-    void set_segment_data(const char *raw_data, Elf_Word size);
+    void set_copy_of_segment_data(const char *raw_data, Elf_Word size);
+
+    void set_segment_data(char *raw_data, Elf_Word size);
 
 protected:
     char *segment_data;
