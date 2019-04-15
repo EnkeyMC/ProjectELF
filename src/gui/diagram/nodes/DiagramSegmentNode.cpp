@@ -16,6 +16,8 @@ void DiagramSegmentNode::paint(QPainter *painter) const
     painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "Segment");
+    this->paintAddress(painter);
+    this->paintSize(painter);
 }
 
 int DiagramSegmentNode::getMinHeight() const

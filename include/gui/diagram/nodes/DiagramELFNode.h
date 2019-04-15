@@ -17,6 +17,10 @@ public:
     double getProportionalSize() const override;
 
 protected:
+    void paintAddress(QPainter *painter) const;
+
+    void paintSize(QPainter *painter) const;
+
     double proportionalPosition;
     double proportionalSize;
 

@@ -34,6 +34,8 @@ void DiagramSectionHeaderTableNode::paint(QPainter *painter) const {
     for (auto headerNode : sectionHeaderNodes) {
         headerNode->paint(painter);
     }
+    this->paintAddress(painter);
+    this->paintSize(painter);
 }
 
 int DiagramSectionHeaderTableNode::getMinHeight() const {

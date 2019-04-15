@@ -27,6 +27,8 @@ void DiagramProgramHeaderTableNode::paint(QPainter *painter) const {
     for (auto headerNode : programHeaderNodes) {
         headerNode->paint(painter);
     }
+    this->paintAddress(painter);
+    this->paintSize(painter);
 }
 
 int DiagramProgramHeaderTableNode::getMinHeight() const {

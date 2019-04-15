@@ -18,6 +18,8 @@ DiagramScene::DiagramScene(QQuickItem *parent)
     padding(20), minWidth(0)
 {
     connect(this, &DiagramScene::modelChanged, this, &DiagramScene::onModelChanged);
+    setAcceptedMouseButtons(Qt::AllButtons);
+    setAcceptHoverEvents(true);
 
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
     this->layout = new ProportionalDiagramLayout(this);
@@ -117,4 +119,21 @@ void DiagramScene::onModelChanged() {
 
     this->layout->layoutNodes();
     this->setImplicitHeight(this->layout->getSize().height() + 2*getPadding());
+}
+
+void DiagramScene::mousePressEvent(QMouseEvent *event) {
+    QQuickItem::mousePressEvent(event);
+
+    qDebug() << event->pos();
+}
+
+void DiagramScene::mouseReleaseEvent(QMouseEvent *event) {
+    QQuickItem::mouseReleaseEvent(event);
+    qDebug() << event->pos();
+}
+
+void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
+    QQuickItem::hoverMoveEvent(event);event->accept();
+
+    qDebug() << event->pos();
 }

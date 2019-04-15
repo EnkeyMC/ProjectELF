@@ -15,6 +15,8 @@ void DiagramHeaderNode::paint(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "ELF Header");
+    this->paintAddress(painter);
+    this->paintSize(painter);
 }
 
 int DiagramHeaderNode::getMinHeight() const {

@@ -21,3 +21,13 @@ double DiagramELFNode::getProportionalPosition() const {
 double DiagramELFNode::getProportionalSize() const {
     return proportionalSize;
 }
+
+void DiagramELFNode::paintAddress(QPainter *painter) const {
+    painter->setPen(QColor(0, 0, 0, 100));
+    painter->drawText(this->nodeRect.adjusted(5, 5, -5, -5), QString("Addr: 0x") + QString::number(modelItem->getAddressInFile(), 16));
+}
+
+void DiagramELFNode::paintSize(QPainter *painter) const {
+    painter->setPen(QColor(0, 0, 0, 100));
+    painter->drawText(this->nodeRect.adjusted(5, 5, -5, -5), Qt::AlignRight, QString("Size: ") + QString::number(modelItem->getSizeInFile()) + " B");
+}

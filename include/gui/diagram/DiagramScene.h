@@ -34,6 +34,13 @@ public:
 
     int getMinWidth() const;
 
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    void hoverMoveEvent(QHoverEvent *event) override;
+
 signals:
     void modelChanged(ELFModel * model);
     void paddingChanged(int padding);
