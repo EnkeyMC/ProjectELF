@@ -37,7 +37,7 @@ class ELFModel : public ModelBase {
     Q_PROPERTY(QString dispAbiversion   READ getDispAbiversion      NOTIFY abiversionChanged)
 public:
 
-    ELFModel(QObject *parent = nullptr);
+    explicit ELFModel(QObject *parent = nullptr);
 
     explicit ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent = nullptr);
 

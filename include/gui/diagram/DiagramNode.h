@@ -14,7 +14,7 @@ class DiagramNode : public QObject {
 public:
     explicit DiagramNode(DiagramScene *diagram);
 
-    virtual ~DiagramNode();
+    ~DiagramNode() override;
 
     virtual void paint(QPainter *painter) const = 0;
 

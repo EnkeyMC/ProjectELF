@@ -9,9 +9,10 @@
 #include <QPointer>
 #include <set>
 
-#include "include/core/models/ELFModel.h"
-#include "DiagramNode.h"
-#include "DiagramLayout.h"
+#include "core/models/ELFModel.h"
+#include "core/IVerticalBinaryTreeNode.h"
+#include "gui/diagram/DiagramNode.h"
+#include "gui/diagram/DiagramLayout.h"
 
 class DiagramScene : public QQuickPaintedItem {
     Q_OBJECT

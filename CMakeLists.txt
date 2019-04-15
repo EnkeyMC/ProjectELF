@@ -51,7 +51,7 @@ set(SOURCE_FILES
         src/gui/diagram/nodes/DiagramSectionHeaderNode.cpp
         include/gui/diagram/nodes/DiagramSectionHeaderNode.h
         src/core/models/ELFIndexedModelItem.cpp
-        include/core/models/ELFIndexedModelItem.h src/gui/diagram/nodes/DiagramProgramHeaderNode.cpp include/gui/diagram/nodes/DiagramProgramHeaderNode.h src/gui/diagram/nodes/DiagramSectionNode.cpp include/gui/diagram/nodes/DiagramSectionNode.h src/gui/diagram/nodes/DiagramSegmentNode.cpp include/gui/diagram/nodes/DiagramSegmentNode.h)
+        include/core/models/ELFIndexedModelItem.h src/gui/diagram/nodes/DiagramProgramHeaderNode.cpp include/gui/diagram/nodes/DiagramProgramHeaderNode.h src/gui/diagram/nodes/DiagramSectionNode.cpp include/gui/diagram/nodes/DiagramSectionNode.h src/gui/diagram/nodes/DiagramSegmentNode.cpp include/gui/diagram/nodes/DiagramSegmentNode.h include/core/VerticalBinaryTree.h include/core/IVerticalBinaryTreeNode.h)
 
 # Google Tests
 add_subdirectory(ext/gtest)
@@ -60,7 +60,7 @@ enable_testing()
 
 set(TEST_FILES
         tests/test.cpp
-)
+        include/core/IVerticalBinaryTreeNode.h)
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES})
 

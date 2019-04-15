@@ -123,17 +123,12 @@ void DiagramScene::onModelChanged() {
 
 void DiagramScene::mousePressEvent(QMouseEvent *event) {
     QQuickItem::mousePressEvent(event);
-
-    qDebug() << event->pos();
 }
 
 void DiagramScene::mouseReleaseEvent(QMouseEvent *event) {
     QQuickItem::mouseReleaseEvent(event);
-    qDebug() << event->pos();
 }
 
 void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
-    QQuickItem::hoverMoveEvent(event);event->accept();
-
-    qDebug() << event->pos();
+    QQuickItem::hoverMoveEvent(event);
 }
