@@ -10,7 +10,8 @@
 #include <set>
 
 #include "core/models/ELFModel.h"
-#include "core/IVerticalBinaryTreeNode.h"
+#include "core/VerticalBinaryTree.h"
+#include "core/IMouseListener.h"
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramLayout.h"
 
@@ -35,12 +36,7 @@ public:
 
     int getMinWidth() const;
 
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-
-    void mouseReleaseEvent(QMouseEvent *event) override;
-
-    void hoverMoveEvent(QHoverEvent *event) override;
+    QPoint getLayoutOffset() const;
 
 signals:
     void modelChanged(ELFModel * model);
@@ -49,9 +45,21 @@ signals:
 
 private slots:
     void onModelChanged();
+    void onLayoutChanged();
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    void hoverMoveEvent(QHoverEvent *event) override;
+
     void setMinWidth(int minWidth);
+
+    QPoint translateMousePos(QPoint point) const;
+    QPointF translateMousePos(QPointF point) const;
+
+    VerticalBinaryTree<IDiagramMouseListener> nodeTree;
 
     QPointer<ELFModel> model;
     QPointer<DiagramLayout> layout;

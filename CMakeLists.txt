@@ -51,28 +51,17 @@ set(SOURCE_FILES
         src/gui/diagram/nodes/DiagramSectionHeaderNode.cpp
         include/gui/diagram/nodes/DiagramSectionHeaderNode.h
         src/core/models/ELFIndexedModelItem.cpp
-        include/core/models/ELFIndexedModelItem.h src/gui/diagram/nodes/DiagramProgramHeaderNode.cpp include/gui/diagram/nodes/DiagramProgramHeaderNode.h src/gui/diagram/nodes/DiagramSectionNode.cpp include/gui/diagram/nodes/DiagramSectionNode.h src/gui/diagram/nodes/DiagramSegmentNode.cpp include/gui/diagram/nodes/DiagramSegmentNode.h include/core/VerticalBinaryTree.h include/core/IVerticalBinaryTreeNode.h)
+        include/core/models/ELFIndexedModelItem.h
+        src/gui/diagram/nodes/DiagramProgramHeaderNode.cpp
+        include/gui/diagram/nodes/DiagramProgramHeaderNode.h
+        src/gui/diagram/nodes/DiagramSectionNode.cpp
+        include/gui/diagram/nodes/DiagramSectionNode.h
+        src/gui/diagram/nodes/DiagramSegmentNode.cpp
+        include/gui/diagram/nodes/DiagramSegmentNode.h
+        include/core/VerticalBinaryTree.h
+        include/core/IVerticalBinaryTreeNode.h
+        include/core/IMouseListener.h include/gui/diagram/IDiagramMouseListener.h)
 
-# Google Tests
-add_subdirectory(ext/gtest)
-
-enable_testing()
-
-set(TEST_FILES
-        tests/test.cpp
-        include/core/IVerticalBinaryTreeNode.h)
-
-add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES})
-
-target_link_libraries(${PROJECT_NAME_TESTS} GTest::GTest GTest::Main)
-
-add_test(Tests ${PROJECT_NAME_TESTS})
-
-#add_custom_command(TARGET ${PROJECT_NAME}_test PRE_BUILD
-#        COMMAND ${CMAKE_COMMAND} -E copy_directory
-#        ${CMAKE_SOURCE_DIR}/tests/test_files ${PROJECT_BINARY_DIR}/test_files)
-
-add_subdirectory(libelf)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -82,6 +71,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 
+# Google Tests
+add_subdirectory(ext/gtest)
+
+enable_testing()
+
+set(TEST_FILES
+        tests/core/EmptyVerticalBinaryTreeTestFixture.cpp)
+
+add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES})
+
+target_link_libraries(${PROJECT_NAME_TESTS} GTest::GTest GTest::Main Qt5::Core Qt5::Quick)
+target_include_directories(${PROJECT_NAME_TESTS} PRIVATE ${PROJECT_SOURCE_DIR}/include)
+
+add_test(Tests ${PROJECT_NAME_TESTS})
+
+#add_custom_command(TARGET ${PROJECT_NAME}_test PRE_BUILD
+#        COMMAND ${CMAKE_COMMAND} -E copy_directory
+#        ${CMAKE_SOURCE_DIR}/tests/test_files ${PROJECT_BINARY_DIR}/test_files)
+
+add_subdirectory(libelf)
+
+target_link_libraries(${PROJECT_NAME_TESTS} libelf)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)

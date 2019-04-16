@@ -22,3 +22,8 @@ void DiagramHeaderNode::paint(QPainter *painter) const {
 int DiagramHeaderNode::getMinHeight() const {
     return 50;
 }
+
+void DiagramHeaderNode::mousePressEvent(QMouseEvent *event) {
+    IMouseListener::mousePressEvent(event);
+    qDebug() << "Clicked: " << event->pos();
+}

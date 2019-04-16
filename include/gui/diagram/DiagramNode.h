@@ -7,9 +7,11 @@
 
 #include <QPainter>
 
+#include "gui/diagram/IDiagramMouseListener.h"
+
 class DiagramScene;
 
-class DiagramNode : public QObject {
+class DiagramNode : public QObject, virtual public IDiagramMouseListener {
     Q_OBJECT
 public:
     explicit DiagramNode(DiagramScene *diagram);
@@ -43,6 +45,10 @@ public:
     void stretch(double factor);
 
     bool operator<(const DiagramNode &rhs) const;
+
+    QRect getBounds() const override;
+
+    bool contains(const QPoint &point) const override;
 
 signals:
     void nodeRectChanged(const QRect &nodeRect);

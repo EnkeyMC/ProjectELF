@@ -56,3 +56,15 @@ QSize DiagramLayout::getSize() const {
 int DiagramLayout::getMinWidth() const {
     return minWidth;
 }
+
+void DiagramLayout::layoutNodes() {
+    emit layoutChanged();
+}
+
+const std::set<DiagramNode *> &DiagramLayout::getLinkColumnSortedNodes() const {
+    return linkColumnSortedNodes;
+}
+
+const std::set<DiagramNode *> &DiagramLayout::getExecColumnSortedNodes() const {
+    return execColumnSortedNodes;
+}

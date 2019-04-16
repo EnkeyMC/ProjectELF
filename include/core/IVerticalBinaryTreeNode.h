@@ -9,7 +9,7 @@
 
 class IVerticalBinaryTreeNode {
 public:
-    virtual QRect getBoundingBox() const = 0;
+    virtual QRect getBounds() const = 0;
     virtual bool contains(const QPoint &point) const = 0;
 };
 

@@ -38,6 +38,8 @@ void ProportionalDiagramLayout::layoutNodes() {
     this->forEachNode([this, maxStretchRatio](DiagramNode &node) {
         this->layoutNodeInHeight(node, static_cast<int>(MIN_HEIGHT * maxStretchRatio));
     });
+
+    DiagramLayout::layoutNodes();
 }
 
 void ProportionalDiagramLayout::paint(QPainter *painter) const {
@@ -51,13 +53,14 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0));
     painter->drawRect(ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->contentsSize.height());
 
-    painter->translate(0, HEADER_HEIGHT);
+    auto offset = getNodeOffset();
+    painter->translate(offset.x(), offset.y());
     for (const auto &linkNode : linkColumnSortedNodes)
         linkNode->paint(painter);
 
     for (const auto &execNode : execColumnSortedNodes)
         execNode->paint(painter);
-    painter->translate(0, -HEADER_HEIGHT);
+    painter->translate(-offset.x(), -offset.y());
 }
 
 void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height) {
@@ -76,4 +79,8 @@ void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height
 
 QSize ProportionalDiagramLayout::getSize() const {
     return this->contentsSize + QSize(2*ARROW_SPACE_WIDTH, HEADER_HEIGHT);
+}
+
+QPoint ProportionalDiagramLayout::getNodeOffset() const {
+    return {0, HEADER_HEIGHT};
 }

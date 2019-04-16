@@ -18,6 +18,8 @@ public:
 
     QSize getSize() const override;
 
+    QPoint getNodeOffset() const override;
+
 protected:
     void layoutNodeInHeight(DiagramNode &node, int height);
 

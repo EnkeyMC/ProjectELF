@@ -89,6 +89,8 @@ void CondensedDiagramLayout::layoutNodes() {
 //            }
 //        }
 //    }
+
+    DiagramLayout::layoutNodes();
 }
 
 void CondensedDiagramLayout::paint(QPainter *painter) const {

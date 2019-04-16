@@ -23,7 +23,7 @@ public:
 
     virtual ~DiagramLayout() {}
 
-    virtual void layoutNodes() = 0;
+    virtual void layoutNodes();
 
     virtual void paint(QPainter *painter) const = 0;
 
@@ -36,6 +36,15 @@ public:
     void addExecNode(DiagramNode *node);
 
     void clearNodes();
+
+    const std::set<DiagramNode *> &getLinkColumnSortedNodes() const;
+
+    const std::set<DiagramNode *> &getExecColumnSortedNodes() const;
+
+    virtual QPoint getNodeOffset() const = 0;
+
+signals:
+    void layoutChanged();
 
 protected:
     typedef std::function<void(DiagramNode &)> NodeCallback;

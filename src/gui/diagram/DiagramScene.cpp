@@ -15,7 +15,7 @@
 
 DiagramScene::DiagramScene(QQuickItem *parent)
     : QQuickPaintedItem(parent), model(nullptr),
-    padding(20), minWidth(0)
+    padding(20), minWidth(0), nodeTree()
 {
     connect(this, &DiagramScene::modelChanged, this, &DiagramScene::onModelChanged);
     setAcceptedMouseButtons(Qt::AllButtons);
@@ -23,6 +23,7 @@ DiagramScene::DiagramScene(QQuickItem *parent)
 
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
     this->layout = new ProportionalDiagramLayout(this);
+    connect(this->layout, &DiagramLayout::layoutChanged, this, &DiagramScene::onLayoutChanged);
 
     this->setMinWidth(this->layout->getMinWidth() + 2*this->padding);
 
@@ -34,18 +35,10 @@ DiagramScene::~DiagramScene() {
 }
 
 void DiagramScene::paint(QPainter *painter) {
-    QRect paddingRect{padding, padding,
-                      static_cast<int>(width() - padding * 2),
-                      static_cast<int>(height() - padding * 2)};
-
-    int horizontalCenteringPadding = (paddingRect.width() - this->layout->getSize().width()) / 2;
-
-    paddingRect.setLeft(paddingRect.left() + horizontalCenteringPadding);
-    paddingRect.setRight(paddingRect.right() - horizontalCenteringPadding);
-
-    painter->translate(paddingRect.left(), paddingRect.top());
+    auto offset = this->getLayoutOffset();
+    painter->translate(offset.x(), offset.y());
     layout->paint(painter);
-    painter->translate(-paddingRect.left(), -paddingRect.top());
+    painter->translate(-offset.x(), -offset.y());
 }
 
 void DiagramScene::setModel(ELFModel *model) {
@@ -122,13 +115,81 @@ void DiagramScene::onModelChanged() {
 }
 
 void DiagramScene::mousePressEvent(QMouseEvent *event) {
+    QMouseEvent translatedEvent {
+            event->type(),
+            translateMousePos(event->localPos()),
+            event->windowPos(),
+            event->screenPos(),
+            event->button(),
+            event->buttons(),
+            event->modifiers(),
+            event->source()
+    };
+
+    auto targets = nodeTree.getContaining(translatedEvent.pos());
+    for (auto target : targets)
+        target->mousePressEvent(&translatedEvent);
+
     QQuickItem::mousePressEvent(event);
 }
 
 void DiagramScene::mouseReleaseEvent(QMouseEvent *event) {
+    QMouseEvent translatedEvent {
+            event->type(),
+            translateMousePos(event->localPos()),
+            event->windowPos(),
+            event->screenPos(),
+            event->button(),
+            event->buttons(),
+            event->modifiers(),
+            event->source()
+    };
+
+    auto targets = nodeTree.getContaining(translatedEvent.pos());
+    for (auto target : targets)
+        target->mouseReleaseEvent(&translatedEvent);
+
     QQuickItem::mouseReleaseEvent(event);
 }
 
 void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
+    QHoverEvent translatedEvent{
+            event->type(),
+            translateMousePos(event->pos()),
+            translateMousePos(event->oldPos()),
+            event->modifiers()
+    };
+    auto targets = nodeTree.getContaining(translatedEvent.pos());
+    for (auto target : targets)
+        target->hoverMoveEvent(&translatedEvent);
+
     QQuickItem::hoverMoveEvent(event);
+}
+
+void DiagramScene::onLayoutChanged() {
+    nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->height())));
+
+    auto linkNodes = this->layout->getLinkColumnSortedNodes();
+    for (auto node : linkNodes)
+        nodeTree.insert(node);
+
+    auto execNodes = this->layout->getExecColumnSortedNodes();
+    for (auto node : execNodes)
+        nodeTree.insert(node);
+}
+
+QPoint DiagramScene::getLayoutOffset() const {
+    QRect paddingRect{padding, padding,
+                      static_cast<int>(width() - padding * 2),
+                      static_cast<int>(height() - padding * 2)};
+    int horizontalCenteringPadding = (paddingRect.width() - this->layout->getSize().width()) / 2;
+    return {padding + horizontalCenteringPadding, padding};
+}
+
+QPoint DiagramScene::translateMousePos(QPoint point) const {
+    return point - getLayoutOffset() - layout->getNodeOffset();
+}
+
+QPointF DiagramScene::translateMousePos(QPointF point) const {
+    return point - getLayoutOffset() - layout->getNodeOffset();
 }

@@ -57,3 +57,11 @@ void DiagramNode::setColumn(int column) {
 int DiagramNode::getColumn() const {
     return column;
 }
+
+QRect DiagramNode::getBounds() const {
+    return nodeRect;
+}
+
+bool DiagramNode::contains(const QPoint &point) const {
+    return nodeRect.contains(point);
+}

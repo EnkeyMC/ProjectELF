@@ -17,6 +17,8 @@ public:
 
     int getMinHeight() const override;
 
+    void mousePressEvent(QMouseEvent *event) override;
+
 protected:
     ELFHeaderModelItem *headerModelItem;
 };
