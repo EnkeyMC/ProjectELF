@@ -11,8 +11,8 @@ DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {
-    painter->setBrush(QBrush(QColor(255, 100, 255)));
-    painter->setPen(QColor(0, 0, 0));
+    painter->setBrush(diagram->getStyle()->getHeaderNodeBgr());
+    painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "ELF Header");
     this->paintAddress(painter);
@@ -20,10 +20,9 @@ void DiagramHeaderNode::paint(QPainter *painter) const {
 }
 
 int DiagramHeaderNode::getMinHeight() const {
-    return 50;
+    return 30;
 }
 
 void DiagramHeaderNode::mousePressEvent(QMouseEvent *event) {
     IMouseListener::mousePressEvent(event);
-    qDebug() << "Clicked: " << event->pos();
 }

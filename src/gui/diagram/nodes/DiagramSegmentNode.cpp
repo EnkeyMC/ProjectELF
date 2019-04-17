@@ -3,6 +3,7 @@
 //
 
 #include "gui/diagram/nodes/DiagramSegmentNode.h"
+#include "gui/diagram/DiagramScene.h"
 
 DiagramSegmentNode::DiagramSegmentNode(DiagramScene *diagram, ELFSegmentModelItem *segmentModel)
     : DiagramELFNode (diagram, segmentModel), segmentModel(segmentModel)
@@ -12,8 +13,8 @@ DiagramSegmentNode::DiagramSegmentNode(DiagramScene *diagram, ELFSegmentModelIte
 
 void DiagramSegmentNode::paint(QPainter *painter) const
 {
-    painter->setBrush(QBrush(QColor(255, 50, 255)));
-    painter->setPen(QColor(0, 0, 0));
+    painter->setBrush(diagram->getStyle()->getSegmentNodeBgr());
+    painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "Segment");
     this->paintAddress(painter);

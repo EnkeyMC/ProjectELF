@@ -3,6 +3,7 @@
 //
 
 #include "gui/diagram/nodes/DiagramProgramHeaderTableNode.h"
+#include "gui/diagram/DiagramScene.h"
 
 DiagramProgramHeaderTableNode::DiagramProgramHeaderTableNode(
         DiagramScene *diagram,
@@ -20,8 +21,8 @@ DiagramProgramHeaderTableNode::DiagramProgramHeaderTableNode(
 }
 
 void DiagramProgramHeaderTableNode::paint(QPainter *painter) const {
-    painter->setBrush(QBrush(QColor(100, 100, 255)));
-    painter->setPen(QColor(0, 0, 0));
+    painter->setBrush(diagram->getStyle()->getProgramTableNodeBgr());
+    painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
 
     for (auto headerNode : programHeaderNodes) {

@@ -31,6 +31,7 @@ ColumnLayout {
 
         DiagramScene {
             id: diagramScene
+            style: Style._DiagramStyle
             implicitWidth: Math.max(minWidth, scroll.availableWidth)
         }
     }

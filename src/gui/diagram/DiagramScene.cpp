@@ -193,3 +193,12 @@ QPoint DiagramScene::translateMousePos(QPoint point) const {
 QPointF DiagramScene::translateMousePos(QPointF point) const {
     return point - getLayoutOffset() - layout->getNodeOffset();
 }
+
+DiagramStyle *DiagramScene::getStyle() const {
+    return style;
+}
+
+void DiagramScene::setStyle(DiagramStyle *style) {
+    this->style = style;
+    emit styleChanged(style);
+}

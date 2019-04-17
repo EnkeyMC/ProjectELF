@@ -2,12 +2,11 @@
 // Created by MOmac on 11.03.2019.
 //
 
-#include <include/gui/diagram/ProportionalDiagramLayout.h>
-
 #include "gui/diagram/ProportionalDiagramLayout.h"
+#include "gui/diagram/DiagramScene.h"
 
 const int ProportionalDiagramLayout::ARROW_SPACE_WIDTH = 50;
-const int ProportionalDiagramLayout::COLUMN_WIDTH = 200;
+const int ProportionalDiagramLayout::COLUMN_WIDTH = 400;
 const int ProportionalDiagramLayout::HEADER_HEIGHT = 70;
 const int ProportionalDiagramLayout::MIN_HEIGHT = 500;
 const int ProportionalDiagramLayout::MAX_HEIGHT = 4000;
@@ -51,7 +50,11 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->drawLine(COLUMN_WIDTH + ARROW_SPACE_WIDTH, 0, COLUMN_WIDTH + ARROW_SPACE_WIDTH, HEADER_HEIGHT);
 
     painter->setPen(QColor(0, 0, 0));
-    painter->drawRect(ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->contentsSize.height());
+    painter->setBrush(diagram->getStyle()->getBgr());
+    QRect background{ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->contentsSize.height()};
+    painter->drawRect(background);
+    painter->setBrush(diagram->getStyle()->getBgrPattern());
+    painter->drawRect(background);
 
     auto offset = getNodeOffset();
     painter->translate(offset.x(), offset.y());

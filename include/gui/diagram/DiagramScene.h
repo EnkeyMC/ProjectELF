@@ -14,12 +14,14 @@
 #include "core/IMouseListener.h"
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramLayout.h"
+#include "gui/diagram/DiagramStyle.h"
 
 class DiagramScene : public QQuickPaintedItem {
     Q_OBJECT
     Q_PROPERTY(ELFModel * model READ getModel WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int padding READ getPadding WRITE setPadding NOTIFY paddingChanged)
     Q_PROPERTY(int minWidth READ getMinWidth NOTIFY minWidthChanged)
+    Q_PROPERTY(DiagramStyle * style READ getStyle WRITE setStyle NOTIFY styleChanged)
 
 public:
     explicit DiagramScene(QQuickItem *parent = nullptr);
@@ -38,10 +40,14 @@ public:
 
     QPoint getLayoutOffset() const;
 
+    DiagramStyle *getStyle() const;
+    void setStyle(DiagramStyle *style);
+
 signals:
     void modelChanged(ELFModel * model);
     void paddingChanged(int padding);
     void minWidthChanged(int minWidth);
+    void styleChanged(DiagramStyle *style);
 
 private slots:
     void onModelChanged();
@@ -63,6 +69,7 @@ protected:
 
     QPointer<ELFModel> model;
     QPointer<DiagramLayout> layout;
+    QPointer<DiagramStyle> style;
 
     int padding;
     int minWidth;

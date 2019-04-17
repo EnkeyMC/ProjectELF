@@ -4,15 +4,7 @@
 
 #include "gui/diagram/DiagramScene.h"
 #include "version.h"
-#include "core/models/ELFModel.h"
 #include "core/models/OpenFilesModel.h"
-#include "core/models/ELFHeaderModelItem.h"
-#include "core/models/ELFProgramHeaderTableModelItem.h"
-#include "core/models/ELFSectionHeaderTableModelItem.h"
-#include "core/models/ELFProgramHeaderModelItem.h"
-#include "core/models/ELFSectionHeaderModelItem.h"
-#include "core/models/ELFSectionModelItem.h"
-#include "core/models/ELFSegmentModelItem.h"
 
 #define UNCREATABLE_MSG "This type is not creatable in QML."
 #define NMSPC_DIAGRAM "projectelf.diagram"
@@ -20,6 +12,7 @@
 
 void registerCustomQMLTypes() {
     qmlRegisterType<DiagramScene>(NMSPC_DIAGRAM, 1, 0, "DiagramScene");
+    qmlRegisterType<DiagramStyle>(NMSPC_DIAGRAM, 1, 0, "DiagramStyle");
     qmlRegisterType<ELFModel>(NMSPC_MODELS, 1, 0, "ELFModel");
 
     qmlRegisterUncreatableType<ELFHeaderModelItem>

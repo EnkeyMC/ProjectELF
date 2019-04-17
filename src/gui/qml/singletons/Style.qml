@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick 2.0
+import projectelf.diagram 1.0
 
 QtObject {
 
@@ -16,6 +17,8 @@ QtObject {
 
     readonly property color _ColorTextLight: "#FFFFFF"
     readonly property color _ColorTextDark: "#000000"
+
+    readonly property DiagramStyle _DiagramStyle: DiagramStyle {}
 
     readonly property QtObject mainMenuBar: QtObject {
         readonly property int _Height: 25

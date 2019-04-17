@@ -3,6 +3,7 @@
 //
 
 #include "gui/diagram/nodes/DiagramSectionNode.h"
+#include "gui/diagram/DiagramScene.h"
 
 DiagramSectionNode::DiagramSectionNode(DiagramScene *diagram, ELFSectionModelItem *sectionModel)
     : DiagramELFNode (diagram, sectionModel), sectionModel(sectionModel)
@@ -12,8 +13,8 @@ DiagramSectionNode::DiagramSectionNode(DiagramScene *diagram, ELFSectionModelIte
 
 void DiagramSectionNode::paint(QPainter *painter) const
 {
-    painter->setBrush(QBrush(QColor(50, 255, 50)));
-    painter->setPen(QColor(0, 0, 0));
+    painter->setBrush(diagram->getStyle()->getSectionNodeBgr());
+    painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
     painter->drawText(nodeRect, Qt::AlignCenter, "Section");
     this->paintAddress(painter);

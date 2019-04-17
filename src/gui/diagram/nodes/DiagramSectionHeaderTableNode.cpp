@@ -27,8 +27,8 @@ DiagramSectionHeaderTableNode::~DiagramSectionHeaderTableNode()
 }
 
 void DiagramSectionHeaderTableNode::paint(QPainter *painter) const {
-    painter->setBrush(QBrush(QColor(255, 100, 100)));
-    painter->setPen(QColor(0, 0, 0));
+    painter->setBrush(diagram->getStyle()->getSectionTableNodeBgr());
+    painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
 
     for (auto headerNode : sectionHeaderNodes) {
