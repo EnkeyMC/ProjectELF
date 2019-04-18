@@ -21,18 +21,49 @@ ColumnLayout {
         }
     }
 
-    ScrollView {
-        id: scroll
+    Item {
+        id: frame
         Layout.fillWidth: true
         Layout.fillHeight: true
-        clip: true
-        ScrollBar.horizontal.snapMode: ScrollBar.SnapAlways
-        ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
 
         DiagramScene {
             id: diagramScene
+            anchors.fill: parent
             style: Style._DiagramStyle
-            implicitWidth: Math.max(minWidth, scroll.availableWidth)
+
+            scrollXPosition: hbar.position
+            scrollYPosition: vbar.position
+
+            onWidthChanged: scrollXPositionChanged(scrollXPosition);
+            onHeightChanged: scrollYPositionChanged(scrollYPosition);
+        }
+
+        ScrollBar {
+            id: vbar
+            hoverEnabled: true
+            active: hovered || pressed || hbar.active
+            orientation: Qt.Vertical
+            size: frame.height / diagramScene.contentHeight
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            policy: frame.height > diagramScene.contentHeight ? ScrollBar.AlwaysOff : ScrollBar.AlwaysOn
+
+            position: diagramScene.scrollYPosition
+        }
+
+        ScrollBar {
+            id: hbar
+            hoverEnabled: true
+            active: hovered || pressed || hbar.active
+            orientation: Qt.Horizontal
+            size: frame.width / diagramScene.contentWidth
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            policy: frame.width > diagramScene.contentWidth ? ScrollBar.AlwaysOff : ScrollBar.AlwaysOn
+
+            position: diagramScene.scrollXPosition
         }
     }
 }

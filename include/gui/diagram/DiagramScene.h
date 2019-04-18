@@ -22,6 +22,10 @@ class DiagramScene : public QQuickPaintedItem {
     Q_PROPERTY(int padding READ getPadding WRITE setPadding NOTIFY paddingChanged)
     Q_PROPERTY(int minWidth READ getMinWidth NOTIFY minWidthChanged)
     Q_PROPERTY(DiagramStyle * style READ getStyle WRITE setStyle NOTIFY styleChanged)
+    Q_PROPERTY(int contentHeight READ getContentHeight NOTIFY contentSizeChanged)
+    Q_PROPERTY(int contentWidth READ getContentWidth NOTIFY contentSizeChanged)
+    Q_PROPERTY(qreal scrollYPosition READ getScrollYPosition WRITE setScrollYPosition NOTIFY scrollYPositionChanged)
+    Q_PROPERTY(qreal scrollXPosition READ getScrollXPosition WRITE setScrollXPosition NOTIFY scrollXPositionChanged)
 
 public:
     explicit DiagramScene(QQuickItem *parent = nullptr);
@@ -43,15 +47,31 @@ public:
     DiagramStyle *getStyle() const;
     void setStyle(DiagramStyle *style);
 
+    QSize getContentSize() const;
+
+    int getContentHeight() const;
+    int getContentWidth() const;
+
+    qreal getScrollYPosition() const;
+    void setScrollYPosition(qreal pos);
+    qreal getScrollXPosition() const;
+    void setScrollXPosition(qreal pos);
+
 signals:
     void modelChanged(ELFModel * model);
     void paddingChanged(int padding);
     void minWidthChanged(int minWidth);
     void styleChanged(DiagramStyle *style);
+    void contentSizeChanged(QSize size);
+    void scrollYPositionChanged(qreal pos);
+    void scrollXPositionChanged(qreal pos);
+    void repaint();
 
 private slots:
     void onModelChanged();
     void onLayoutChanged();
+    void onRepaint();
+    void onWidthChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -60,7 +80,11 @@ protected:
 
     void hoverMoveEvent(QHoverEvent *event) override;
 
+    void wheelEvent(QWheelEvent *event) override;
+
     void setMinWidth(int minWidth);
+
+    void clampScroll();
 
     QPoint translateMousePos(QPoint point) const;
     QPointF translateMousePos(QPointF point) const;
@@ -73,6 +97,8 @@ protected:
 
     int padding;
     int minWidth;
+
+    QPoint scroll;
 };
 
 

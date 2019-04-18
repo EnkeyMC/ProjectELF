@@ -15,9 +15,11 @@
 
 DiagramScene::DiagramScene(QQuickItem *parent)
     : QQuickPaintedItem(parent), model(nullptr),
-    padding(20), minWidth(0), nodeTree()
+    padding(20), minWidth(0), nodeTree(), scroll(0, 0)
 {
     connect(this, &DiagramScene::modelChanged, this, &DiagramScene::onModelChanged);
+    connect(this, &DiagramScene::repaint, this, &DiagramScene::onRepaint);
+    connect(this, &DiagramScene::widthChanged, this, &DiagramScene::onWidthChanged);
     setAcceptedMouseButtons(Qt::AllButtons);
     setAcceptHoverEvents(true);
 
@@ -36,9 +38,11 @@ DiagramScene::~DiagramScene() {
 
 void DiagramScene::paint(QPainter *painter) {
     auto offset = this->getLayoutOffset();
+    painter->translate(scroll);
     painter->translate(offset.x(), offset.y());
     layout->paint(painter);
     painter->translate(-offset.x(), -offset.y());
+    painter->translate(-scroll);
 }
 
 void DiagramScene::setModel(ELFModel *model) {
@@ -55,6 +59,7 @@ ELFModel *DiagramScene::getModel() const {
 void DiagramScene::setPadding(int padding) {
     this->padding = padding;
     emit paddingChanged(this->padding);
+    emit contentsSizeChanged();
 }
 
 int DiagramScene::getPadding() const {
@@ -176,13 +181,18 @@ void DiagramScene::onLayoutChanged() {
     auto execNodes = this->layout->getExecColumnSortedNodes();
     for (auto node : execNodes)
         nodeTree.insert(node);
+
+    this->update();
+    emit contentSizeChanged(this->getContentSize());
 }
 
 QPoint DiagramScene::getLayoutOffset() const {
     QRect paddingRect{padding, padding,
                       static_cast<int>(width() - padding * 2),
                       static_cast<int>(height() - padding * 2)};
-    int horizontalCenteringPadding = (paddingRect.width() - this->layout->getSize().width()) / 2;
+    int horizontalCenteringPadding = 0;
+    if (width() > getContentWidth())
+        horizontalCenteringPadding = (paddingRect.width() - this->layout->getSize().width()) / 2;
     return {padding + horizontalCenteringPadding, padding};
 }
 
@@ -201,4 +211,83 @@ DiagramStyle *DiagramScene::getStyle() const {
 void DiagramScene::setStyle(DiagramStyle *style) {
     this->style = style;
     emit styleChanged(style);
+}
+
+void DiagramScene::wheelEvent(QWheelEvent *event) {
+    if (event->pixelDelta().x() != 0 && event->pixelDelta().y() != 0) {
+        scroll = scroll + event->pixelDelta();
+    } else {
+        scroll = scroll + event->angleDelta();
+    }
+
+    clampScroll();
+
+    event->accept();
+
+    emit scrollXPositionChanged(getScrollXPosition());
+    emit scrollYPositionChanged(getScrollYPosition());
+    emit repaint();
+}
+
+void DiagramScene::clampScroll() {
+    if (getContentHeight() > height()) {
+        if (scroll.y() > 0)
+            scroll.setY(0);
+        else if (-scroll.y() > getContentHeight() - height())
+            scroll.setY(static_cast<int>(- (getContentHeight() - height())));
+    } else {
+        scroll.setY(0);
+    }
+
+    if (getContentWidth() > width()) {
+        if (scroll.x() > 0)
+            scroll.setX(0);
+        else if (-scroll.x() > getContentWidth() - width())
+            scroll.setX(static_cast<int>(- (getContentWidth() - width())));
+    } else {
+        scroll.setX(0);
+    }
+}
+
+QSize DiagramScene::getContentSize() const {
+    return layout->getSize() + QSize(2*padding, 2*padding);
+}
+
+int DiagramScene::getContentHeight() const {
+    return getContentSize().height();
+}
+
+int DiagramScene::getContentWidth() const {
+    return getContentSize().width();
+}
+
+qreal DiagramScene::getScrollYPosition() const {
+    return (-scroll.y()) / (static_cast<qreal>(getContentHeight()));
+}
+
+qreal DiagramScene::getScrollXPosition() const {
+    return (-scroll.x()) / (static_cast<qreal>(getContentWidth()));
+}
+
+void DiagramScene::setScrollYPosition(qreal pos) {
+    auto scrollY = static_cast<int>(-(pos * getContentHeight()));
+    scroll.setY(scrollY);
+    emit repaint();
+}
+
+void DiagramScene::setScrollXPosition(qreal pos) {
+    auto scrollX = static_cast<int>(-(pos * getContentWidth()));
+    scroll.setX(scrollX);
+    emit repaint();
+}
+
+void DiagramScene::onRepaint() {
+    this->update();
+}
+
+void DiagramScene::onWidthChanged() {
+    if (width() > getContentWidth()) {
+        scroll.setX(0);
+        emit scrollXPositionChanged(getScrollXPosition());
+    }
 }
