@@ -11,7 +11,7 @@ DiagramSectionHeaderTableNode::DiagramSectionHeaderTableNode(
         DiagramScene *diagram,
         ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem
 )
-        : DiagramELFNode(diagram, sectionHeaderTableModelItem),
+        : DiagramTableNode(diagram, sectionHeaderTableModelItem),
           sectionHeaderTableModelItem(sectionHeaderTableModelItem)
 {
     auto headerModels = sectionHeaderTableModelItem->getSectionHeaders();
@@ -26,26 +26,23 @@ DiagramSectionHeaderTableNode::~DiagramSectionHeaderTableNode()
         delete headerNode;
 }
 
-void DiagramSectionHeaderTableNode::paint(QPainter *painter) const {
-    painter->setBrush(diagram->getStyle()->getSectionTableNodeBgr());
-    painter->setPen(diagram->getStyle()->getDefaultPen());
-    painter->drawRect(nodeRect);
-
-    for (auto headerNode : sectionHeaderNodes) {
-        headerNode->paint(painter);
-    }
-    this->paintAddress(painter);
-    this->paintSize(painter);
-}
-
-int DiagramSectionHeaderTableNode::getMinHeight() const {
-    int sum = 0;
-    for (auto sectionHeaderNode : sectionHeaderNodes)
-        sum += sectionHeaderNode->getMinHeight();
-    return sum;
-}
-
 DiagramSectionHeaderNode *DiagramSectionHeaderTableNode::getSectionHeaderNode(unsigned index)
 {
     return sectionHeaderNodes[index];
+}
+
+vector<DiagramSectionHeaderNode *> &DiagramSectionHeaderTableNode::getTableEntries() {
+    return sectionHeaderNodes;
+}
+
+const vector<DiagramSectionHeaderNode *> &DiagramSectionHeaderTableNode::getTableEntries() const {
+    return sectionHeaderNodes;
+}
+
+const QBrush &DiagramSectionHeaderTableNode::getBrush() const {
+    return diagram->getStyle()->getSectionTableNodeBgr();
+}
+
+const QPen &DiagramSectionHeaderTableNode::getPen() const {
+    return diagram->getStyle()->getDefaultPen();
 }

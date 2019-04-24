@@ -5,22 +5,27 @@
 #ifndef PROJECTELF_DIAGRAMSECTIONHEADERSNODE_H
 #define PROJECTELF_DIAGRAMSECTIONHEADERSNODE_H
 
-#include "gui/diagram/nodes/DiagramELFNode.h"
+#include "gui/diagram/nodes/DiagramTableNode.h"
 #include "gui/diagram/nodes/DiagramSectionHeaderNode.h"
 #include "core/models/ELFSectionHeaderTableModelItem.h"
 
-class DiagramSectionHeaderTableNode : public DiagramELFNode {
+class DiagramSectionHeaderTableNode : public DiagramTableNode<DiagramSectionHeaderNode> {
     Q_OBJECT
 public:
     DiagramSectionHeaderTableNode(DiagramScene *diagram, ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem);
 
     ~DiagramSectionHeaderTableNode() override;
 
-    void paint(QPainter *painter) const override;
-
-    int getMinHeight() const override;
-
     DiagramSectionHeaderNode *getSectionHeaderNode(unsigned index);
+
+protected:
+    vector<DiagramSectionHeaderNode *> &getTableEntries() override;
+
+    const vector<DiagramSectionHeaderNode *> &getTableEntries() const override;
+
+    const QBrush &getBrush() const override;
+
+    const QPen &getPen() const override;
 
 private:
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;

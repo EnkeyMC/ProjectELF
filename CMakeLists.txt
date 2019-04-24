@@ -60,7 +60,7 @@ set(SOURCE_FILES
         include/gui/diagram/nodes/DiagramSegmentNode.h
         include/core/VerticalBinaryTree.h
         include/core/IVerticalBinaryTreeNode.h
-        include/core/IMouseListener.h include/gui/diagram/IDiagramMouseListener.h include/gui/diagram/DiagramStyle.h)
+        include/core/IMouseListener.h include/gui/diagram/IDiagramMouseListener.h include/gui/diagram/DiagramStyle.h include/gui/diagram/nodes/DiagramTableNode.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

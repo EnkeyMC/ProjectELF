@@ -5,23 +5,27 @@
 #ifndef PROJECTELF_DIAGRAMPROGRAMHEADERARRAYNODE_H
 #define PROJECTELF_DIAGRAMPROGRAMHEADERARRAYNODE_H
 
-#include "gui/diagram/nodes/DiagramELFNode.h"
+#include "gui/diagram/nodes/DiagramTableNode.h"
 #include "gui/diagram/nodes/DiagramProgramHeaderNode.h"
 #include "core/models/ELFProgramHeaderTableModelItem.h"
 
-class DiagramProgramHeaderTableNode : public DiagramELFNode {
+class DiagramProgramHeaderTableNode : public DiagramTableNode<DiagramProgramHeaderNode> {
     Q_OBJECT
 public:
     explicit DiagramProgramHeaderTableNode(DiagramScene *diagram, ELFProgramHeaderTableModelItem *programHeaderTableModelItem);
 
-    void paint(QPainter *painter) const override;
-
-    int getMinHeight() const override;
+    ~DiagramProgramHeaderTableNode() override;
 
     DiagramProgramHeaderNode *getProgramHeaderNode(unsigned index);
 
-public slots:
-    void onNodeRectChanged();
+protected:
+    vector<DiagramProgramHeaderNode *> &getTableEntries() override;
+
+    const vector<DiagramProgramHeaderNode *> &getTableEntries() const override;
+
+    const QBrush &getBrush() const override;
+
+    const QPen &getPen() const override;
 
 private:
     ELFProgramHeaderTableModelItem *programHeaderTableModelItem;

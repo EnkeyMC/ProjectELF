@@ -9,34 +9,18 @@ DiagramProgramHeaderTableNode::DiagramProgramHeaderTableNode(
         DiagramScene *diagram,
         ELFProgramHeaderTableModelItem *programHeaderTableModelItem
 )
-        : DiagramELFNode(diagram, programHeaderTableModelItem),
+        : DiagramTableNode(diagram, programHeaderTableModelItem),
           programHeaderTableModelItem(programHeaderTableModelItem)
 {
-    connect(this, &DiagramNode::nodeRectChanged, this, &DiagramProgramHeaderTableNode::onNodeRectChanged);
-
     auto headerModels = programHeaderTableModelItem->getProgramHeaders();
     for (auto headerModel : headerModels) {
         programHeaderNodes.push_back(new DiagramProgramHeaderNode(diagram, headerModel));
     }
 }
 
-void DiagramProgramHeaderTableNode::paint(QPainter *painter) const {
-    painter->setBrush(diagram->getStyle()->getProgramTableNodeBgr());
-    painter->setPen(diagram->getStyle()->getDefaultPen());
-    painter->drawRect(nodeRect);
-
-    for (auto headerNode : programHeaderNodes) {
-        headerNode->paint(painter);
-    }
-    this->paintAddress(painter);
-    this->paintSize(painter);
-}
-
-int DiagramProgramHeaderTableNode::getMinHeight() const {
-    int sum = 0;
-    for (auto programHeaderNode : programHeaderNodes)
-        sum += programHeaderNode->getMinHeight();
-    return sum;
+DiagramProgramHeaderTableNode::~DiagramProgramHeaderTableNode() {
+    for (auto node : programHeaderNodes)
+        delete node;
 }
 
 DiagramProgramHeaderNode *DiagramProgramHeaderTableNode::getProgramHeaderNode(unsigned index)
@@ -44,6 +28,18 @@ DiagramProgramHeaderNode *DiagramProgramHeaderTableNode::getProgramHeaderNode(un
     return programHeaderNodes[index];
 }
 
-void DiagramProgramHeaderTableNode::onNodeRectChanged() {
+const QBrush &DiagramProgramHeaderTableNode::getBrush() const {
+    return diagram->getStyle()->getProgramTableNodeBgr();
+}
 
+const QPen &DiagramProgramHeaderTableNode::getPen() const {
+    return diagram->getStyle()->getDefaultPen();
+}
+
+vector<DiagramProgramHeaderNode *> &DiagramProgramHeaderTableNode::getTableEntries() {
+    return programHeaderNodes;
+}
+
+const vector<DiagramProgramHeaderNode *> &DiagramProgramHeaderTableNode::getTableEntries() const {
+    return programHeaderNodes;
 }
