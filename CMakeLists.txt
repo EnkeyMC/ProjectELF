@@ -60,7 +60,7 @@ set(SOURCE_FILES
         include/gui/diagram/nodes/DiagramSegmentNode.h
         include/core/VerticalBinaryTree.h
         include/core/IVerticalBinaryTreeNode.h
-        include/core/IMouseListener.h include/gui/diagram/IDiagramMouseListener.h include/gui/diagram/DiagramStyle.h include/gui/diagram/nodes/DiagramTableNode.h)
+        include/core/IMouseListener.h include/gui/diagram/IDiagramMouseListener.h include/gui/diagram/DiagramStyle.h include/gui/diagram/nodes/DiagramTableNode.h src/gui/diagram/Connection.cpp include/gui/diagram/Connection.h include/core/Bindable.h src/gui/diagram/ConnectionPoint.cpp include/gui/diagram/ConnectionPoint.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -77,7 +77,7 @@ add_subdirectory(ext/gtest)
 enable_testing()
 
 set(TEST_FILES
-        tests/core/VerticalBinaryTreeTest.cpp)
+        tests/core/VerticalBinaryTreeTest.cpp src/gui/diagram/Connection.cpp include/gui/diagram/Connection.h tests/core/BindableTest.cpp)
 
 add_executable(${PROJECT_NAME_TESTS} ${TEST_FILES})
 

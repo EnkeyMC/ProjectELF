@@ -13,6 +13,7 @@ DiagramSectionNode::DiagramSectionNode(DiagramScene *diagram, ELFSectionModelIte
 
 void DiagramSectionNode::paint(QPainter *painter) const
 {
+    DiagramELFNode::paint(painter);
     painter->setBrush(diagram->getStyle()->getSectionNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);

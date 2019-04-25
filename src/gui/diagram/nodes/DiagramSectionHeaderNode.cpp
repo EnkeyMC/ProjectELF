@@ -12,6 +12,7 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
 
 void DiagramSectionHeaderNode::paint(QPainter *painter) const
 {
+    DiagramELFNode::paint(painter);
     painter->setBrush(QBrush(QColor(255, 255, 100)));
     painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);

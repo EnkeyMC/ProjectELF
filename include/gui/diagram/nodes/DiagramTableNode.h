@@ -38,6 +38,7 @@ DiagramTableNode<T>::DiagramTableNode(DiagramScene *diagram, ELFModelItem *model
 
 template <typename T>
 void DiagramTableNode<T>::paint(QPainter *painter) const {
+    DiagramELFNode::paint(painter);
     painter->setBrush(this->getBrush());
     painter->setPen(this->getPen());
     painter->drawRect(nodeRect);

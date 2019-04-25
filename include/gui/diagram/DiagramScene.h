@@ -15,6 +15,7 @@
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramLayout.h"
 #include "gui/diagram/DiagramStyle.h"
+#include "gui/diagram/Connection.h"
 
 class DiagramScene : public QQuickPaintedItem {
     Q_OBJECT
@@ -80,16 +81,23 @@ protected:
 
     void hoverMoveEvent(QHoverEvent *event) override;
 
+    void hoverEnterEvent(QHoverEvent *event) override;
+
+    void hoverLeaveEvent(QHoverEvent *event) override;
+
     void wheelEvent(QWheelEvent *event) override;
 
     void setMinWidth(int minWidth);
 
     void clampScroll();
 
+    void createConnection(DiagramNode *nodeFrom, const QString &connPoint, DiagramNode *nodeTo, Connection::Side side);
+
     QPoint translateMousePos(QPoint point) const;
     QPointF translateMousePos(QPointF point) const;
 
     VerticalBinaryTree<IDiagramMouseListener> nodeTree;
+    vector<Connection *> connections;
 
     QPointer<ELFModel> model;
     QPointer<DiagramLayout> layout;

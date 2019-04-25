@@ -13,6 +13,7 @@ DiagramProgramHeaderNode::DiagramProgramHeaderNode(DiagramScene *diagram, ELFPro
 
 void DiagramProgramHeaderNode::paint(QPainter *painter) const
 {
+    DiagramELFNode::paint(painter);
     painter->setBrush(QBrush(QColor(100, 255, 255)));
     painter->setPen(QColor(0, 0, 0));
     painter->drawRect(nodeRect);

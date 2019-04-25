@@ -33,6 +33,9 @@ DiagramScene::DiagramScene(QQuickItem *parent)
 }
 
 DiagramScene::~DiagramScene() {
+    for (auto connection : connections)
+        delete connection;
+
     delete layout;
 }
 
@@ -41,6 +44,8 @@ void DiagramScene::paint(QPainter *painter) {
     painter->translate(scroll);
     painter->translate(offset.x(), offset.y());
     layout->paint(painter);
+    for (auto conn : connections)
+        conn->paint(painter);
     painter->translate(-offset.x(), -offset.y());
     painter->translate(-scroll);
 }
@@ -91,12 +96,16 @@ void DiagramScene::onModelChanged() {
         return;
     }
 
-    this->layout->addLinkNode(new DiagramHeaderNode(this, header));
+    auto headerNode = new DiagramHeaderNode(this, header);
+    this->layout->addLinkNode(headerNode);
+
 
     auto sectionHeaderTable = header->getSectionHeaderTable();
     if (sectionHeaderTable != nullptr) {
         auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
         this->layout->addLinkNode(sectionHeaderTableNode);
+
+        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, Connection::LEFT);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
             auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
@@ -109,6 +118,8 @@ void DiagramScene::onModelChanged() {
         auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
         this->layout->addExecNode(programHeaderTableNode);
 
+        createConnection(headerNode, "e_phoff", programHeaderTableNode, Connection::RIGHT);
+
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
             auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
             this->layout->addExecNode(segmentNode);
@@ -117,6 +128,19 @@ void DiagramScene::onModelChanged() {
 
     this->layout->layoutNodes();
     this->setImplicitHeight(this->layout->getSize().height() + 2*getPadding());
+}
+
+void DiagramScene::createConnection(DiagramNode *nodeFrom,
+        const QString &connPoint,
+        DiagramNode *nodeTo,
+        Connection::Side side)
+{
+    auto shtConnection = new Connection(side);
+    shtConnection->getStartBindable().bindTo(nodeFrom->getConnectionPoints().at(connPoint));
+    shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
+    connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
+    connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
+    connections.push_back(shtConnection);
 }
 
 void DiagramScene::mousePressEvent(QMouseEvent *event) {
@@ -155,6 +179,34 @@ void DiagramScene::mouseReleaseEvent(QMouseEvent *event) {
         target->mouseReleaseEvent(&translatedEvent);
 
     QQuickItem::mouseReleaseEvent(event);
+}
+
+void DiagramScene::hoverEnterEvent(QHoverEvent *event) {
+    QHoverEvent translatedEvent{
+            event->type(),
+            translateMousePos(event->pos()),
+            translateMousePos(event->oldPos()),
+            event->modifiers()
+    };
+    auto targets = nodeTree.getContaining(translatedEvent.pos());
+    for (auto target : targets)
+        target->hoverEnteredEvent(&translatedEvent);
+
+    QQuickItem::hoverEnterEvent(event);
+}
+
+void DiagramScene::hoverLeaveEvent(QHoverEvent *event) {
+    QHoverEvent translatedEvent{
+            event->type(),
+            translateMousePos(event->pos()),
+            translateMousePos(event->oldPos()),
+            event->modifiers()
+    };
+    auto targets = nodeTree.getContaining(translatedEvent.pos());
+    for (auto target : targets)
+        target->hoverLeavedEvent(&translatedEvent);
+
+    QQuickItem::hoverLeaveEvent(event);
 }
 
 void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
