@@ -5,7 +5,7 @@
 #include "gui/diagram/Connection.h"
 #include "gui/diagram/DiagramScene.h"
 
-Connection::Connection(DiagramScene* diagram, Connection::Side side, int level)
+Connection::Connection(DiagramScene* diagram, Side side, int level)
     : diagram(diagram), side(side), visible(false), level(level)
 {
 

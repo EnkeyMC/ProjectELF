@@ -4,7 +4,7 @@
 
 #include "gui/diagram/ConnectionPoint.h"
 
-ConnectionPoint::ConnectionPoint(const QString &name, enum Side side, elf::Elf64_Addr endAddress)
+ConnectionPoint::ConnectionPoint(const QString &name, Side side, elf::Elf64_Addr endAddress)
     : name(name), side(side), endAddress(endAddress)
 {
 
@@ -47,7 +47,7 @@ const QString &ConnectionPoint::getName() const {
     return name;
 }
 
-ConnectionPoint::Side ConnectionPoint::getSide() const {
+Side ConnectionPoint::getSide() const {
     return side;
 }
 

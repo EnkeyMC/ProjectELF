@@ -71,7 +71,7 @@ set(SOURCE_FILES
         include/gui/diagram/ConnectionPoint.h
         src/core/Hoverable.cpp
         include/core/Hoverable.h
-        include/core/IContains.h)
+        include/core/IContains.h include/core/Side.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

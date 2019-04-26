@@ -10,7 +10,7 @@ DiagramProgramHeaderNode::DiagramProgramHeaderNode(DiagramScene *diagram, ELFPro
       programHeaderModelItem(programHeaderModel)
 {
     registerConnectionPoint(
-            new ConnectionPoint("p_offset", ConnectionPoint::RIGHT, programHeaderModel->getSegmentModelItem()->getAddressInFile())
+            new ConnectionPoint("p_offset", RIGHT, programHeaderModel->getSegmentModelItem()->getAddressInFile())
     );
 }
 

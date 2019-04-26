@@ -9,7 +9,7 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
       sectionHeaderModelItem(sectionHeaderModelItem)
 {
     registerConnectionPoint(
-            new ConnectionPoint("sh_offset", ConnectionPoint::LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
+            new ConnectionPoint("sh_offset", LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
     );
 }
 

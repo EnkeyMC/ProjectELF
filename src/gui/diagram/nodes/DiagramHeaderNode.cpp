@@ -14,8 +14,8 @@ DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *
     auto pht = modelItem->getProgramHeaderTable();
     auto phtOffset = pht == nullptr ? ConnectionPoint::INVALID_ADDRESS : pht->getAddressInFile();
 
-    this->registerConnectionPoint(new ConnectionPoint("e_shoff", ConnectionPoint::LEFT, shtOffset));
-    this->registerConnectionPoint(new ConnectionPoint("e_phoff", ConnectionPoint::RIGHT, phtOffset));
+    this->registerConnectionPoint(new ConnectionPoint("e_shoff", LEFT, shtOffset));
+    this->registerConnectionPoint(new ConnectionPoint("e_phoff", RIGHT, phtOffset));
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {

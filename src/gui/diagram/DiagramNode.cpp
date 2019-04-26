@@ -96,7 +96,7 @@ void DiagramNode::onNodeRectChanged() {
     int rightIdx = 0;
 
     for (auto &nameConnPointPair : connectionPoints) {
-        if (nameConnPointPair.second->getSide() == ConnectionPoint::LEFT) {
+        if (nameConnPointPair.second->getSide() == LEFT) {
             nameConnPointPair.second->set(leftPoint + QPoint(0, - leftIdx * CONN_POINT_GAP));
             leftIdx++;
         } else {

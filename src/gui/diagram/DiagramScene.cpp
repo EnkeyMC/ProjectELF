@@ -107,14 +107,14 @@ void DiagramScene::onModelChanged() {
         auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
         this->layout->addLinkNode(sectionHeaderTableNode);
 
-        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, Connection::LEFT, 0);
+        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, LEFT, 0);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
             auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
             this->layout->addLinkNode(sectionNode);
 
             auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
-            createConnection(sectionHeaderNode, "sh_offset", sectionNode, Connection::LEFT, 1);
+            createConnection(sectionHeaderNode, "sh_offset", sectionNode, LEFT, 1);
         }
     }
 
@@ -123,14 +123,14 @@ void DiagramScene::onModelChanged() {
         auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
         this->layout->addExecNode(programHeaderTableNode);
 
-        createConnection(headerNode, "e_phoff", programHeaderTableNode, Connection::RIGHT, 0);
+        createConnection(headerNode, "e_phoff", programHeaderTableNode, RIGHT, 0);
 
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
             auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
             this->layout->addExecNode(segmentNode);
 
             auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
-            createConnection(programHeaderNode, "p_offset", segmentNode, Connection::RIGHT, 1);
+            createConnection(programHeaderNode, "p_offset", segmentNode, RIGHT, 1);
         }
     }
 
@@ -141,7 +141,7 @@ void DiagramScene::onModelChanged() {
 void DiagramScene::createConnection(DiagramNode *nodeFrom,
         const QString &connPoint,
         DiagramNode *nodeTo,
-        Connection::Side side,
+        Side side,
         int level)
 {
     auto shtConnection = new Connection(this, side, level);

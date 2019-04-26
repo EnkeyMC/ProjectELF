@@ -9,18 +9,15 @@
 #include <QPoint>
 #include <QPainter>
 #include "core/Bindable.h"
+#include "core/Side.h"
 
 class DiagramScene;
 
 class Connection : public QObject {
     Q_OBJECT
 public:
-    enum Side {
-        LEFT,
-        RIGHT
-    };
 
-    explicit Connection(DiagramScene* diagram, enum Side side, int level = 0);
+    explicit Connection(DiagramScene* diagram, Side side, int level = 0);
 
     void paint(QPainter *painter) const;
 
@@ -38,7 +35,7 @@ private:
 
     DiagramScene* diagram;
 
-    enum Side side;
+    Side side;
     bool visible;
     int level;
 };
