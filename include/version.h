@@ -5,7 +5,7 @@
 
 namespace Version {
     const int MAJOR = 0;
-    const int MINOR = 1;
+    const int MINOR = 2;
     const int REVISION = 0;
 
     inline const std::string toString() {
