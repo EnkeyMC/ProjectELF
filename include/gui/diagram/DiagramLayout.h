@@ -10,6 +10,7 @@
 #include <QObject>
 #include <set>
 #include <functional>
+#include <ELFTypes.h>
 
 #include "DiagramNode.h"
 

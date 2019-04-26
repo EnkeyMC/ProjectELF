@@ -70,6 +70,9 @@ signals:
     void scrollXPositionChanged(qreal pos);
     void repaint();
 
+public slots:
+    void scrollToAddress(elf::Elf64_Addr address);
+
 private slots:
     void onModelChanged();
     void onLayoutChanged();

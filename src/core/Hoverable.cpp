@@ -3,7 +3,6 @@
 //
 
 #include "core/Hoverable.h"
-#include <QDebug>
 
 Hoverable::Hoverable() : hovered(false) {
 

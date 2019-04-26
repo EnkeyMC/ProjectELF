@@ -138,7 +138,7 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
         Connection::Side side)
 {
     auto shtConnection = new Connection(this, side);
-    shtConnection->getStartBindable().bindTo(nodeFrom->getConnectionPoints().at(connPoint));
+    shtConnection->getStartBindable().bindTo(*nodeFrom->getConnectionPoints().at(connPoint));
     shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
     connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
     connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
@@ -224,11 +224,11 @@ QPoint DiagramScene::getLayoutOffset() const {
 }
 
 QPoint DiagramScene::translateMousePos(QPoint point) const {
-    return point - getLayoutOffset() - layout->getNodeOffset();
+    return point - getLayoutOffset() - layout->getNodeOffset() - scroll;
 }
 
 QPointF DiagramScene::translateMousePos(QPointF point) const {
-    return point - getLayoutOffset() - layout->getNodeOffset();
+    return point - getLayoutOffset() - layout->getNodeOffset() - scroll;
 }
 
 DiagramStyle *DiagramScene::getStyle() const {
@@ -321,4 +321,11 @@ void DiagramScene::onWidthChanged() {
 
 DiagramLayout *DiagramScene::getLayout() const {
     return layout;
+}
+
+void DiagramScene::scrollToAddress(elf::Elf64_Addr address) {
+    auto proportionalOffset = static_cast<double>(layout->getSize().height() * address) / model->getFileSize();
+    scroll.setY(- static_cast<int>(proportionalOffset - this->height() / 6));
+    clampScroll();
+    emit scrollYPositionChanged(getScrollYPosition());
 }

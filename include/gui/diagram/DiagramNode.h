@@ -54,10 +54,14 @@ public:
 
     bool contains(const QPoint &point) const override;
 
-    const map<QString, ConnectionPoint> &getConnectionPoints() const;
-    map<QString, ConnectionPoint> &getConnectionPoints();
+    const map<QString, ConnectionPoint*> &getConnectionPoints() const;
+    map<QString, ConnectionPoint*> &getConnectionPoints();
 
     Bindable<QPoint> & getNodeBindable();
+
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
     void nodeRectChanged(const QRect &nodeRect);
@@ -70,7 +74,7 @@ private slots:
 protected:
     static const int CONN_POINT_GAP = 20;
 
-    void registerConnectionPoint(const ConnectionPoint &connectionPoint);
+    void registerConnectionPoint(ConnectionPoint *connectionPoint);
 
     void paintConnectionPoints(QPainter *painter) const;
 
@@ -78,7 +82,9 @@ protected:
 
     void hoverLeavedEvent() override;
 
-    map<QString, ConnectionPoint> connectionPoints;
+protected:
+
+    map<QString, ConnectionPoint*> connectionPoints;
 
     DiagramScene *diagram;
 

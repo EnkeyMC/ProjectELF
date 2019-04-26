@@ -12,7 +12,10 @@ DiagramNode::DiagramNode(DiagramScene *diagram) : QObject (), column(0) {
     connect(this, &DiagramNode::nodeRectChanged, this, &DiagramNode::onNodeRectChanged);
 }
 
-DiagramNode::~DiagramNode() = default;
+DiagramNode::~DiagramNode() {
+    for (const auto& nameConnPointPair : connectionPoints)
+        delete nameConnPointPair.second;
+}
 
 void DiagramNode::paint(QPainter *painter) const {
     painter->setClipRect(nodeRect);
@@ -72,11 +75,11 @@ bool DiagramNode::contains(const QPoint &point) const {
     return nodeRect.contains(point);
 }
 
-const map<QString, ConnectionPoint> &DiagramNode::getConnectionPoints() const {
+const map<QString, ConnectionPoint*> &DiagramNode::getConnectionPoints() const {
     return connectionPoints;
 }
 
-map<QString, ConnectionPoint> &DiagramNode::getConnectionPoints() {
+map<QString, ConnectionPoint*> &DiagramNode::getConnectionPoints() {
     return connectionPoints;
 }
 
@@ -93,11 +96,11 @@ void DiagramNode::onNodeRectChanged() {
     int rightIdx = 0;
 
     for (auto &nameConnPointPair : connectionPoints) {
-        if (nameConnPointPair.second.getSide() == ConnectionPoint::LEFT) {
-            nameConnPointPair.second.set(leftPoint + QPoint(0, - leftIdx * CONN_POINT_GAP));
+        if (nameConnPointPair.second->getSide() == ConnectionPoint::LEFT) {
+            nameConnPointPair.second->set(leftPoint + QPoint(0, - leftIdx * CONN_POINT_GAP));
             leftIdx++;
         } else {
-            nameConnPointPair.second.set(rightPoint + QPoint(0, - rightIdx * CONN_POINT_GAP));
+            nameConnPointPair.second->set(rightPoint + QPoint(0, - rightIdx * CONN_POINT_GAP));
             rightIdx++;
         }
     }
@@ -107,13 +110,16 @@ Bindable<QPoint> & DiagramNode::getNodeBindable() {
     return nodeBindable;
 }
 
-void DiagramNode::registerConnectionPoint(const ConnectionPoint &connectionPoint) {
-    connectionPoints[connectionPoint.getName()] = connectionPoint;
+void DiagramNode::registerConnectionPoint(ConnectionPoint *connectionPoint) {
+    connectionPoints[connectionPoint->getName()] = connectionPoint;
+    connect(connectionPoint, &ConnectionPoint::clicked, diagram, &DiagramScene::scrollToAddress);
+    connect(connectionPoint, &ConnectionPoint::repaintRequested, diagram, &DiagramScene::repaint);
+    this->addHoverableChild(connectionPoint);
 }
 
 void DiagramNode::paintConnectionPoints(QPainter *painter) const {
     for (const auto& nameConnPointPair : connectionPoints) {
-        nameConnPointPair.second.paint(painter);
+        nameConnPointPair.second->paint(painter);
     }
 }
 
@@ -125,4 +131,22 @@ void DiagramNode::hoverEnteredEvent() {
 void DiagramNode::hoverLeavedEvent() {
     emit hoverLeaved();
     Hoverable::hoverLeavedEvent();
+}
+
+void DiagramNode::mousePressEvent(QMouseEvent *event) {
+    IMouseListener::mousePressEvent(event);
+
+    for (auto nameConnPointPair : connectionPoints) {
+        if (nameConnPointPair.second->contains(event->pos()))
+            nameConnPointPair.second->mousePressEvent(event);
+    }
+}
+
+void DiagramNode::mouseReleaseEvent(QMouseEvent *event) {
+    IMouseListener::mouseReleaseEvent(event);
+
+    for (auto nameConnPointPair : connectionPoints) {
+        if (nameConnPointPair.second->contains(event->pos()))
+            nameConnPointPair.second->mouseReleaseEvent(event);
+    }
 }

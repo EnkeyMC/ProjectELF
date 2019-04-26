@@ -9,8 +9,13 @@ DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *
     this->colspan = 2;
     this->headerModelItem = modelItem;
 
-    this->registerConnectionPoint(ConnectionPoint("e_shoff", ConnectionPoint::LEFT));
-    this->registerConnectionPoint(ConnectionPoint("e_phoff", ConnectionPoint::RIGHT));
+    auto sht = modelItem->getSectionHeaderTable();
+    auto shtOffset = sht == nullptr ? ConnectionPoint::INVALID_ADDRESS : sht->getAddressInFile();
+    auto pht = modelItem->getProgramHeaderTable();
+    auto phtOffset = pht == nullptr ? ConnectionPoint::INVALID_ADDRESS : pht->getAddressInFile();
+
+    this->registerConnectionPoint(new ConnectionPoint("e_shoff", ConnectionPoint::LEFT, shtOffset));
+    this->registerConnectionPoint(new ConnectionPoint("e_phoff", ConnectionPoint::RIGHT, phtOffset));
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {
@@ -29,5 +34,5 @@ int DiagramHeaderNode::getMinHeight() const {
 }
 
 void DiagramHeaderNode::mousePressEvent(QMouseEvent *event) {
-    IMouseListener::mousePressEvent(event);
+    DiagramNode::mousePressEvent(event);
 }

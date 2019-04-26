@@ -7,7 +7,6 @@
 
 
 #include <QMouseEvent>
-#include <QHoverEvent>
 
 class IMouseListener {
 public:

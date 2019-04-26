@@ -41,6 +41,20 @@ void ProportionalDiagramLayout::layoutNodes() {
     DiagramLayout::layoutNodes();
 }
 
+void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height) {
+    QRect rect{};
+    rect.setTop(static_cast<int>(height * node.getProportionalPosition() + 0.5) + 1);
+    const double proportionalBottomPosition = node.getProportionalPosition() + node.getProportionalSize();
+    rect.setBottom(static_cast<int>(height * proportionalBottomPosition + 0.5));
+    rect.setLeft(node.getColumn() * COLUMN_WIDTH);
+    rect.setWidth(COLUMN_WIDTH * node.getColspan());
+
+    node.setNodeRect(rect);
+
+    if (rect.bottom() > this->size.height())
+        this->size.setHeight(rect.bottom());
+}
+
 void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0));
     painter->drawText(QRect(QPoint(ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH, HEADER_HEIGHT)), Qt::AlignCenter, "Linking view");
@@ -64,20 +78,6 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     for (const auto &execNode : execColumnSortedNodes)
         execNode->paint(painter);
     painter->translate(-offset);
-}
-
-void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height) {
-    QRect rect{};
-    rect.setTop(static_cast<int>(height * node.getProportionalPosition() + 0.5) + 1);
-    const double proportionalBottomPosition = node.getProportionalPosition() + node.getProportionalSize();
-    rect.setBottom(static_cast<int>(height * proportionalBottomPosition + 0.5));
-    rect.setLeft(node.getColumn() * COLUMN_WIDTH);
-    rect.setWidth(COLUMN_WIDTH * node.getColspan());
-
-    node.setNodeRect(rect);
-
-    if (rect.bottom() > this->size.height())
-        this->size.setHeight(rect.bottom());
 }
 
 QSize ProportionalDiagramLayout::getSize() const {
