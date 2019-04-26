@@ -14,12 +14,6 @@ public:
     virtual void mousePressEvent(QMouseEvent *event) {}
 
     virtual void mouseReleaseEvent(QMouseEvent *event) {}
-
-    virtual void hoverMoveEvent(QHoverEvent *event) {}
-
-    virtual void hoverEnteredEvent(QHoverEvent *event) {}
-
-    virtual void hoverLeavedEvent(QHoverEvent *event) {}
 };
 
 

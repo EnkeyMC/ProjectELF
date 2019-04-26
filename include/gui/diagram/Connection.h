@@ -10,6 +10,8 @@
 #include <QPainter>
 #include "core/Bindable.h"
 
+class DiagramScene;
+
 class Connection : public QObject {
     Q_OBJECT
 public:
@@ -18,7 +20,7 @@ public:
         RIGHT
     };
 
-    explicit Connection(enum Side side);
+    explicit Connection(DiagramScene* diagram, enum Side side);
 
     void paint(QPainter *painter) const;
 
@@ -33,6 +35,8 @@ public slots:
 private:
     Bindable<QPoint> startBindable;
     Bindable<QPoint> endBindable;
+
+    DiagramScene* diagram;
 
     enum Side side;
     bool visible;

@@ -29,6 +29,10 @@ public:
 
     virtual QSize getSize() const;
 
+    virtual int getContentWidth() const = 0;
+
+    virtual int getArrowSpace() const = 0;
+
     int getMinWidth() const;
 
     void addLinkNode(DiagramNode *node);
@@ -43,23 +47,21 @@ public:
 
     virtual QPoint getNodeOffset() const = 0;
 
+    typedef std::function<void(DiagramNode &)> NodeCallback;
+    void forEachLinkNode(const NodeCallback &callback);
+    void forEachExecNode(const NodeCallback &callback);
+    void forEachNode(const NodeCallback &callback);
+
 signals:
     void layoutChanged();
 
 protected:
-    typedef std::function<void(DiagramNode &)> NodeCallback;
-
-    void forEachLinkNode(const NodeCallback &callback);
-
-    void forEachExecNode(const NodeCallback &callback);
-
-    void forEachNode(const NodeCallback &callback);
 
     DiagramScene *diagram;
     std::set<DiagramNode *> linkColumnSortedNodes;
     std::set<DiagramNode *> execColumnSortedNodes;
 
-    QSize contentsSize;
+    QSize size;
     int minWidth;
 };
 

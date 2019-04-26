@@ -59,10 +59,6 @@ public:
 
     Bindable<QPoint> & getNodeBindable();
 
-    void hoverEnteredEvent(QHoverEvent *event) override;
-
-    void hoverLeavedEvent(QHoverEvent *event) override;
-
 signals:
     void nodeRectChanged(const QRect &nodeRect);
     void hoverEntered();
@@ -77,6 +73,10 @@ protected:
     void registerConnectionPoint(const ConnectionPoint &connectionPoint);
 
     void paintConnectionPoints(QPainter *painter) const;
+
+    void hoverEnteredEvent() override;
+
+    void hoverLeavedEvent() override;
 
     map<QString, ConnectionPoint> connectionPoints;
 

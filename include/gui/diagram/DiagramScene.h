@@ -53,6 +53,8 @@ public:
     int getContentHeight() const;
     int getContentWidth() const;
 
+    DiagramLayout *getLayout() const;
+
     qreal getScrollYPosition() const;
     void setScrollYPosition(qreal pos);
     qreal getScrollXPosition() const;
@@ -80,10 +82,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
     void hoverMoveEvent(QHoverEvent *event) override;
-
-    void hoverEnterEvent(QHoverEvent *event) override;
-
-    void hoverLeaveEvent(QHoverEvent *event) override;
 
     void wheelEvent(QWheelEvent *event) override;
 

@@ -42,11 +42,13 @@ DiagramScene::~DiagramScene() {
 void DiagramScene::paint(QPainter *painter) {
     auto offset = this->getLayoutOffset();
     painter->translate(scroll);
-    painter->translate(offset.x(), offset.y());
+    painter->translate(offset);
     layout->paint(painter);
+    painter->translate(layout->getNodeOffset());
     for (auto conn : connections)
         conn->paint(painter);
-    painter->translate(-offset.x(), -offset.y());
+    painter->translate(-layout->getNodeOffset());
+    painter->translate(-offset);
     painter->translate(-scroll);
 }
 
@@ -135,11 +137,13 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
         DiagramNode *nodeTo,
         Connection::Side side)
 {
-    auto shtConnection = new Connection(side);
+    auto shtConnection = new Connection(this, side);
     shtConnection->getStartBindable().bindTo(nodeFrom->getConnectionPoints().at(connPoint));
     shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
     connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
     connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
+    connect(nodeTo, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
+    connect(nodeTo, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
     connections.push_back(shtConnection);
 }
 
@@ -181,34 +185,6 @@ void DiagramScene::mouseReleaseEvent(QMouseEvent *event) {
     QQuickItem::mouseReleaseEvent(event);
 }
 
-void DiagramScene::hoverEnterEvent(QHoverEvent *event) {
-    QHoverEvent translatedEvent{
-            event->type(),
-            translateMousePos(event->pos()),
-            translateMousePos(event->oldPos()),
-            event->modifiers()
-    };
-    auto targets = nodeTree.getContaining(translatedEvent.pos());
-    for (auto target : targets)
-        target->hoverEnteredEvent(&translatedEvent);
-
-    QQuickItem::hoverEnterEvent(event);
-}
-
-void DiagramScene::hoverLeaveEvent(QHoverEvent *event) {
-    QHoverEvent translatedEvent{
-            event->type(),
-            translateMousePos(event->pos()),
-            translateMousePos(event->oldPos()),
-            event->modifiers()
-    };
-    auto targets = nodeTree.getContaining(translatedEvent.pos());
-    for (auto target : targets)
-        target->hoverLeavedEvent(&translatedEvent);
-
-    QQuickItem::hoverLeaveEvent(event);
-}
-
 void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
     QHoverEvent translatedEvent{
             event->type(),
@@ -216,9 +192,8 @@ void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
             translateMousePos(event->oldPos()),
             event->modifiers()
     };
-    auto targets = nodeTree.getContaining(translatedEvent.pos());
-    for (auto target : targets)
-        target->hoverMoveEvent(&translatedEvent);
+
+    layout->forEachNode([&translatedEvent](DiagramNode &node) {node.hoverMoveEvent(&translatedEvent);});
 
     QQuickItem::hoverMoveEvent(event);
 }
@@ -342,4 +317,8 @@ void DiagramScene::onWidthChanged() {
         scroll.setX(0);
         emit scrollXPositionChanged(getScrollXPosition());
     }
+}
+
+DiagramLayout *DiagramScene::getLayout() const {
+    return layout;
 }

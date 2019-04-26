@@ -20,6 +20,10 @@ public:
 
     QPoint getNodeOffset() const override;
 
+    int getContentWidth() const override;
+
+    int getArrowSpace() const override;
+
 protected:
     void layoutNodeInHeight(DiagramNode &node, int height);
 

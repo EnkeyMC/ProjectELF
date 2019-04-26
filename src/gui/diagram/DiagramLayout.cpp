@@ -50,7 +50,7 @@ void DiagramLayout::forEachNode(const NodeCallback &callback) {
 }
 
 QSize DiagramLayout::getSize() const {
-    return contentsSize;
+    return size;
 }
 
 int DiagramLayout::getMinWidth() const {

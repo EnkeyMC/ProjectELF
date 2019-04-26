@@ -3,14 +3,40 @@
 //
 
 #include "gui/diagram/Connection.h"
+#include "gui/diagram/DiagramScene.h"
 
-Connection::Connection(Connection::Side side) : side(side), visible(false) {
+Connection::Connection(DiagramScene* diagram, Connection::Side side)
+    : diagram(diagram), side(side), visible(true)
+{
 
 }
 
 void Connection::paint(QPainter *painter) const {
     if (!visible)
         return;
+
+    int lineX = -diagram->getLayout()->getArrowSpace() / 2;
+    if (side == RIGHT) {
+        lineX = diagram->getLayout()->getContentWidth() - lineX;
+    }
+
+    const auto startPoint = startBindable.get();
+    const auto endPoint = endBindable.get();
+
+    painter->setClipping(false);
+    painter->setPen(Qt::black);
+    painter->setBrush(Qt::black);
+    painter->drawLine(lineX, startPoint.y(), startPoint.x(), startPoint.y());
+    painter->drawLine(lineX, startPoint.y(), lineX, endBindable.get().y());
+    painter->drawLine(lineX, endPoint.y(), endPoint.x(), endPoint.y());
+    if (side == LEFT) {
+        painter->drawLine(endPoint.x() - 5, endPoint.y() - 5, endPoint.x(), endPoint.y());
+        painter->drawLine(endPoint.x() - 5, endPoint.y() + 5, endPoint.x(), endPoint.y());
+    } else {
+        painter->drawLine(endPoint.x() + 5, endPoint.y() - 5, endPoint.x(), endPoint.y());
+        painter->drawLine(endPoint.x() + 5, endPoint.y() + 5, endPoint.x(), endPoint.y());
+    }
+    painter->setClipping(true);
 }
 
 Bindable<QPoint> &Connection::getStartBindable() {
@@ -23,8 +49,10 @@ Bindable<QPoint> &Connection::getEndBindable()  {
 
 void Connection::setVisible() {
     visible = true;
+    emit diagram->repaint();
 }
 
 void Connection::setInvisible() {
     visible = false;
+    emit diagram->repaint();
 }

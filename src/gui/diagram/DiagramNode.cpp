@@ -5,7 +5,7 @@
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramNode::DiagramNode(DiagramScene *diagram) : QObject () {
+DiagramNode::DiagramNode(DiagramScene *diagram) : QObject (), column(0) {
     this->diagram = diagram;
     this->colspan = 1;
 
@@ -117,12 +117,12 @@ void DiagramNode::paintConnectionPoints(QPainter *painter) const {
     }
 }
 
-void DiagramNode::hoverEnteredEvent(QHoverEvent *event) {
-    IMouseListener::hoverEnteredEvent(event);
+void DiagramNode::hoverEnteredEvent() {
     emit hoverEntered();
+    Hoverable::hoverEnteredEvent();
 }
 
-void DiagramNode::hoverLeavedEvent(QHoverEvent *event) {
-    IMouseListener::hoverLeavedEvent(event);
+void DiagramNode::hoverLeavedEvent() {
     emit hoverLeaved();
+    Hoverable::hoverLeavedEvent();
 }

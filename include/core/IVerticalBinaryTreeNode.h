@@ -7,10 +7,11 @@
 
 #include <QRect>
 
-class IVerticalBinaryTreeNode {
+#include "core/IContains.h"
+
+class IVerticalBinaryTreeNode : virtual public IContains {
 public:
     virtual QRect getBounds() const = 0;
-    virtual bool contains(const QPoint &point) const = 0;
 };
 
 
