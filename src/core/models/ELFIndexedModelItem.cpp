@@ -9,3 +9,7 @@ ELFIndexedModelItem::ELFIndexedModelItem(ELFModel *parent, std::shared_ptr<elf::
 {
 
 }
+
+unsigned int ELFIndexedModelItem::getIndex() const {
+    return index;
+}

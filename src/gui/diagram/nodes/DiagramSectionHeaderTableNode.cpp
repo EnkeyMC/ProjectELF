@@ -16,7 +16,9 @@ DiagramSectionHeaderTableNode::DiagramSectionHeaderTableNode(
 {
     auto headerModels = sectionHeaderTableModelItem->getSectionHeaders();
     for (auto headerModel : headerModels) {
-        sectionHeaderNodes.push_back(new DiagramSectionHeaderNode(diagram, headerModel));
+        auto sectionHeaderNode = new DiagramSectionHeaderNode(diagram, headerModel);
+        addHoverableChild(sectionHeaderNode);
+        sectionHeaderNodes.push_back(sectionHeaderNode);
     }
 }
 
@@ -37,12 +39,4 @@ vector<DiagramSectionHeaderNode *> &DiagramSectionHeaderTableNode::getTableEntri
 
 const vector<DiagramSectionHeaderNode *> &DiagramSectionHeaderTableNode::getTableEntries() const {
     return sectionHeaderNodes;
-}
-
-const QBrush &DiagramSectionHeaderTableNode::getBrush() const {
-    return diagram->getStyle()->getSectionTableNodeBgr();
-}
-
-const QPen &DiagramSectionHeaderTableNode::getPen() const {
-    return diagram->getStyle()->getDefaultPen();
 }

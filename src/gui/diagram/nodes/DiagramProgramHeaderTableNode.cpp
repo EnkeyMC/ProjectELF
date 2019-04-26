@@ -14,7 +14,9 @@ DiagramProgramHeaderTableNode::DiagramProgramHeaderTableNode(
 {
     auto headerModels = programHeaderTableModelItem->getProgramHeaders();
     for (auto headerModel : headerModels) {
-        programHeaderNodes.push_back(new DiagramProgramHeaderNode(diagram, headerModel));
+        auto programHeaderNode = new DiagramProgramHeaderNode(diagram, headerModel);
+        addHoverableChild(programHeaderNode);
+        programHeaderNodes.push_back(programHeaderNode);
     }
 }
 
@@ -26,14 +28,6 @@ DiagramProgramHeaderTableNode::~DiagramProgramHeaderTableNode() {
 DiagramProgramHeaderNode *DiagramProgramHeaderTableNode::getProgramHeaderNode(unsigned index)
 {
     return programHeaderNodes[index];
-}
-
-const QBrush &DiagramProgramHeaderTableNode::getBrush() const {
-    return diagram->getStyle()->getProgramTableNodeBgr();
-}
-
-const QPen &DiagramProgramHeaderTableNode::getPen() const {
-    return diagram->getStyle()->getDefaultPen();
 }
 
 vector<DiagramProgramHeaderNode *> &DiagramProgramHeaderTableNode::getTableEntries() {

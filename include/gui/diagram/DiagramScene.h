@@ -92,7 +92,8 @@ protected:
 
     void clampScroll();
 
-    void createConnection(DiagramNode *nodeFrom, const QString &connPoint, DiagramNode *nodeTo, Connection::Side side);
+    void createConnection(DiagramNode *nodeFrom, const QString &connPoint,
+            DiagramNode *nodeTo, Connection::Side side, int level);
 
     QPoint translateMousePos(QPoint point) const;
     QPointF translateMousePos(QPointF point) const;

@@ -16,6 +16,10 @@ public:
 
     int getMinHeight() const override;
 
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 private slots:
     void onNodeRectChanged();
 
@@ -23,10 +27,6 @@ protected:
     virtual std::vector<T *> &getTableEntries() = 0;
 
     virtual const std::vector<T *> &getTableEntries() const = 0;
-
-    virtual const QBrush &getBrush() const = 0;
-
-    virtual const QPen &getPen() const = 0;
 };
 
 template <typename T>
@@ -39,10 +39,8 @@ DiagramTableNode<T>::DiagramTableNode(DiagramScene *diagram, ELFModelItem *model
 template <typename T>
 void DiagramTableNode<T>::paint(QPainter *painter) const {
     DiagramELFNode::paint(painter);
-    painter->setBrush(this->getBrush());
-    painter->setPen(this->getPen());
-    painter->drawRect(nodeRect);
 
+    this->paintConnectionPoints(painter);
     for (auto headerNode : getTableEntries()) {
         headerNode->paint(painter);
     }
@@ -64,6 +62,24 @@ void DiagramTableNode<T>::onNodeRectChanged() {
     for (int i = 0; i < tableEntries.size(); i++) {
         auto node = tableEntries[i];
         node->setNodeRect(tmpRect.translated(0, entryHeight*i));
+    }
+}
+
+template<typename T>
+void DiagramTableNode<T>::mousePressEvent(QMouseEvent *event) {
+    DiagramNode::mousePressEvent(event);
+    for (auto entry : getTableEntries()) {
+        if (entry->contains(event->pos()))
+            entry->mousePressEvent(event);
+    }
+}
+
+template<typename T>
+void DiagramTableNode<T>::mouseReleaseEvent(QMouseEvent *event) {
+    DiagramNode::mouseReleaseEvent(event);
+    for (auto entry : getTableEntries()) {
+        if (entry->contains(event->pos()))
+            entry->mouseReleaseEvent(event);
     }
 }
 

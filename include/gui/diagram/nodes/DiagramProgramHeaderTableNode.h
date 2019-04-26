@@ -23,10 +23,6 @@ protected:
 
     const vector<DiagramProgramHeaderNode *> &getTableEntries() const override;
 
-    const QBrush &getBrush() const override;
-
-    const QPen &getPen() const override;
-
 private:
     ELFProgramHeaderTableModelItem *programHeaderTableModelItem;
 

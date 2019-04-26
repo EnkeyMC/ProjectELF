@@ -107,11 +107,14 @@ void DiagramScene::onModelChanged() {
         auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
         this->layout->addLinkNode(sectionHeaderTableNode);
 
-        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, Connection::LEFT);
+        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, Connection::LEFT, 0);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
             auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
             this->layout->addLinkNode(sectionNode);
+
+            auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
+            createConnection(sectionHeaderNode, "sh_offset", sectionNode, Connection::LEFT, 1);
         }
     }
 
@@ -120,11 +123,14 @@ void DiagramScene::onModelChanged() {
         auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
         this->layout->addExecNode(programHeaderTableNode);
 
-        createConnection(headerNode, "e_phoff", programHeaderTableNode, Connection::RIGHT);
+        createConnection(headerNode, "e_phoff", programHeaderTableNode, Connection::RIGHT, 0);
 
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
             auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
             this->layout->addExecNode(segmentNode);
+
+            auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
+            createConnection(programHeaderNode, "p_offset", segmentNode, Connection::RIGHT, 1);
         }
     }
 
@@ -135,9 +141,10 @@ void DiagramScene::onModelChanged() {
 void DiagramScene::createConnection(DiagramNode *nodeFrom,
         const QString &connPoint,
         DiagramNode *nodeTo,
-        Connection::Side side)
+        Connection::Side side,
+        int level)
 {
-    auto shtConnection = new Connection(this, side);
+    auto shtConnection = new Connection(this, side, level);
     shtConnection->getStartBindable().bindTo(*nodeFrom->getConnectionPoints().at(connPoint));
     shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
     connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
@@ -324,8 +331,8 @@ DiagramLayout *DiagramScene::getLayout() const {
 }
 
 void DiagramScene::scrollToAddress(elf::Elf64_Addr address) {
-    auto proportionalOffset = static_cast<double>(layout->getSize().height() * address) / model->getFileSize();
-    scroll.setY(- static_cast<int>(proportionalOffset - this->height() / 6));
+    auto proportionalOffset = layout->getSize().height() * (static_cast<double>(address) / model->getFileSize());
+    scroll.setY(- static_cast<int>(proportionalOffset) - layout->getNodeOffset().y() - padding);
     clampScroll();
     emit scrollYPositionChanged(getScrollYPosition());
 }

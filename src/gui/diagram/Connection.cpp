@@ -5,8 +5,8 @@
 #include "gui/diagram/Connection.h"
 #include "gui/diagram/DiagramScene.h"
 
-Connection::Connection(DiagramScene* diagram, Connection::Side side)
-    : diagram(diagram), side(side), visible(true)
+Connection::Connection(DiagramScene* diagram, Connection::Side side, int level)
+    : diagram(diagram), side(side), visible(false), level(level)
 {
 
 }
@@ -15,7 +15,7 @@ void Connection::paint(QPainter *painter) const {
     if (!visible)
         return;
 
-    int lineX = -diagram->getLayout()->getArrowSpace() / 2;
+    int lineX = -diagram->getLayout()->getArrowSpace() / 2 + 5*level;
     if (side == RIGHT) {
         lineX = diagram->getLayout()->getContentWidth() - lineX;
     }
@@ -24,8 +24,9 @@ void Connection::paint(QPainter *painter) const {
     const auto endPoint = endBindable.get();
 
     painter->setClipping(false);
-    painter->setPen(Qt::black);
+    painter->setPen(QPen(QColor(0, 0, 0), 2));
     painter->setBrush(Qt::black);
+
     painter->drawLine(lineX, startPoint.y(), startPoint.x(), startPoint.y());
     painter->drawLine(lineX, startPoint.y(), lineX, endBindable.get().y());
     painter->drawLine(lineX, endPoint.y(), endPoint.x(), endPoint.y());

@@ -20,7 +20,7 @@ public:
         RIGHT
     };
 
-    explicit Connection(DiagramScene* diagram, enum Side side);
+    explicit Connection(DiagramScene* diagram, enum Side side, int level = 0);
 
     void paint(QPainter *painter) const;
 
@@ -40,6 +40,7 @@ private:
 
     enum Side side;
     bool visible;
+    int level;
 };
 
 
