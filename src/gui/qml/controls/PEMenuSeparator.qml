@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4
 import "../singletons"
 
 MenuSeparator {
+    id: menuSeparator
     padding: 5
 
     contentItem: Rectangle {

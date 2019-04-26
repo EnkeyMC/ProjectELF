@@ -6,6 +6,7 @@ import "../singletons"
 import "../controls"
 
 Text {
+    id: toolBarText
     leftPadding: 10
     rightPadding: 10
     height: parent.height

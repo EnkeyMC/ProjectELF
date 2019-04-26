@@ -13,6 +13,7 @@ ColumnLayout {
     default property alias __items: expandableItem.data
 
     Pane {
+        id: expandableHeader
         Layout.fillWidth: true
         leftPadding: 10
         rightPadding: 10
@@ -85,7 +86,7 @@ ColumnLayout {
                 NumberAnimation {
                     duration: 400
                     properties: "height"
-                    easing.type: Easing.InOutCubic
+                    easing.type: Easing.OutCubic
                 }
             },
             Transition {
@@ -93,7 +94,7 @@ ColumnLayout {
                 NumberAnimation {
                     duration: 400
                     properties: "height"
-                    easing.type: Easing.InOutCubic
+                    easing.type: Easing.OutCubic
                 }
             }
         ]

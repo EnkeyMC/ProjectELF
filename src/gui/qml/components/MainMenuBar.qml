@@ -9,30 +9,6 @@ import "../js/utils.js" as Utils
 MenuBar {
     id: mainMenuBar
 
-    MenuPrimary {
-        title: qsTr("&File")
-        Action { text: qsTr("&Open...") }
-        Action { text: qsTr("&Save") }
-        Action { text: qsTr("Save &As...") }
-        PEMenuSeparator {}
-        Action { text: qsTr("&Quit") }
-    }
-
-    MenuPrimary {
-        title: qsTr("&Edit")
-        Action { text: qsTr("Cu&t") }
-        Action { text: qsTr("&Copy") }
-        Action { text: qsTr("&Paste") }
-    }
-    MenuPrimary {
-        title: qsTr("&Help")
-        Action { text: qsTr("&About") }
-        MenuPrimary {
-            title: "ASfgs"
-            Action { text: "AS" }
-        }
-    }
-
     background: Rectangle {
         color: Style._ColorPrimaryDark
         implicitHeight: Style.mainMenuBar._Height

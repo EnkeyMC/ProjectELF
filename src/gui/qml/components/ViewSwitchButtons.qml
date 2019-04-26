@@ -6,6 +6,7 @@ import "../singletons"
 import "../controls"
 
 Rectangle {
+    id: viewSwitchButtons
     color: Style._ColorPrimaryDark
     width: 200
     height: Style.mainMenuBar._Height
@@ -17,6 +18,7 @@ Rectangle {
         spacing: 0
 
         PEButton {
+            id: btnOverview
             Layout.fillWidth: true
             text: qsTr("Overview")
             checkable: true
@@ -27,6 +29,7 @@ Rectangle {
         }
 
         PEButton {
+            id: btnEdit
             Layout.fillWidth: true
             text: qsTr("Edit")
             checkable: true

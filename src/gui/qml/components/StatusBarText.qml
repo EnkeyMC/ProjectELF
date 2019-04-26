@@ -5,5 +5,6 @@ import QtQuick.Layouts 1.11
 import "../singletons"
 
 Text {
+    id: statusBarText
     color: Style._ColorTextLight
 }

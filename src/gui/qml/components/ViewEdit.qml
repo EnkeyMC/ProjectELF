@@ -6,9 +6,13 @@ import "../singletons"
 import "../controls"
 
 PESplitView {
+    id: viewEdit
     orientation: Qt.Horizontal
 
+    property QtObject elfModel
+
     ColumnLayout {
+        id: elfHeaderColumn
         Layout.fillHeight: true
         width: 250
         spacing: 0
@@ -69,6 +73,7 @@ PESplitView {
     }
 
     ColumnLayout {
+        id: sectionHeaderColumn
         Layout.fillHeight: true
         width: 250
 
@@ -82,6 +87,7 @@ PESplitView {
     }
 
     ColumnLayout {
+        id: sectionsColumn
         Layout.fillHeight: true
         Layout.fillWidth: true
 

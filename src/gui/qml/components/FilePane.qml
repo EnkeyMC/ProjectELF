@@ -1,23 +1,23 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import projectelf.models 1.0
 
 import "../singletons"
 
-Item {
-    property int view: View.currentView
+StackLayout {
+    id: filePane
+    width: parent.width
+    height: parent.height
+    currentIndex: View.currentView
 
-    StackLayout {
-        width: parent.width
-        height: parent.height
-        currentIndex: parent.view
+    property alias elfModel: viewOverview.elfModel
 
-        ViewOverview {
+    ViewOverview {
+        id: viewOverview
+    }
 
-        }
-
-        ViewEdit {
-
-        }
+    ViewEdit {
+        elfModel: filePane.elfModel
     }
 }

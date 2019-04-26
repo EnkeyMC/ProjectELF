@@ -6,18 +6,20 @@ import "../singletons"
 import "../controls"
 
 Column {
-    id: peTermDefinition
+    id: termDefinition
 
-    property string term: ""
-    property string definition: ""
+    property string key: ""
+    property string value: ""
 
     Label {
-        text: peTermDefinition.term
+        id: key
+        text: termDefinition.key
         textFormat: Text.RichText
     }
     
     Label {
-        text: peTermDefinition.definition
+        id: value
+        text: termDefinition.value
         textFormat: Text.RichText
         leftPadding: 20
     }
