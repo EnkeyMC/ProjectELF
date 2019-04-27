@@ -6,10 +6,12 @@
 #include "gui/diagram/DiagramScene.h"
 
 const int ProportionalDiagramLayout::ARROW_SPACE_WIDTH = 50;
-const int ProportionalDiagramLayout::COLUMN_WIDTH = 400;
+const int ProportionalDiagramLayout::COLUMN_WIDTH = 200;
 const int ProportionalDiagramLayout::HEADER_HEIGHT = 70;
 const int ProportionalDiagramLayout::MIN_HEIGHT = 500;
 const int ProportionalDiagramLayout::MAX_HEIGHT = 4000;
+const int ProportionalDiagramLayout::COLUMN_COUNT = 4;
+const int ProportionalDiagramLayout::COLUMNS_PER_SIDE = COLUMN_COUNT / 2;
 
 
 ProportionalDiagramLayout::ProportionalDiagramLayout(DiagramScene *diagram) : DiagramLayout(diagram) {
@@ -46,7 +48,7 @@ void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height
     rect.setTop(static_cast<int>(height * node.getProportionalPosition() + 0.5) + 1);
     const double proportionalBottomPosition = node.getProportionalPosition() + node.getProportionalSize();
     rect.setBottom(static_cast<int>(height * proportionalBottomPosition + 0.5));
-    rect.setLeft(node.getColumn() * COLUMN_WIDTH);
+    rect.setLeft(COLUMN_WIDTH * node.getColumn());
     rect.setWidth(COLUMN_WIDTH * node.getColspan());
 
     node.setNodeRect(rect);
@@ -57,15 +59,17 @@ void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height
 
 void ProportionalDiagramLayout::paint(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0));
-    painter->drawText(QRect(QPoint(ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH, HEADER_HEIGHT)), Qt::AlignCenter, "Linking view");
-    painter->drawText(QRect(QPoint(COLUMN_WIDTH + ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH, HEADER_HEIGHT)), Qt::AlignCenter, "Execution view");
+    int center = ARROW_SPACE_WIDTH + COLUMN_WIDTH*COLUMNS_PER_SIDE;
+    auto headerLabelRect = QRect(QPoint(ARROW_SPACE_WIDTH, 0), QSize(COLUMN_WIDTH * COLUMNS_PER_SIDE, HEADER_HEIGHT));
+    painter->drawText(headerLabelRect, Qt::AlignCenter, "Linking view");
+    painter->drawText(headerLabelRect.translated(COLUMNS_PER_SIDE * COLUMN_WIDTH, 0), Qt::AlignCenter, "Execution view");
 
     painter->setPen(QPen(QBrush(QColor(0, 0, 0)), 1, Qt::DashLine));
-    painter->drawLine(COLUMN_WIDTH + ARROW_SPACE_WIDTH, 0, COLUMN_WIDTH + ARROW_SPACE_WIDTH, HEADER_HEIGHT);
+    painter->drawLine(center, 0, center, HEADER_HEIGHT);
 
     painter->setPen(QColor(0, 0, 0));
     painter->setBrush(diagram->getStyle()->getBgr());
-    QRect background{ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, 2 * COLUMN_WIDTH, this->size.height()};
+    QRect background{ARROW_SPACE_WIDTH, HEADER_HEIGHT + 1, COLUMN_COUNT * COLUMN_WIDTH, this->size.height()};
     painter->drawRect(background);
     painter->setBrush(diagram->getStyle()->getBgrPattern());
     painter->drawRect(background);
@@ -89,7 +93,7 @@ QPoint ProportionalDiagramLayout::getNodeOffset() const {
 }
 
 int ProportionalDiagramLayout::getContentWidth() const {
-    return COLUMN_WIDTH*2;
+    return COLUMN_WIDTH*COLUMN_COUNT;
 }
 
 int ProportionalDiagramLayout::getArrowSpace() const {

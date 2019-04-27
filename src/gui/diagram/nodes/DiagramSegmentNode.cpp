@@ -8,7 +8,8 @@
 DiagramSegmentNode::DiagramSegmentNode(DiagramScene *diagram, ELFSegmentModelItem *segmentModel)
     : DiagramELFNode (diagram, segmentModel), segmentModel(segmentModel)
 {
-
+    this->viewSide = DiagramNode::RIGHT;
+    this->column = 3;
 }
 
 void DiagramSegmentNode::paint(QPainter *painter) const

@@ -45,7 +45,7 @@ public:
     }
 
 protected:
-    static constexpr int NODE_OPACITY = 200;
+    static constexpr int NODE_OPACITY = 150;
 
     QPen defaultPen{QColor(0, 0, 0)};
 

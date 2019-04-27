@@ -8,8 +8,9 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
     : DiagramELFNode (diagram, sectionHeaderModelItem),
       sectionHeaderModelItem(sectionHeaderModelItem)
 {
+    this->viewSide = DiagramNode::LEFT;
     registerConnectionPoint(
-            new ConnectionPoint("sh_offset", LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
+            new ConnectionPoint("sh_offset", Side::LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
     );
 }
 

@@ -9,8 +9,9 @@ DiagramProgramHeaderNode::DiagramProgramHeaderNode(DiagramScene *diagram, ELFPro
     : DiagramELFNode (diagram, programHeaderModel),
       programHeaderModelItem(programHeaderModel)
 {
+    this->viewSide = DiagramNode::RIGHT;
     registerConnectionPoint(
-            new ConnectionPoint("p_offset", RIGHT, programHeaderModel->getSegmentModelItem()->getAddressInFile())
+            new ConnectionPoint("p_offset", Side::RIGHT, programHeaderModel->getSegmentModelItem()->getAddressInFile())
     );
 }
 

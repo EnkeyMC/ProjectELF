@@ -8,7 +8,8 @@
 DiagramSectionNode::DiagramSectionNode(DiagramScene *diagram, ELFSectionModelItem *sectionModel)
     : DiagramELFNode (diagram, sectionModel), sectionModel(sectionModel)
 {
-
+    this->viewSide = DiagramNode::LEFT;
+    this->column = 0;
 }
 
 void DiagramSectionNode::paint(QPainter *painter) const

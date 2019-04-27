@@ -18,6 +18,12 @@ using std::map;
 class DiagramNode : public QObject, virtual public IDiagramMouseListener {
     Q_OBJECT
 public:
+    typedef enum {
+        LEFT,
+        RIGHT,
+        BOTH
+    } ViewSide;
+
     explicit DiagramNode(DiagramScene *diagram);
 
     ~DiagramNode() override;
@@ -32,6 +38,8 @@ public:
 
     int getColspan() const;
 
+    void setColspan(int colspan);
+
     const QRect &getNodeRect() const;
 
     void setNodeRect(const QRect &nodeRect);
@@ -41,6 +49,10 @@ public:
     void setColumn(int column);
 
     int getColumn() const;
+
+    ViewSide getViewSide() const;
+
+    void setViewSide(ViewSide viewSide);
 
     void moveTop(int y);
 
@@ -82,13 +94,13 @@ protected:
 
     void hoverLeavedEvent() override;
 
-protected:
-
     map<QString, ConnectionPoint*> connectionPoints;
 
     DiagramScene *diagram;
 
     QRect nodeRect;
+
+    ViewSide viewSide;
 
     int colspan;
     int column;

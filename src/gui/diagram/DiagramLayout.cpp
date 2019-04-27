@@ -15,12 +15,10 @@ DiagramLayout::DiagramLayout(DiagramScene *diagram) : QObject(diagram) {
 
 void DiagramLayout::addLinkNode(DiagramNode *node) {
     this->linkColumnSortedNodes.insert(node);
-    node->setColumn(0);
 }
 
 void DiagramLayout::addExecNode(DiagramNode *node) {
     this->execColumnSortedNodes.insert(node);
-    node->setColumn(1);
 }
 
 void DiagramLayout::clearNodes()

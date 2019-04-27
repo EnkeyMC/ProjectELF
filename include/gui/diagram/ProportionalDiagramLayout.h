@@ -29,6 +29,8 @@ protected:
 
     static const int ARROW_SPACE_WIDTH;
     static const int COLUMN_WIDTH;
+    static const int COLUMN_COUNT;
+    static const int COLUMNS_PER_SIDE;
     static const int HEADER_HEIGHT;
     static const int MIN_HEIGHT;
     static const int MAX_HEIGHT;

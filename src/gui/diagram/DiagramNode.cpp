@@ -5,9 +5,11 @@
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramNode::DiagramNode(DiagramScene *diagram) : QObject (), column(0) {
+DiagramNode::DiagramNode(DiagramScene *diagram) : QObject () {
     this->diagram = diagram;
     this->colspan = 1;
+    this->column = 0;
+    this->viewSide = LEFT;
 
     connect(this, &DiagramNode::nodeRectChanged, this, &DiagramNode::onNodeRectChanged);
 }
@@ -18,7 +20,7 @@ DiagramNode::~DiagramNode() {
 }
 
 void DiagramNode::paint(QPainter *painter) const {
-    painter->setClipRect(nodeRect);
+    painter->setClipRect(nodeRect.adjusted(0, 0, 1, 1));
 }
 
 int DiagramNode::getColspan() const {
@@ -84,10 +86,10 @@ map<QString, ConnectionPoint*> &DiagramNode::getConnectionPoints() {
 }
 
 void DiagramNode::onNodeRectChanged() {
-    if (column == 0)
-        nodeBindable = nodeRect.topLeft();
-    else
+    if (viewSide == DiagramNode::RIGHT)
         nodeBindable = nodeRect.topRight();
+    else
+        nodeBindable = nodeRect.topLeft();
 
     QPoint leftPoint{nodeRect.left() + 15, nodeRect.bottom() - 15};
     QPoint rightPoint{nodeRect.right() - 15, nodeRect.bottom() - 15};
@@ -96,7 +98,7 @@ void DiagramNode::onNodeRectChanged() {
     int rightIdx = 0;
 
     for (auto &nameConnPointPair : connectionPoints) {
-        if (nameConnPointPair.second->getSide() == LEFT) {
+        if (nameConnPointPair.second->getSide() == Side::LEFT) {
             nameConnPointPair.second->set(leftPoint + QPoint(0, - leftIdx * CONN_POINT_GAP));
             leftIdx++;
         } else {
@@ -149,4 +151,16 @@ void DiagramNode::mouseReleaseEvent(QMouseEvent *event) {
         if (nameConnPointPair.second->contains(event->pos()))
             nameConnPointPair.second->mouseReleaseEvent(event);
     }
+}
+
+DiagramNode::ViewSide DiagramNode::getViewSide() const {
+    return viewSide;
+}
+
+void DiagramNode::setViewSide(DiagramNode::ViewSide viewSide) {
+    DiagramNode::viewSide = viewSide;
+}
+
+void DiagramNode::setColspan(int colspan) {
+    DiagramNode::colspan = colspan;
 }
