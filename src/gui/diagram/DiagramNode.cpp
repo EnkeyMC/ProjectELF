@@ -40,27 +40,6 @@ void DiagramNode::setNodeRect(const QRect &nodeRect) {
     emit nodeRectChanged(this->nodeRect);
 }
 
-void DiagramNode::setHeight(int height) {
-    this->nodeRect.setHeight(height);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::moveTop(int y) {
-    this->nodeRect.moveTop(y);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::setBottom(int y) {
-    this->nodeRect.setBottom(y);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::stretch(double factor) {
-    this->nodeRect.setTop(static_cast<int>(this->nodeRect.top() * factor));
-    this->nodeRect.setBottom(static_cast<int>(this->nodeRect.bottom() * factor));
-    emit nodeRectChanged(this->nodeRect);
-}
-
 void DiagramNode::setColumn(int column) {
     this->column = column;
 }

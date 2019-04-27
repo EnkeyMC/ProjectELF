@@ -44,8 +44,6 @@ public:
 
     void setNodeRect(const QRect &nodeRect);
 
-    void setHeight(int height);
-
     void setColumn(int column);
 
     int getColumn() const;
@@ -53,12 +51,6 @@ public:
     ViewSide getViewSide() const;
 
     void setViewSide(ViewSide viewSide);
-
-    void moveTop(int y);
-
-    void setBottom(int y);
-
-    void stretch(double factor);
 
     bool operator<(const DiagramNode &rhs) const;
 
