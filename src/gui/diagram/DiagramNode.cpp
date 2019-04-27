@@ -136,10 +136,6 @@ DiagramNode::ViewSide DiagramNode::getViewSide() const {
     return viewSide;
 }
 
-void DiagramNode::setViewSide(DiagramNode::ViewSide viewSide) {
-    DiagramNode::viewSide = viewSide;
-}
-
 void DiagramNode::setColspan(int colspan) {
     DiagramNode::colspan = colspan;
 }

@@ -50,8 +50,6 @@ public:
 
     ViewSide getViewSide() const;
 
-    void setViewSide(ViewSide viewSide);
-
     bool operator<(const DiagramNode &rhs) const;
 
     QRect getBounds() const override;
