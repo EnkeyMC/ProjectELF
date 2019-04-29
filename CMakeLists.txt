@@ -16,8 +16,6 @@ set(SOURCE_FILES
         include/gui/diagram/nodes/DiagramHeaderNode.h
         src/gui/diagram/DiagramLayout.cpp
         include/gui/diagram/DiagramLayout.h
-        src/gui/diagram/CondensedDiagramLayout.cpp
-        include/gui/diagram/CondensedDiagramLayout.h
         src/gui/diagram/nodes/DiagramSectionHeaderTableNode.cpp
         include/gui/diagram/nodes/DiagramSectionHeaderTableNode.h
         src/gui/diagram/ProportionalDiagramLayout.cpp

@@ -40,7 +40,7 @@ signals:
     void repaintRequested();
 
 protected:
-    void hoverEnteredEvent() override;
+    void hoverEnteredEvent(QHoverEvent *event) override;
 
     void hoverLeavedEvent() override;
 

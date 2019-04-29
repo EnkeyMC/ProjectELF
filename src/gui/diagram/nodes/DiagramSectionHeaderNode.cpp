@@ -30,3 +30,7 @@ int DiagramSectionHeaderNode::getMinHeight() const
 {
     return 20;
 }
+
+void DiagramSectionHeaderNode::hoverEnteredEvent(QHoverEvent *event) {
+    emit hoverEntered();
+}

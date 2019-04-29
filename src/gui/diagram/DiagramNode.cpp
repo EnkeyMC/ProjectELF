@@ -104,9 +104,11 @@ void DiagramNode::paintConnectionPoints(QPainter *painter) const {
     }
 }
 
-void DiagramNode::hoverEnteredEvent() {
+void DiagramNode::hoverEnteredEvent(QHoverEvent *event) {
     emit hoverEntered();
-    Hoverable::hoverEnteredEvent();
+    emit diagram->pushNodeToFront(this);
+    event->accept();
+    Hoverable::hoverEnteredEvent(event);
 }
 
 void DiagramNode::hoverLeavedEvent() {

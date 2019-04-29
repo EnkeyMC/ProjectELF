@@ -69,6 +69,7 @@ signals:
     void scrollYPositionChanged(qreal pos);
     void scrollXPositionChanged(qreal pos);
     void repaint();
+    void pushNodeToFront(DiagramNode *node);
 
 public slots:
     void scrollToAddress(elf::Elf64_Addr address);

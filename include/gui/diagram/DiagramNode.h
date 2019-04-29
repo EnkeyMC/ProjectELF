@@ -24,6 +24,12 @@ public:
         BOTH
     } ViewSide;
 
+    typedef struct {
+        bool operator()(const DiagramNode* lhs, const DiagramNode* rhs) const {
+            return *lhs < *rhs;
+        }
+    } PtrComparer;
+
     explicit DiagramNode(DiagramScene *diagram);
 
     ~DiagramNode() override;
@@ -80,7 +86,7 @@ protected:
 
     void paintConnectionPoints(QPainter *painter) const;
 
-    void hoverEnteredEvent() override;
+    void hoverEnteredEvent(QHoverEvent *event) override;
 
     void hoverLeavedEvent() override;
 

@@ -31,3 +31,7 @@ int DiagramProgramHeaderNode::getMinHeight() const
 {
     return 20;
 }
+
+void DiagramProgramHeaderNode::hoverEnteredEvent(QHoverEvent *event) {
+    emit hoverEntered();
+}

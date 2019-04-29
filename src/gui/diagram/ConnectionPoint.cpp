@@ -66,8 +66,8 @@ void ConnectionPoint::mousePressEvent(QMouseEvent *event) {
     emit clicked(endAddress);
 }
 
-void ConnectionPoint::hoverEnteredEvent() {
-    Hoverable::hoverEnteredEvent();
+void ConnectionPoint::hoverEnteredEvent(QHoverEvent *event) {
+    Hoverable::hoverEnteredEvent(event);
     emit repaintRequested();
 }
 

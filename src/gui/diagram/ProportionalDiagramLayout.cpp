@@ -66,11 +66,8 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     this->paintNodeBackground(painter);
     this->paintColumnBorders(painter);
 
-    for (const auto &linkNode : linkColumnSortedNodes)
-        linkNode->paint(painter);
-
-    for (const auto &execNode : execColumnSortedNodes)
-        execNode->paint(painter);
+    for (const auto &node : nodesZOrdered)
+        node->paint(painter);
 
     painter->translate(-offset);
 }

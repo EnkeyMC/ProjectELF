@@ -26,6 +26,7 @@ DiagramScene::DiagramScene(QQuickItem *parent)
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
     this->layout = new ProportionalDiagramLayout(this);
     connect(this->layout, &DiagramLayout::layoutChanged, this, &DiagramScene::onLayoutChanged);
+    connect(this, &DiagramScene::pushNodeToFront, this->layout, &DiagramLayout::pushToFront);
 
     this->setMinWidth(this->layout->getMinWidth() + 2*this->padding);
 
@@ -99,19 +100,19 @@ void DiagramScene::onModelChanged() {
     }
 
     auto headerNode = new DiagramHeaderNode(this, header);
-    this->layout->addLinkNode(headerNode);
+    this->layout->addNode(headerNode);
 
 
     auto sectionHeaderTable = header->getSectionHeaderTable();
     if (sectionHeaderTable != nullptr) {
         auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
-        this->layout->addLinkNode(sectionHeaderTableNode);
+        this->layout->addNode(sectionHeaderTableNode);
 
         createConnection(headerNode, "e_shoff", sectionHeaderTableNode, LEFT, 0);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
             auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
-            this->layout->addLinkNode(sectionNode);
+            this->layout->addNode(sectionNode);
 
             auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
             createConnection(sectionHeaderNode, "sh_offset", sectionNode, LEFT, 1);
@@ -121,13 +122,13 @@ void DiagramScene::onModelChanged() {
     auto programHeaderTable = header->getProgramHeaderTable();
     if (programHeaderTable != nullptr) {
         auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
-        this->layout->addExecNode(programHeaderTableNode);
+        this->layout->addNode(programHeaderTableNode);
 
         createConnection(headerNode, "e_phoff", programHeaderTableNode, RIGHT, 0);
 
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
             auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
-            this->layout->addExecNode(segmentNode);
+            this->layout->addNode(segmentNode);
 
             auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
             createConnection(programHeaderNode, "p_offset", segmentNode, RIGHT, 1);
@@ -151,6 +152,7 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
     connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
     connect(nodeTo, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
     connect(nodeTo, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
+    connect(nodeFrom, &DiagramNode::hoverEntered, [=]() {emit this->pushNodeToFront(nodeTo);});
     connections.push_back(shtConnection);
 }
 
@@ -199,8 +201,17 @@ void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
             translateMousePos(event->oldPos()),
             event->modifiers()
     };
+    translatedEvent.setAccepted(false);
 
-    layout->forEachNode([&translatedEvent](DiagramNode &node) {node.hoverMoveEvent(&translatedEvent);});
+    std::deque<DiagramNode *> zOrderedNodes{layout->getNodesZOrdered().size()};
+    // Copy to avoid concurrent modification
+    std::copy(layout->getNodesZOrdered().begin(), layout->getNodesZOrdered().end(), zOrderedNodes.begin());
+    for (auto it = zOrderedNodes.rbegin(); it != zOrderedNodes.rend(); it++) {
+        if (translatedEvent.isAccepted()) {
+            break;
+        }
+        (*it)->hoverMoveEvent(&translatedEvent);
+    }
 
     QQuickItem::hoverMoveEvent(event);
 }
@@ -210,11 +221,11 @@ void DiagramScene::onLayoutChanged() {
 
     auto linkNodes = this->layout->getLinkColumnSortedNodes();
     for (auto node : linkNodes)
-        nodeTree.insert(node);
+        nodeTree.insert(node.first);
 
     auto execNodes = this->layout->getExecColumnSortedNodes();
     for (auto node : execNodes)
-        nodeTree.insert(node);
+        nodeTree.insert(node.first);
 
     this->update();
     emit contentSizeChanged(this->getContentSize());
