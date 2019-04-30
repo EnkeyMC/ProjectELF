@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.3 as Dialogs
 
 import projectelf.models 1.0
 
@@ -16,7 +16,7 @@ ApplicationWindow {
     height: 600
     title: "ProjectELF"
 
-    FileDialog {
+    Dialogs.FileDialog {
         id: openFileDialog
         title: qsTr("Open file")
         folder: shortcuts.home
@@ -26,8 +26,19 @@ ApplicationWindow {
         }
     }
 
+    Dialogs.MessageDialog {
+        id: errorDialog
+        icon: Dialogs.StandardIcon.Critical
+        standardButtons: Dialogs.StandardButton.Ok
+    }
+
     OpenFilesModel {
         id: openFilesModel
+        onError: {
+            errorDialog.title = title;
+            errorDialog.text = description;
+            errorDialog.open();
+        }
     }
 
     menuBar: RowLayout {
@@ -72,10 +83,6 @@ ApplicationWindow {
             Layout.fillHeight: true
             id: viewSwitch
         }
-    }
-
-    footer: StatusBar {
-        width: mainWindow.width
     }
 
     ColumnLayout {

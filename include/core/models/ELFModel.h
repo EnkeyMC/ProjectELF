@@ -11,6 +11,7 @@
 
 #include "core/ModelBase.h"
 #include "core/models/ELFHeaderModelItem.h"
+#include "core/models/ELFIssueListModel.h"
 
 class ELFModel : public ModelBase {
     Q_OBJECT
@@ -25,6 +26,7 @@ class ELFModel : public ModelBase {
     Q_PROPERTY(QString abiversion   READ getAbiversion      WRITE setAbiversion     NOTIFY abiversionChanged)
 
     Q_PROPERTY(ELFHeaderModelItem* header READ getHeader NOTIFY headerChanged)
+    Q_PROPERTY(ELFIssueListModel* issueListModel READ getIssues NOTIFY issuesChanged)
 
     Q_PROPERTY(QString dispMag0         READ getDispMag0            NOTIFY mag0Changed)
     Q_PROPERTY(QString dispMag1         READ getDispMag1            NOTIFY mag1Changed)
@@ -77,6 +79,9 @@ public:
     void setOsabi(const QString &hexValue);
     void setAbiversion(const QString &hexValue);
 
+    Q_INVOKABLE void reloadIssues();
+    ELFIssueListModel *getIssues();
+
 signals:
     void mag0Changed(QString);
     void mag1Changed(QString);
@@ -89,11 +94,13 @@ signals:
     void abiversionChanged(QString);
 
     void headerChanged(ELFHeaderModelItem *);
+    void issuesChanged(ELFIssueListModel *);
 
 protected:
     ELFHeaderModelItem *headerModelItem;
 
     std::shared_ptr<elf::ELF> elf;
+    ELFIssueListModel issueListModel;
 };
 
 

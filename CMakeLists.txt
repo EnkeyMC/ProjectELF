@@ -69,7 +69,14 @@ set(SOURCE_FILES
         include/gui/diagram/ConnectionPoint.h
         src/core/Hoverable.cpp
         include/core/Hoverable.h
-        include/core/IContains.h include/core/Side.h)
+        include/core/IContains.h
+        include/core/Side.h
+        src/core/ELFIssueConverter.cpp
+        include/core/ELFIssueConverter.h
+        src/core/models/ListModelBase.cpp
+        include/core/models/ListModelBase.h
+        src/core/models/ELFIssueListModel.cpp
+        include/core/models/ELFIssueListModel.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

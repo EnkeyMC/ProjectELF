@@ -2,13 +2,12 @@
 // Created by MOmac on 02.03.2019.
 //
 
-#include <ELF.h>
-
 #include "ELF.h"
+#include "ELFIssueException.h"
 
 namespace elf {
 
-ELF::ELF() : header(nullptr) {}
+ELF::ELF() : file_size(0), header(nullptr) {}
 
 ELF::~ELF() {
     clear();
@@ -35,31 +34,16 @@ void ELF::clear() {
     section_headers.clear();
 }
 
-ELFIssuesBySeverity ELF::set_e_ident(const unsigned char *e_ident) {
-    ELFIssuesBySeverity issues;
+void ELF::set_e_ident(const unsigned char *e_ident) {
+    auto issues = find_e_ident_issues(e_ident);
+    if (issues.has_critical_issue())
+        throw ELFIssueException(*issues[ISEV_CRITICAL].begin());
 
-    if (e_ident[EI_MAG0] != ELFMAG0
-        || e_ident[EI_MAG1] != ELFMAG1
-        || e_ident[EI_MAG2] != ELFMAG2
-        || e_ident[EI_MAG3] != ELFMAG3) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID);
-    }
+    converter.setup(e_ident[EI_DATA]);
 
-    if (e_ident[EI_CLASS] != ELFCLASS32 && e_ident[EI_CLASS] != ELFCLASS64) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_CLASS, ITYPE_INVALID);
-    }
-
-    if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
-    } else {
-        converter.setup(e_ident[EI_DATA]);
-    }
-
-    for (int i = 0; i < sizeof(this->e_ident); ++i) {
+    for (unsigned i = 0; i < sizeof(this->e_ident); ++i) {
         this->e_ident[i] = e_ident[i];
     }
-
-    return issues;
 }
 
 const endianess_converter & ELF::get_converter() const {
@@ -71,14 +55,35 @@ size_t ELF::get_file_size() const {
 }
 
 void ELF::set_file_size(size_t file_size) {
-    ELF::file_size = file_size;
+    this->file_size = file_size;
+}
+
+ELFIssuesBySeverity ELF::find_issues() const
+{
+    ELFIssuesBySeverity issues;
+
+    // TODO
+    issues += ELFIssue::NO_ISSUE;
+    issues += ELFIssue::NO_ISSUE;
+    issues += ELFIssue::NO_ISSUE;
+    issues += ELFIssue::NO_ISSUE;
+    issues += find_e_ident_issues(this->e_ident);
+    issues += header->find_issues();
+
+    for (auto section_header : section_headers)
+        issues += section_header->find_issues();
+
+    for (auto program_header : program_headers)
+        issues += program_header->find_issues();
+
+    return issues;
 }
 
 void ELF::add_section_header(ELFSectionHeader *section_header) {
     section_headers.push_back(section_header);
 }
 
-vector<ELFSectionHeader *> ELF::get_section_headers() const {
+const vector<ELFSectionHeader *> &ELF::get_section_headers() const {
     return section_headers;
 }
 
@@ -174,6 +179,28 @@ void ELF::set_ei_osabi(unsigned char value)
 void ELF::set_ei_abiversion(unsigned char value)
 {
     e_ident[EI_ABIVERSION] = value;
+}
+
+ELFIssuesBySeverity ELF::find_e_ident_issues(const unsigned char *e_ident)
+{
+    ELFIssuesBySeverity issues;
+
+    if (e_ident[EI_MAG0] != ELFMAG0
+        || e_ident[EI_MAG1] != ELFMAG1
+        || e_ident[EI_MAG2] != ELFMAG2
+        || e_ident[EI_MAG3] != ELFMAG3) {
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID);
+    }
+
+    if (e_ident[EI_CLASS] != ELFCLASS32 && e_ident[EI_CLASS] != ELFCLASS64) {
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_CLASS, ITYPE_INVALID);
+    }
+
+    if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
+    }
+
+    return issues;
 }
 
 }

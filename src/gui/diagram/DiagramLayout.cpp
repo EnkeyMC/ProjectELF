@@ -74,7 +74,6 @@ void DiagramLayout::pushToFront(DiagramNode *node) {
     auto nodeIterator = getNodeIterator(node);
     if (nodeIterator == getEndIterator(node->getViewSide()))
         return;
-    qDebug() << "Pushing " << nodeIterator->second;
 
     nodesZOrdered.erase(nodesZOrdered.begin() + nodeIterator->second);
     for (int i = nodeIterator->second; i < nodesZOrdered.size(); i++) {
@@ -83,7 +82,6 @@ void DiagramLayout::pushToFront(DiagramNode *node) {
     nodeIterator->second = nodesZOrdered.size();
     nodesZOrdered.push_back(node);
 
-    qDebug() << "Pushed " << node->getProportionalPosition() << " " << nodeIterator->second;
     emit zOrderChanged();
 }
 

@@ -1,4 +1,5 @@
 #include <ELF.h>
+#include <ELFIssueException.h>
 #include "gtest/gtest.h"
 
 class ELFTest : public ::testing::Test {
@@ -24,9 +25,7 @@ TEST_F(ELFTest, set_e_ident_no_issues1) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident);
-
-    EXPECT_EQ(issues.size(), 0) << "set_e_ident should return no issues";
+    elf->set_e_ident(e_ident);
 
     auto e_ident_result = elf->get_e_ident();
     for (int i = 0; i < EI_NIDENT; ++i) {
@@ -50,9 +49,7 @@ TEST_F(ELFTest, set_e_ident_no_issues2) {
     e_ident[EI_CLASS] = ELFCLASS64;
     e_ident[EI_DATA] = ELFDATA2LSB;
 
-    auto issues = elf->set_e_ident(e_ident);
-
-    EXPECT_EQ(issues.size(), 0) << "set_e_ident should return no issues";
+    elf->set_e_ident(e_ident);
 
     auto e_ident_result = elf->get_e_ident();
     for (int i = 0; i < EI_NIDENT; ++i) {
@@ -76,13 +73,15 @@ TEST_F(ELFTest, set_e_ident_mag0_issue) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_mag0(), e_ident[EI_MAG0]) << "get_ei_mag0 should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, set_e_ident_mag1_issue) {
@@ -94,13 +93,15 @@ TEST_F(ELFTest, set_e_ident_mag1_issue) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_mag1(), e_ident[EI_MAG1]) << "get_ei_mag1 should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, set_e_ident_mag2_issue) {
@@ -112,13 +113,15 @@ TEST_F(ELFTest, set_e_ident_mag2_issue) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_mag2(), e_ident[EI_MAG2]) << "get_ei_mag2 should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, set_e_ident_mag3_issue) {
@@ -130,13 +133,15 @@ TEST_F(ELFTest, set_e_ident_mag3_issue) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_mag3(), e_ident[EI_MAG3]) << "get_ei_mag3 should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, set_e_ident_class_issue) {
@@ -148,13 +153,15 @@ TEST_F(ELFTest, set_e_ident_class_issue) {
     e_ident[EI_CLASS] = 98;  // the issue
     e_ident[EI_DATA] = ELFDATA2MSB;
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_CLASS) << "source of issue should be EI_CLASS";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_class(), e_ident[EI_CLASS]) << "get_ei_class should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_CLASS) << "source of issue should be EI_CLASS";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, set_e_ident_data_issue) {
@@ -166,13 +173,15 @@ TEST_F(ELFTest, set_e_ident_data_issue) {
     e_ident[EI_CLASS] = ELFCLASS32;
     e_ident[EI_DATA] = 5; // the issue
 
-    auto issues = elf->set_e_ident(e_ident).get_issues();
-
-    ASSERT_EQ(issues.size(), 1) << "set_e_ident should return only 1 issue";
-    EXPECT_EQ(issues[0].get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-    EXPECT_EQ(issues[0].get_source(), elf::ISRC_EI_DATA) << "source of issue should be EI_DATA";
-    EXPECT_EQ(issues[0].get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
-    EXPECT_EQ(elf->get_ei_data(), e_ident[EI_DATA]) << "get_ei_data should return the wrong value";
+    try {
+        elf->set_e_ident(e_ident);
+        ASSERT_FALSE(true) << "set_e_ident should throw exception";
+    } catch (const elf::ELFIssueException &ex) {
+        auto issue = ex.getIssue();
+        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
+        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_DATA) << "source of issue should be EI_DATA";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+    }
 }
 
 TEST_F(ELFTest, e_ident_clear) {

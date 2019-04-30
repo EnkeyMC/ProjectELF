@@ -14,6 +14,7 @@ void registerCustomQMLTypes() {
     qmlRegisterType<DiagramScene>(NMSPC_DIAGRAM, 1, 0, "DiagramScene");
     qmlRegisterType<DiagramStyle>(NMSPC_DIAGRAM, 1, 0, "DiagramStyle");
     qmlRegisterType<ELFModel>(NMSPC_MODELS, 1, 0, "ELFModel");
+    qmlRegisterType<ELFIssueListModel>(NMSPC_MODELS, 1, 0, "ELFIssueListModel");
 
     qmlRegisterUncreatableType<ELFHeaderModelItem>
             (NMSPC_MODELS, 1, 0, "ELFHeaderModelItem", UNCREATABLE_MSG);

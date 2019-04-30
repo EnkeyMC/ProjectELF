@@ -53,9 +53,7 @@ TEST_F(ELFReaderTest, parse_header_valid_32bit_msb) {
 
     setInput(input, sizeof(input));
 
-    auto issues = reader->parse_header();
-
-    EXPECT_TRUE(issues.empty()) << "Header parsing shouldn't return any issues";
+    reader->parse_header();
 
     EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
@@ -103,9 +101,7 @@ TEST_F(ELFReaderTest, parse_header_valid_64bit_msb) {
 
     setInput(input, sizeof(input));
 
-    auto issues = reader->parse_header();
-
-    EXPECT_TRUE(issues.empty()) << "Header parsing shouldn't return any issues";
+    reader->parse_header();
 
     EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
@@ -153,9 +149,7 @@ TEST_F(ELFReaderTest, parse_header_valid_64bit_lsb) {
 
     setInput(input, sizeof(input));
 
-    auto issues = reader->parse_header();
-
-    EXPECT_TRUE(issues.empty()) << "Header parsing shouldn't return any issues";
+    reader->parse_header();
 
     EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
@@ -203,9 +197,7 @@ TEST_F(ELFReaderTest, parse_header_valid_32bit_lsb) {
 
     setInput(input, sizeof(input));
 
-    auto issues = reader->parse_header();
-
-    EXPECT_TRUE(issues.empty()) << "Header parsing shouldn't return any issues";
+    reader->parse_header();
 
     EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
@@ -236,9 +228,7 @@ TEST(ELFReaderTestFromFile, parse_header_valid_32bit_msb) {
     std::ifstream in("resources/elf_header.bin", std::ios::binary);
     elf::ELFReader reader{in, elf};
 
-    auto issues = reader.parse_header();
-
-    EXPECT_TRUE(issues.empty()) << "Header parsing shouldn't return any issues";
+    reader.parse_header();
 
     EXPECT_EQ(elf.get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf.get_ei_mag1(), ELFMAG1);
@@ -269,15 +259,13 @@ TEST(ELFReaderTestFromFile, parse_helloworld_file) {
     elf::ELFReader reader(in, elf);
 
     // ACT
-    auto issues = reader.parse_header();
-    issues += reader.parse_section_headers();
-    issues += reader.parse_program_headers();
-    issues += reader.parse_sections();
-    issues += reader.parse_segments();
+    reader.parse_header();
+    reader.parse_section_headers();
+    reader.parse_program_headers();
+    reader.parse_sections();
+    reader.parse_segments();
 
     // ASSERT
-    EXPECT_TRUE(issues.empty());
-
     EXPECT_EQ(elf.get_ei_mag0(), ELFMAG0);
     EXPECT_EQ(elf.get_ei_mag1(), ELFMAG1);
     EXPECT_EQ(elf.get_ei_mag2(), ELFMAG2);

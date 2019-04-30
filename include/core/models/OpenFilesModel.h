@@ -1,8 +1,7 @@
 #ifndef OPENFILESMODEL_H
 #define OPENFILESMODEL_H
 
-#include <QAbstractItemModel>
-
+#include "core/models/ListModelBase.h"
 #include "core/models/ELFModel.h"
 
 typedef struct {
@@ -11,7 +10,7 @@ typedef struct {
     ELFModel *elfModel;
 } OpenFile;
 
-class OpenFilesModel : public QAbstractItemModel
+class OpenFilesModel : public ListModelBase
 {
     Q_OBJECT
 
@@ -31,26 +30,16 @@ public:
 
     Q_INVOKABLE void openFile(QString filepath);
 
-    // Basic functionality:
-    QModelIndex index(int row, int column,
-                      const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &index) const override;
-
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-    // Editable:
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
-
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     QHash<int, QByteArray> roleNames() const override;
 
 signals:
     void fileOpened(int index);
+    void error(QString title, QString description);
+
+protected:
+    QVariant getData(int idx, int role) const override;
 
 private:
     QString getFilenameFromPath(QString path) const;

@@ -18,18 +18,20 @@ class ELFReader {
 public:
     explicit ELFReader(std::istream &istream, ELF &output);
 
-    ELFIssuesBySeverity parse_header();
+    void parse();
 
-    ELFIssuesBySeverity parse_section_headers();
+    void parse_header();
 
-    ELFIssuesBySeverity parse_program_headers();
+    void parse_section_headers();
 
-    ELFIssuesBySeverity parse_sections();
+    void parse_program_headers();
 
-    ELFIssuesBySeverity parse_segments();
+    void parse_sections();
+
+    void parse_segments();
 
 private:
-    ELFIssuesBySeverity parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index = 0);
+    ELFIssue parse_raw(IRawParsable &parsable, ELFIssueSource issue_source, unsigned issue_index = 0);
 
     ELFHeader* create_header(unsigned char ei_class) const;
 

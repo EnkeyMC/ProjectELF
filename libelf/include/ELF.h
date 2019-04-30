@@ -23,7 +23,7 @@ public:
 
     void clear();
 
-    ELFIssuesBySeverity set_e_ident(const unsigned char e_ident[EI_NIDENT]);
+    void set_e_ident(const unsigned char e_ident[EI_NIDENT]);
 
     const endianess_converter & get_converter() const;
 
@@ -31,11 +31,13 @@ public:
 
     void set_file_size(size_t file_size);
 
+    ELFIssuesBySeverity find_issues() const;
+
     const unsigned char *get_e_ident() const;
     ELFHeader *get_header();
 
     void add_section_header(ELFSectionHeader *section_header);
-    vector<ELFSectionHeader *> get_section_headers() const;
+    const vector<ELFSectionHeader *> &get_section_headers() const;
 
     void add_program_header(ELFProgramHeader *program_header);
     const vector<ELFProgramHeader *> &get_program_headers() const;
@@ -63,6 +65,8 @@ public:
     friend class ELFReader;
 
 protected:
+    static ELFIssuesBySeverity find_e_ident_issues(const unsigned char *e_ident);
+
     endianess_converter converter;
 
     size_t file_size;

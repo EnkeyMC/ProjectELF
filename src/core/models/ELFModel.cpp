@@ -14,6 +14,7 @@ ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr
 
 ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(parent), elf(std::move(elf)) {
     this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
+    this->reloadIssues();
 }
 
 ELFModel::~ELFModel() {
@@ -188,4 +189,14 @@ void ELFModel::setAbiversion(const QString &hexValue)
 {
     elf->set_ei_abiversion(static_cast<unsigned char>(hexValue.toUInt(nullptr, HEX)));
     emit abiversionChanged(hexValue);
+}
+
+void ELFModel::reloadIssues()
+{
+    this->issueListModel = elf->find_issues();
+    emit issuesChanged(&this->issueListModel);
+}
+
+ELFIssueListModel *ELFModel::getIssues() {
+    return &issueListModel;
 }

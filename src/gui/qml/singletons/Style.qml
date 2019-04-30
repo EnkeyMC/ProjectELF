@@ -45,11 +45,19 @@ QtObject {
         readonly property int _Height: 20
     }
 
+    readonly property QtObject statusBarButton: QtObject {
+        readonly property int _FontSize: 11
+    }
+
     readonly property QtObject progressBar: QtObject {
         readonly property int _Height: 8
     }
 
     readonly property QtObject toolBar: QtObject {
         readonly property int _Height: 30
+    }
+
+    readonly property QtObject badge: QtObject {
+        readonly property int _FontSize: 11
     }
 }

@@ -5,19 +5,31 @@ import projectelf.models 1.0
 
 import "../singletons"
 
-StackLayout {
+ColumnLayout {
     id: filePane
     width: parent.width
     height: parent.height
-    currentIndex: View.currentView
-
+    spacing: 0
     property alias elfModel: viewOverview.elfModel
 
-    ViewOverview {
-        id: viewOverview
+    StackLayout {
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+
+        currentIndex: View.currentView
+
+        ViewOverview {
+            id: viewOverview
+        }
+
+        ViewEdit {
+            elfModel: filePane.elfModel
+        }
     }
 
-    ViewEdit {
-        elfModel: filePane.elfModel
+    StatusBar {
+        Layout.fillWidth: true
+        issueListModel: filePane.elfModel.issueListModel
     }
 }
+

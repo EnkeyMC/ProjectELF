@@ -10,12 +10,14 @@
 namespace elf {
 
 enum ELFIssueSeverity {
+    ISEV_NONE,  /// No issue has occured, default value
     ISEV_CRITICAL,  /// Cannot continue parsing
     ISEV_ERROR,  /// Partially parsable, contains errors
     ISEV_WARNING  /// Fully parsed, but contains unknown or invalid values
 };
 
 enum ELFIssueSource {
+    ISRC_NONE,
     ISRC_HEADER,
     ISRC_EI_MAGN,
     ISRC_EI_CLASS,
@@ -43,6 +45,7 @@ enum ELFIssueSource {
 };
 
 enum ELFIssueType {
+    ITYPE_NONE,
     ITYPE_UNEXPECTED_EOF,
     ITYPE_INVALID
 };
@@ -57,11 +60,17 @@ public:
 
     ELFIssueType get_type() const;
 
-    unsigned int getIndex() const;
+    unsigned int get_index() const;
 
     bool operator==(const ELFIssue &rhs) const;
 
+    bool operator!=(const ELFIssue &rhs) const;
+
+    static const ELFIssue NO_ISSUE;
+
 private:
+    ELFIssue();
+
     enum ELFIssueSeverity severity;
     enum ELFIssueSource source;
     enum ELFIssueType type;
