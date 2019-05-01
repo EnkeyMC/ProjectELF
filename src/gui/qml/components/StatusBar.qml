@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.10
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import projectelf.models 1.0
@@ -33,42 +33,38 @@ Rectangle {
 
             onClicked: dropdown.toggle();
 
-            Rectangle {
+            PEDropdown {
                 id: dropdown
-                height: open ? Math.min(issueListView.contentHeight, 400) : 0
-                width: 200
-                color: Style._ColorSecondaryDark
-                z: 100
                 anchors.bottom: parent.top
                 anchors.right: parent.right
-
-                property bool open: false
-
-                signal toggle()
-                signal open()
-                signal close()
-
-                onToggle: open = !open
-
-                onOpen: open = true
-
-                onClose: open = false
-
-                MouseArea {
-                    anchors.fill: parent
-                    z: 101
-                }
+                width: 200
+                color: Style._ColorPrimaryDark
 
                 ListView {
                     id: issueListView
                     model: statusBar.issueListModel
                     anchors.fill: parent
-                    z: 102
                     clip: true
+                    spacing: 1
+                    boundsBehavior: Flickable.StopAtBounds
+                    boundsMovement: Flickable.StopAtBounds
+                    ScrollBar.vertical: ScrollBar{}
 
-                    delegate: Text {
-                        text: model.description
-                        color: Style._ColorTextLight
+                    header: Label {
+                        padding: 10
+                        text: "No issues"
+                        color: Qt.darker(Style._ColorTextLight, 1.3)
+                        visible: issueListView.count == 0
+                        width: parent.width
+
+                        background: Rectangle {
+                            color: Style._ColorSecondaryDark
+                        }
+                    }
+
+                    delegate: IssueItem {
+                        width: parent.width
+                        issueModel: model
                     }
                 }
             }

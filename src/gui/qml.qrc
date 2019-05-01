@@ -33,5 +33,7 @@
         <file>qml/controls/PEStatusBarButton.qml</file>
         <file>qml/controls/PEStatusBarText.qml</file>
         <file>qml/controls/PEBadge.qml</file>
+        <file>qml/controls/PEDropdown.qml</file>
+        <file>qml/components/IssueItem.qml</file>
     </qresource>
 </RCC>

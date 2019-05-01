@@ -5,5 +5,5 @@
 #include "core/ELFIssueConverter.h"
 
 QString ELFIssueConverter::toReadable(const elf::ELFIssue &issue) {
-    return "NYI";
+    return "NYII IDISIDASJDI SAIDJ jFISJ FASIF IAS JFI";
 }

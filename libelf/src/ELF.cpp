@@ -62,11 +62,6 @@ ELFIssuesBySeverity ELF::find_issues() const
 {
     ELFIssuesBySeverity issues;
 
-    // TODO
-    issues += ELFIssue::NO_ISSUE;
-    issues += ELFIssue::NO_ISSUE;
-    issues += ELFIssue::NO_ISSUE;
-    issues += ELFIssue::NO_ISSUE;
     issues += find_e_ident_issues(this->e_ident);
     issues += header->find_issues();
 
