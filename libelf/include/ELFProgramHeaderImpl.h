@@ -17,7 +17,12 @@ public:
     explicit ELFProgramHeaderImpl(ELF &elf) : ELFProgramHeader(elf) {}
 
     ELFIssuesBySeverity find_issues() const override {
-        return ELFIssuesBySeverity();  // TODO
+        ELFIssuesBySeverity issues{};
+
+        if (get_p_offset() + get_p_filesz() > elf.get_file_size())
+            issues += ELFIssue(ISEV_ERROR, ISRC_SEGMENT, ITYPE_OUT_OF_BOUNDS, get_index());
+
+        return issues;
     }
 
     size_t get_size() const override {

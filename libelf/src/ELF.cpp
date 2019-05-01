@@ -63,6 +63,7 @@ ELFIssuesBySeverity ELF::find_issues() const
     ELFIssuesBySeverity issues;
 
     issues += find_e_ident_issues(this->e_ident);
+    issues += find_overlaping_sections();
     issues += header->find_issues();
 
     for (auto section_header : section_headers)
@@ -75,6 +76,7 @@ ELFIssuesBySeverity ELF::find_issues() const
 }
 
 void ELF::add_section_header(ELFSectionHeader *section_header) {
+    section_header->set_index(section_headers.size());
     section_headers.push_back(section_header);
 }
 
@@ -134,6 +136,7 @@ const vector<ELFProgramHeader *> &ELF::get_program_headers() const {
 }
 
 void ELF::add_program_header(ELFProgramHeader *program_header) {
+    program_header->set_index(program_headers.size());
     this->program_headers.push_back(program_header);
 }
 
@@ -193,6 +196,33 @@ ELFIssuesBySeverity ELF::find_e_ident_issues(const unsigned char *e_ident)
 
     if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
+    }
+
+    return issues;
+}
+
+ELFIssuesBySeverity ELF::find_overlaping_sections() const {
+    ELFIssuesBySeverity issues;
+
+    for (auto section_header : section_headers) {
+        for (auto other_section_header : section_headers) {
+            auto shoff = section_header->get_sh_offset();
+            auto oshoff = other_section_header->get_sh_offset();
+            auto shsize = section_header->get_sh_size();
+            auto oshsize = other_section_header->get_sh_size();
+
+            if (section_header->get_sh_type() != SHT_NOBITS
+                && other_section_header->get_sh_type() != SHT_NOBITS
+                && section_header->get_sh_size() > 0
+                && other_section_header->get_sh_size() > 0
+                && shoff > oshoff
+                && shoff < oshoff + oshsize
+                && shoff + shsize > oshoff
+                && shoff + shsize < oshoff + oshsize)
+            {
+                issues += ELFIssue(ISEV_ERROR, ISRC_SECTION, ITYPE_OVERLAPS_SECTION, section_header->get_index());
+            }
+        }
     }
 
     return issues;

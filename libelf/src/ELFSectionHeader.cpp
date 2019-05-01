@@ -34,4 +34,12 @@ void ELFSectionHeader::set_section_data(char *raw_data, Elf_Word size) {
     this->set_sh_size(size);
 }
 
+unsigned int ELFSectionHeader::get_index() const {
+    return index;
+}
+
+void ELFSectionHeader::set_index(unsigned int index) {
+    ELFSectionHeader::index = index;
+}
+
 }

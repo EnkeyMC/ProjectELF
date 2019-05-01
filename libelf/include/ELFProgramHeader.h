@@ -33,8 +33,14 @@ public:
 
     void set_segment_data(char *raw_data, Elf_Word size);
 
+    unsigned int get_index() const;
+
+    void set_index(unsigned int index);
+
 protected:
     char *segment_data;
+
+    unsigned index;
 };
 
 } // namespace elf

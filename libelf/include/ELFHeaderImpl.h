@@ -48,6 +48,16 @@ public:
             issues += ELFIssue(ISEV_WARNING, ISRC_E_VERSION, ITYPE_INVALID);
         if (get_e_ehsize() != sizeof(header) + EI_NIDENT)
             issues += ELFIssue(ISEV_WARNING, ISRC_E_EHSIZE, ITYPE_INVALID);
+        if (get_e_shoff() + get_e_shentsize() * get_e_shnum() > elf.get_file_size())
+            issues += ELFIssue(ISEV_ERROR, ISRC_SECTION_HEADERS, ITYPE_OUT_OF_BOUNDS);
+        if (get_e_shoff() < sizeof(header) + EI_NIDENT)
+            issues += ELFIssue(ISEV_ERROR, ISRC_SECTION_HEADERS, ITYPE_OVERLAPS_HEADER);
+        if (get_e_phoff() + get_e_phentsize() * get_e_phnum() > elf.get_file_size())
+            issues += ELFIssue(ISEV_ERROR, ISRC_PROGRAM_HEADERS, ITYPE_OUT_OF_BOUNDS);
+        if (get_e_phoff() < sizeof(header) + EI_NIDENT)
+            issues += ELFIssue(ISEV_ERROR, ISRC_PROGRAM_HEADERS, ITYPE_OVERLAPS_HEADER);
+        if (get_e_shstrndx() >= get_e_shnum())
+            issues += ELFIssue(ISEV_ERROR, ISRC_E_SHSTRNDX, ITYPE_OUT_OF_BOUNDS);
 
         return issues;
     }

@@ -24,7 +24,12 @@ public:
     }
 
     ELFIssuesBySeverity find_issues() const override {
-        return ELFIssuesBySeverity();  // TODO
+        ELFIssuesBySeverity issues;
+
+        if (get_sh_offset() + get_sh_size() > elf.get_file_size() && get_sh_type() != SHT_NOBITS)
+            issues += ELFIssue(ISEV_ERROR, ISRC_SECTION, ITYPE_OUT_OF_BOUNDS, get_index());
+
+        return issues;
     }
 
     ELFIO_GET_SET_SIZE_ACCESS(Elf_Word, sh_name, header.sh_name);

@@ -51,7 +51,7 @@ void ELFReader::parse_section_headers() {
     for (unsigned int i = 0; i < shnum; ++i) {
         istream.seekg(shoff + shentsize * i);
         section_header = create_section_header();
-        parse_raw(*section_header, ISRC_SECTIONS_HEADER, i);
+        parse_raw(*section_header, ISRC_SECTION_HEADERS, i);
         elf.add_section_header(section_header);
     }
 }
@@ -67,7 +67,7 @@ void ELFReader::parse_program_headers() {
     for (unsigned int i = 0; i < phnum; ++i) {
         istream.seekg(phoff + phentsize * i);
         program_header = create_program_header();
-        parse_raw(*program_header, ISRC_PROGRAM_HEADER, i);
+        parse_raw(*program_header, ISRC_PROGRAM_HEADERS, i);
         elf.add_program_header(program_header);
     }
 }

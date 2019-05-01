@@ -35,8 +35,14 @@ public:
 
     void set_section_data(char *raw_data, Elf_Word size);
 
+    unsigned int get_index() const;
+
+    void set_index(unsigned int index);
+
 protected:
     char *section_data;
+
+    unsigned index;
 
 };
 

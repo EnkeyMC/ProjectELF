@@ -66,6 +66,7 @@ public:
 
 protected:
     static ELFIssuesBySeverity find_e_ident_issues(const unsigned char *e_ident);
+    ELFIssuesBySeverity find_overlaping_sections() const;
 
     endianess_converter converter;
 
