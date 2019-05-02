@@ -56,6 +56,7 @@ Rectangle {
                         text: "No issues"
                         color: Qt.darker(Style._ColorTextLight, 1.3)
                         visible: issueListView.count == 0
+                        height: issueListView.count == 0 ? contentHeight + 2*padding : 0
                         width: parent.width
 
                         background: Rectangle {

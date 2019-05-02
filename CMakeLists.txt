@@ -76,7 +76,8 @@ set(SOURCE_FILES
         src/core/models/ListModelBase.cpp
         include/core/models/ListModelBase.h
         src/core/models/ELFIssueListModel.cpp
-        include/core/models/ELFIssueListModel.h)
+        include/core/models/ELFIssueListModel.h
+        include/core/models/ModelHelpers.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

@@ -15,7 +15,7 @@ PESplitView {
     ColumnLayout {
         id: elfHeaderColumn
         Layout.fillHeight: true
-        width: 250
+        width: 400
         spacing: 0
 
         PEToolBar {
@@ -32,10 +32,14 @@ PESplitView {
             Layout.fillHeight: true
             clip: true
 
-            HeaderEditTable {
-                id: headerEditTable
-                headerModel: elfModel.header
+            ColumnLayout {
                 width: Math.max(150, scroll.availableWidth)
+
+                HeaderEditTable {
+                    id: headerEditTable
+                    headerModel: elfModel.header
+                    Layout.fillWidth: true
+                }
             }
         }
     }
@@ -43,27 +47,13 @@ PESplitView {
     ColumnLayout {
         id: sectionHeaderColumn
         Layout.fillHeight: true
-        width: 250
-
-        PEToolBar {
-            Layout.fillWidth: true
-
-            PEToolBarText {
-                text: "Section header"
-            }
-        }
-    }
-
-    ColumnLayout {
-        id: sectionsColumn
-        Layout.fillHeight: true
         Layout.fillWidth: true
 
         PEToolBar {
             Layout.fillWidth: true
 
             PEToolBarText {
-                text: "Sections"
+                text: "Section header"
             }
         }
     }

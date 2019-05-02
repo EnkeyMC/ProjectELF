@@ -6,9 +6,9 @@
 
 #include "core/models/ELFHeaderModelItem.h"
 #include "core/ELFValueConverter.h"
-#include "core/models/ELFModel.h"
 
 #define DEFAULT(x) if (elf->get_header() == nullptr) return x
+#define ELF_STRUCT elf->get_header()
 
 ELFHeaderModelItem::ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
     : ELFModelItem(parent, std::move(elf)),
@@ -35,88 +35,22 @@ ELFHeaderModelItem::~ELFHeaderModelItem() {
     delete programHeaderTableModelItem;
 }
 
-HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, type, Type, elf->get_header(), e_type, elf::Elf_Half)
-HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, machine, Machine, elf->get_header(), e_machine, elf::Elf_Half)
-HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, version, Version, elf->get_header(), e_version, elf::Elf_Word)
-
-
-QString ELFHeaderModelItem::getEntry() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_entry(), HEX);
-}
-
-QString ELFHeaderModelItem::getPhoff() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_phoff(), HEX);
-}
-
-QString ELFHeaderModelItem::getShoff() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shoff(), HEX);
-}
-
-QString ELFHeaderModelItem::getFlags() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_flags(), HEX);
-}
-
-QString ELFHeaderModelItem::getEhsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_ehsize(), HEX);
-}
-
-QString ELFHeaderModelItem::getPhentsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_phentsize(), HEX);
-}
-
-QString ELFHeaderModelItem::getPhnum() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_phnum(), HEX);
-}
-
-QString ELFHeaderModelItem::getShentsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shentsize(), HEX);
-}
-
-QString ELFHeaderModelItem::getShnum() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shnum(), HEX);
-}
-
-QString ELFHeaderModelItem::getShstrndx() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shstrndx(), HEX);
-}
-
-QString ELFHeaderModelItem::getDispType() const
-{
-    DEFAULT(QString());
-    return ELFValueConverter::eTypeToDisp(elf->get_header()->get_e_type());
-}
-
-QString ELFHeaderModelItem::getDispMachine() const
-{
-    DEFAULT(QString());
-    return ELFValueConverter::eMachineToDisp(elf->get_header()->get_e_machine());
-}
-
-QString ELFHeaderModelItem::getDispVersion() const
-{
-    DEFAULT(QString());
-    return ELFValueConverter::eVersionToDisp(elf->get_header()->get_e_version());
-}
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, type, Type, ELF_STRUCT, e_type, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, machine, Machine, ELF_STRUCT, e_machine, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, version, Version, ELF_STRUCT, e_version, elf::Elf_Word)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, entry, Entry, ELF_STRUCT, e_entry, elf::Elf64_Addr)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, phoff, Phoff, ELF_STRUCT, e_phoff, elf::Elf64_Off)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shoff, Shoff, ELF_STRUCT, e_shoff, elf::Elf64_Off)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, flags, Flags, ELF_STRUCT, e_flags, elf::Elf_Word)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, ehsize, Ehsize, ELF_STRUCT, e_ehsize, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, phentsize, Phentsize, ELF_STRUCT, e_phentsize, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, phnum, Phnum, ELF_STRUCT, e_phnum, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shentsize, Shentsize, ELF_STRUCT, e_shentsize, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shnum, Shnum, ELF_STRUCT, e_shnum, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shstrndx, Shstrndx, ELF_STRUCT, e_shstrndx, elf::Elf_Half)
+HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Type, ELF_STRUCT, e_type, eTypeToDisp)
+HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Machine, ELF_STRUCT, e_machine, eMachineToDisp)
+HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Version, ELF_STRUCT, e_version, eVersionToDisp)
 
 QString ELFHeaderModelItem::getDispEntry() const
 {
@@ -172,66 +106,6 @@ QString ELFHeaderModelItem::getDispShstrndx() const
 {
     DEFAULT(QString());
     return QString::number(elf->get_header()->get_e_shstrndx());
-}
-
-void ELFHeaderModelItem::setEntry(QString hexValue)
-{
-    elf->get_header()->set_e_entry(static_cast<elf::Elf64_Addr>(hexValue.toUInt(nullptr, HEX)));
-    emit entryChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setPhoff(QString hexValue)
-{
-    elf->get_header()->set_e_phoff(static_cast<elf::Elf64_Off>(hexValue.toUInt(nullptr, HEX)));
-    emit phoffChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setShoff(QString hexValue)
-{
-    elf->get_header()->set_e_shoff(static_cast<elf::Elf64_Off>(hexValue.toUInt(nullptr, HEX)));
-    emit shoffChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setFlags(QString hexValue)
-{
-    elf->get_header()->set_e_flags(static_cast<elf::Elf_Word>(hexValue.toUInt(nullptr, HEX)));
-    emit flagsChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setEhsize(QString hexValue)
-{
-    elf->get_header()->set_e_ehsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit ehsizeChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setPhentsize(QString hexValue)
-{
-    elf->get_header()->set_e_phentsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit phentsizeChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setPhnum(QString hexValue)
-{
-    elf->get_header()->set_e_phnum(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit phnumChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setShentsize(QString hexValue)
-{
-    elf->get_header()->set_e_shentsize(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit shentsizeChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setShnum(QString hexValue)
-{
-    elf->get_header()->set_e_shnum(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit shnumChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setShstrndx(QString hexValue)
-{
-    elf->get_header()->set_e_shstrndx(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit shstrndxChanged(hexValue);
 }
 
 ELFSectionHeaderTableModelItem *ELFHeaderModelItem::getSectionHeaderTable() const

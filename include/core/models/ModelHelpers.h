@@ -15,16 +15,23 @@
 #define HEX_ELF_PROP_GET_GETBYTES_SET(_class, name, capitalizedName, elfStruct, elfName, elfType) \
     QString _class::get##capitalizedName() const { \
         if (elfStruct == nullptr) return QString(); \
-        return QString::number(elfStruct->get_##elfName(), 16).rightJustified(elfStruct->get_sizeof_##elfName(), '0'); \
+        return QString::number(elfStruct->get_##elfName(), 16).rightJustified(static_cast<int>(elfStruct->get_sizeof_##elfName()*2), '0'); \
     } \
     unsigned _class::get##capitalizedName##ByteSize() const { \
         if (elfStruct == nullptr) return 0; \
         return elfStruct->get_sizeof_##elfName(); \
     } \
     void _class::set##capitalizedName(QString hexValue) { \
+        if (hexValue == get##capitalizedName()) return; \
         elfStruct->set_##elfName(static_cast<elfType>(hexValue.toUInt(nullptr, 16))); \
         emit name##Changed(hexValue); \
-        this->getModel()->setModified(true); \
+        emit dataChanged(); \
+    }
+
+#define HEX_ELF_PROP_GETDISP_W_CONVERTER(_class, capitalizedName, elfStruct, elfName, converterFunc) \
+    QString _class::getDisp##capitalizedName() const { \
+        if (elfStruct == nullptr) return QString(); \
+        return ELFValueConverter::converterFunc(elfStruct->get_##elfName()); \
     }
 
 #endif // MODELHELPERS_H

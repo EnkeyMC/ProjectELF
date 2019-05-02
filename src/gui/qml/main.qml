@@ -64,18 +64,8 @@ ApplicationWindow {
             }
 
             MenuPrimary {
-                title: qsTr("&Edit")
-                Action { text: qsTr("Cu&t") }
-                Action { text: qsTr("&Copy") }
-                Action { text: qsTr("&Paste") }
-            }
-            MenuPrimary {
                 title: qsTr("&Help")
                 Action { text: qsTr("&About") }
-                MenuPrimary {
-                    title: "ASfgs"
-                    Action { text: "AS" }
-                }
             }
         }
 

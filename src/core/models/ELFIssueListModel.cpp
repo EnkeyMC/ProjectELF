@@ -33,7 +33,6 @@ QVariant ELFIssueListModel::getData(int idx, int role) const {
 }
 
 ELFIssueListModel &ELFIssueListModel::operator=(const elf::ELFIssuesBySeverity &issues) {
-    qDebug() << "reloading " << issues.size();
     if (!this->issues.get_issues().empty()) {
         emit beginRemoveRows(QModelIndex(), 0, this->issues.get_issues().size() - 1);
         this->issues.clear();

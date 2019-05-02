@@ -7,7 +7,7 @@
 
 #define DEFAULT(x) if (elf == nullptr) return x
 
-ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr), modified(false), issueListModel()
+ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr), issueListModel(), modified(false)
 {
 
 }
@@ -16,6 +16,7 @@ ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent) : ModelBase(p
     this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
     this->reloadIssues();
     connect(this, &ELFModel::modifiedChanged, this, &ELFModel::reloadIssues);
+    connect(this->headerModelItem, &ELFHeaderModelItem::dataChanged, [=]() {this->setModified(true);});
 }
 
 ELFModel::~ELFModel() {
