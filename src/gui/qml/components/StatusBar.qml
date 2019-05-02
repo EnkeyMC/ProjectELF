@@ -28,8 +28,9 @@ Rectangle {
             Layout.fillHeight: true
             text: qsTr("Issues")
             badgeText: issueListView.count
-            badgeColor: Style._ColorError
+            badgeColor: Qt.darker(Style._ColorAccent, 1.3)
             badgeTextColor: Style._ColorTextLight
+            checked: dropdown.open
 
             onClicked: dropdown.toggle();
 

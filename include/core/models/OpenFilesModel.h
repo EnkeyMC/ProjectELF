@@ -6,7 +6,6 @@
 
 typedef struct {
     QString filepath;
-    bool changed;
     ELFModel *elfModel;
 } OpenFile;
 
@@ -20,7 +19,7 @@ public:
         FilenameRole = Qt::UserRole + 1,
         FilepathRole,
         DisplayNameRole,
-        ChangedRole,
+        ModifiedRole,
         ELFModelRole
     };
 

@@ -6,6 +6,7 @@
 
 #include "core/models/ELFHeaderModelItem.h"
 #include "core/ELFValueConverter.h"
+#include "core/models/ELFModel.h"
 
 #define DEFAULT(x) if (elf->get_header() == nullptr) return x
 
@@ -34,23 +35,10 @@ ELFHeaderModelItem::~ELFHeaderModelItem() {
     delete programHeaderTableModelItem;
 }
 
-QString ELFHeaderModelItem::getType() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_type(), HEX);
-}
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, type, Type, elf->get_header(), e_type, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, machine, Machine, elf->get_header(), e_machine, elf::Elf_Half)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, version, Version, elf->get_header(), e_version, elf::Elf_Word)
 
-QString ELFHeaderModelItem::getMachine() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_machine(), HEX);
-}
-
-QString ELFHeaderModelItem::getVersion() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_version(), HEX);
-}
 
 QString ELFHeaderModelItem::getEntry() const
 {
@@ -184,24 +172,6 @@ QString ELFHeaderModelItem::getDispShstrndx() const
 {
     DEFAULT(QString());
     return QString::number(elf->get_header()->get_e_shstrndx());
-}
-
-void ELFHeaderModelItem::setType(QString hexValue)
-{
-    elf->get_header()->set_e_type(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setMachine(QString hexValue)
-{
-    elf->get_header()->set_e_machine(static_cast<elf::Elf_Half>(hexValue.toUInt(nullptr, HEX)));
-    emit typeChanged(hexValue);
-}
-
-void ELFHeaderModelItem::setVersion(QString hexValue)
-{
-    elf->get_header()->set_e_version(static_cast<elf::Elf_Word>(hexValue.toUInt(nullptr, HEX)));
-    emit versionChanged(hexValue);
 }
 
 void ELFHeaderModelItem::setEntry(QString hexValue)

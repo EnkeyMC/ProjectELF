@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import projectelf.models 1.0
 
 import "../singletons"
 import "../controls"
@@ -9,7 +10,7 @@ PESplitView {
     id: viewEdit
     orientation: Qt.Horizontal
 
-    property QtObject elfModel
+    property ELFModel elfModel
 
     ColumnLayout {
         id: elfHeaderColumn
@@ -31,43 +32,10 @@ PESplitView {
             Layout.fillHeight: true
             clip: true
 
-            PEExpandablePane {
-                title: "Expandable"
+            HeaderEditTable {
+                id: headerEditTable
+                headerModel: elfModel.header
                 width: Math.max(150, scroll.availableWidth)
-
-                PETable {
-                    id: table
-                    columns: 2
-                    width: parent.width
-
-                    PETableHeader {
-                        text: "Key"
-                    }
-
-                    PETableHeader {
-                        text: "Value"
-                    }
-
-                    PETableCell {
-                        Text {
-                            text: "Key1"
-                        }
-                    }
-
-                    PETableEditableCell {
-                        placeholderText: "editable cell"
-                    }
-
-                    PETableCell {
-                        Text {
-                            text: "Key2"
-                        }
-                    }
-
-                    PETableEditableCell {
-                        placeholderText: "editable cell"
-                    }
-                }
             }
         }
     }

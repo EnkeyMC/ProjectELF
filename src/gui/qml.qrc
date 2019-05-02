@@ -35,5 +35,6 @@
         <file>qml/controls/PEBadge.qml</file>
         <file>qml/controls/PEDropdown.qml</file>
         <file>qml/components/IssueItem.qml</file>
+        <file>qml/components/HeaderEditTable.qml</file>
     </qresource>
 </RCC>

@@ -27,6 +27,7 @@ class ELFModel : public ModelBase {
 
     Q_PROPERTY(ELFHeaderModelItem* header READ getHeader NOTIFY headerChanged)
     Q_PROPERTY(ELFIssueListModel* issueListModel READ getIssues NOTIFY issuesChanged)
+    Q_PROPERTY(bool modified READ isModified WRITE setModified NOTIFY modifiedChanged)
 
     Q_PROPERTY(QString dispMag0         READ getDispMag0            NOTIFY mag0Changed)
     Q_PROPERTY(QString dispMag1         READ getDispMag1            NOTIFY mag1Changed)
@@ -82,6 +83,10 @@ public:
     Q_INVOKABLE void reloadIssues();
     ELFIssueListModel *getIssues();
 
+    bool isModified() const;
+
+    void setModified(bool modified);
+
 signals:
     void mag0Changed(QString);
     void mag1Changed(QString);
@@ -95,12 +100,14 @@ signals:
 
     void headerChanged(ELFHeaderModelItem *);
     void issuesChanged(ELFIssueListModel *);
+    void modifiedChanged(bool modified);
 
 protected:
     ELFHeaderModelItem *headerModelItem;
 
     std::shared_ptr<elf::ELF> elf;
     ELFIssueListModel issueListModel;
+    bool modified;
 };
 
 

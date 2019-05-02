@@ -9,15 +9,16 @@
 #include <ELFHeader.h>
 
 #include "core/models/ELFModelItem.h"
+#include "core/models/ModelHelpers.h"
 #include "core/models/ELFSectionHeaderTableModelItem.h"
 #include "core/models/ELFProgramHeaderTableModelItem.h"
 
 class ELFHeaderModelItem : public ELFModelItem {
     Q_OBJECT
 
-    Q_PROPERTY(QString type         READ getType        WRITE setType       NOTIFY typeChanged)
-    Q_PROPERTY(QString machine      READ getMachine     WRITE setMachine    NOTIFY machineChanged)
-    Q_PROPERTY(QString version      READ getVersion     WRITE setVersion    NOTIFY versionChanged)
+    HEX_ELF_PROP_DECL(type, Type)
+    HEX_ELF_PROP_DECL(machine, Machine)
+    HEX_ELF_PROP_DECL(version, Version)
     Q_PROPERTY(QString entry        READ getEntry       WRITE setEntry      NOTIFY entryChanged)
     Q_PROPERTY(QString phoff        READ getPhoff       WRITE setPhoff      NOTIFY phoffChanged)
     Q_PROPERTY(QString shoff        READ getShoff       WRITE setShoff      NOTIFY shoffChanged)
@@ -29,9 +30,6 @@ class ELFHeaderModelItem : public ELFModelItem {
     Q_PROPERTY(QString shnum        READ getShnum       WRITE setShnum      NOTIFY shnumChanged)
     Q_PROPERTY(QString shstrndx     READ getShstrndx    WRITE setShstrndx   NOTIFY shstrndxChanged)
 
-    Q_PROPERTY(QString dispType         READ getDispType        NOTIFY typeChanged)
-    Q_PROPERTY(QString dispMachine      READ getDispMachine     NOTIFY machineChanged)
-    Q_PROPERTY(QString dispVersion      READ getDispVersion     NOTIFY versionChanged)
     Q_PROPERTY(QString dispEntry        READ getDispEntry       NOTIFY entryChanged)
     Q_PROPERTY(QString dispPhoff        READ getDispPhoff       NOTIFY phoffChanged)
     Q_PROPERTY(QString dispShoff        READ getDispShoff       NOTIFY shoffChanged)
@@ -50,9 +48,6 @@ public:
 
     ~ELFHeaderModelItem() override;
 
-    QString getType() const;
-    QString getMachine() const;
-    QString getVersion() const;
     QString getEntry() const;
     QString getPhoff() const;
     QString getShoff() const;
@@ -64,9 +59,6 @@ public:
     QString getShnum() const;
     QString getShstrndx() const;
 
-    QString getDispType() const;
-    QString getDispMachine() const;
-    QString getDispVersion() const;
     QString getDispEntry() const;
     QString getDispPhoff() const;
     QString getDispShoff() const;
@@ -78,9 +70,6 @@ public:
     QString getDispShnum() const;
     QString getDispShstrndx() const;
 
-    void setType(QString hexValue);
-    void setMachine(QString hexValue);
-    void setVersion(QString hexValue);
     void setEntry(QString hexValue);
     void setPhoff(QString hexValue);
     void setShoff(QString hexValue);
@@ -96,9 +85,6 @@ public:
     ELFProgramHeaderTableModelItem *getProgramHeaderTable() const;
 
 signals:
-    void typeChanged(QString hexValue);
-    void machineChanged(QString hexValue);
-    void versionChanged(QString hexValue);
     void entryChanged(QString hexValue);
     void phoffChanged(QString hexValue);
     void shoffChanged(QString hexValue);

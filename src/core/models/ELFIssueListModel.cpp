@@ -4,6 +4,7 @@
 
 #include "core/models/ELFIssueListModel.h"
 #include "core/ELFIssueConverter.h"
+#include <QDebug>
 
 ELFIssueListModel::ELFIssueListModel(QObject *parent) : ListModelBase(parent) {
 
@@ -32,13 +33,14 @@ QVariant ELFIssueListModel::getData(int idx, int role) const {
 }
 
 ELFIssueListModel &ELFIssueListModel::operator=(const elf::ELFIssuesBySeverity &issues) {
-    if (this->issues.get_issues().size() > 0) {
+    qDebug() << "reloading " << issues.size();
+    if (!this->issues.get_issues().empty()) {
         emit beginRemoveRows(QModelIndex(), 0, this->issues.get_issues().size() - 1);
         this->issues.clear();
         emit endRemoveRows();
     }
 
-    if (issues.get_issues().size() > 0) {
+    if (!issues.get_issues().empty()) {
         emit beginInsertRows(QModelIndex(), 0, issues.get_issues().size() - 1);
         this->issues = issues;
         emit endInsertRows();

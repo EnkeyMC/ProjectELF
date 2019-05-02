@@ -47,8 +47,15 @@ void OpenFilesModel::openFile(QString filepath)
     auto *model = new ELFModel(elf, this);
 
     int index = openFileList.size();
+    connect(model, &ELFModel::modifiedChanged, [=]() {
+        emit dataChanged(
+                this->index(0, 0, QModelIndex()),
+                this->index(openFileList.size() - 1, 0, QModelIndex()),
+                QVector<int>() << ModifiedRole
+        );
+    });
     emit beginInsertRows(QModelIndex(), index, index);
-    openFileList.append({filepath, false, model});
+    openFileList.append({filepath, model});
     emit endInsertRows();
     emit fileOpened(index);
 }
@@ -64,7 +71,7 @@ QHash<int, QByteArray> OpenFilesModel::roleNames() const
     names[FilenameRole] = "filename";
     names[FilepathRole] = "filepath";
     names[DisplayNameRole] = "displayName";
-    names[ChangedRole] = "changed";
+    names[ModifiedRole] = "changed";
     names[ELFModelRole] = "elfModel";
     return names;
 }
@@ -85,8 +92,8 @@ QVariant OpenFilesModel::getData(int idx, int role) const {
     switch (role) {
         case FilenameRole:
             return QVariant(this->getFilenameFromPath(item.filepath));
-        case ChangedRole:
-            return QVariant(item.changed);
+        case ModifiedRole:
+            return QVariant(item.elfModel->isModified());
         case DisplayNameRole:
             return QVariant(this->getDisplayName(idx));
         case FilepathRole:
