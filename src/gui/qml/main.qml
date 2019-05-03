@@ -14,6 +14,8 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+    minimumWidth: 600
+    minimumHeight: 480
     title: "ProjectELF"
 
     Dialogs.FileDialog {

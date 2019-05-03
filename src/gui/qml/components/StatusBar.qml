@@ -41,32 +41,40 @@ Rectangle {
                 width: 200
                 color: Style._ColorPrimaryDark
 
-                ListView {
-                    id: issueListView
-                    model: statusBar.issueListModel
+                Pane {
+                    padding: 1
                     anchors.fill: parent
-                    clip: true
-                    spacing: 1
-                    boundsBehavior: Flickable.StopAtBounds
-                    boundsMovement: Flickable.StopAtBounds
-                    ScrollBar.vertical: ScrollBar{}
-
-                    header: Label {
-                        padding: 10
-                        text: "No issues"
-                        color: Qt.darker(Style._ColorTextLight, 1.3)
-                        visible: issueListView.count == 0
-                        height: issueListView.count == 0 ? contentHeight + 2*padding : 0
-                        width: parent.width
-
-                        background: Rectangle {
-                            color: Style._ColorSecondaryDark
-                        }
+                    background: Rectangle {
+                        color: dropdown.color
                     }
 
-                    delegate: IssueItem {
-                        width: parent.width
-                        issueModel: model
+                    ListView {
+                        id: issueListView
+                        model: statusBar.issueListModel
+                        anchors.fill: parent
+                        clip: true
+                        spacing: 1
+                        boundsBehavior: Flickable.StopAtBounds
+                        boundsMovement: Flickable.StopAtBounds
+                        ScrollBar.vertical: ScrollBar{}
+
+                        header: Label {
+                            padding: 10
+                            text: "No issues"
+                            color: Qt.darker(Style._ColorTextLight, 1.3)
+                            visible: issueListView.count == 0
+                            height: issueListView.count == 0 ? contentHeight + 2*padding : 0
+                            width: parent.width
+
+                            background: Rectangle {
+                                color: Style._ColorSecondaryDark
+                            }
+                        }
+
+                        delegate: IssueItem {
+                            width: parent.width
+                            issueModel: model
+                        }
                     }
                 }
             }

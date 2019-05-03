@@ -36,5 +36,11 @@
         <file>qml/controls/PEDropdown.qml</file>
         <file>qml/components/IssueItem.qml</file>
         <file>qml/components/HeaderEditTable.qml</file>
+        <file>qml/components/IdentificationEditTable.qml</file>
+        <file>qml/components/SectionHeadersEdit.qml</file>
+        <file>qml/controls/PEToolBarButton.qml</file>
+        <file>qml/components/SectionHeaderEditTable.qml</file>
+        <file>qml/components/ProgramHeadersEdit.qml</file>
+        <file>qml/components/ProgramHeaderEditTable.qml</file>
     </qresource>
 </RCC>

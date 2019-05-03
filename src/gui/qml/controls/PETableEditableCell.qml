@@ -8,11 +8,13 @@ import "../controls"
 PETableCell {
     id: tableEditableCell
     Layout.minimumWidth: rowLayout.childrenRect.width + leftPadding + rightPadding
+    Layout.fillHeight: true
     topPadding: 0
     bottomPadding: 0
-    height: rowLayout.height
 
     property alias text: textField.text
+//    property alias dispText: dispText.text
+    property string dispText: ""
     property int byteSize: 0
 
     signal editingFinished()
@@ -21,26 +23,32 @@ PETableCell {
         id: rowLayout
         width: tableEditableCell.width
         spacing: 0
+        height: parent.height
 
         Text {
             text: "0x"
             verticalAlignment: Qt.AlignVCenter
             height: rowLayout.height
             font.family: "Courier"
+            font.pixelSize: Style._DefaultFontSize
             color: "gray"
         }
 
         TextField {
             id: textField
-            padding: 5
+            padding: 0
+            verticalAlignment: Qt.AlignVCenter
+            height: rowLayout.height
             maximumLength: byteSize*2
             inputMask: "H".repeat(byteSize*2)
             font.family: "Courier"
+            font.pixelSize: Style._DefaultFontSize
+            selectByMouse: true
 
             onEditingFinished: tableEditableCell.editingFinished()
 
             background: Rectangle {
-                implicitHeight: 20
+                implicitHeight: 10
             }
         }
     }

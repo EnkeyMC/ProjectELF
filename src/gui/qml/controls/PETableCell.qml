@@ -13,7 +13,7 @@ Pane {
     rightPadding: 10
 
     Layout.fillWidth: true
-    Layout.minimumWidth: 100
+    Layout.minimumWidth: contentWidth + leftPadding + rightPadding
 
     background: Rectangle {
         color: Qt.lighter(Style._ColorPrimaryLight)

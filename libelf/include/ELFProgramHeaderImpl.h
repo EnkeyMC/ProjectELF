@@ -35,12 +35,12 @@ public:
 
     ELFIO_GET_SET_SIZE_ACCESS(Elf_Word, p_type, header.p_type);
     ELFIO_GET_SET_SIZE_ACCESS(Elf_Word, p_flags, header.p_flags);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Off , p_offset, header.p_offset);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Addr , p_vaddr, header.p_vaddr);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Addr , p_paddr, header.p_paddr);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword , p_filesz, header.p_filesz);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword , p_memsz, header.p_memsz);
-    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword , p_align, header.p_align);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Off, p_offset, header.p_offset);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Addr, p_vaddr, header.p_vaddr);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf64_Addr, p_paddr, header.p_paddr);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword, p_filesz, header.p_filesz);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword, p_memsz, header.p_memsz);
+    ELFIO_GET_SET_SIZE_ACCESS(Elf_Xword, p_align, header.p_align);
 
 protected:
     T header;

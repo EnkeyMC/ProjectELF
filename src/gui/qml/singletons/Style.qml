@@ -18,6 +18,8 @@ QtObject {
     readonly property color _ColorTextLight: "#FFFFFF"
     readonly property color _ColorTextDark: "#000000"
 
+    readonly property int _DefaultFontSize: 13
+
     readonly property DiagramStyle _DiagramStyle: DiagramStyle {}
 
     readonly property QtObject mainMenuBar: QtObject {

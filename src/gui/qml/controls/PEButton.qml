@@ -6,7 +6,13 @@ import "../singletons"
 Button {
     id: button
 
+    property color bgrColor: Style._ColorPrimaryDark
+    property color bgrHoveredColor: Qt.darker(Style._ColorAccent, 1.1)
+    property color bgrCheckedColor: Style._ColorAccent
+    property alias color: buttonText.color
+
     contentItem: Text {
+        id: buttonText
         text: button.text
         font.pixelSize: Style.button._FontSize
         color: Style._ColorTextLight
@@ -20,14 +26,14 @@ Button {
         color: (button.down ||
                button.checked)
             ?
-                   Style._ColorAccent
+                   button.bgrCheckedColor
             :
                (button.highlighted ||
                button.visualFocus ||
                button.hovered)
             ?
-                   Qt.darker(Style._ColorAccent, 1.1)
+                   button.bgrHoveredColor
             :
-                   Style._ColorPrimaryDark
+                   button.bgrColor
     }
 }
