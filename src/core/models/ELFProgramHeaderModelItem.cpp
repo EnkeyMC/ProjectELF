@@ -23,7 +23,6 @@ ELFSegmentModelItem *ELFProgramHeaderModelItem::getSegmentModelItem() const
 {
     return this->segmentModelItem;
 }
-
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, type, Type, ELF_STRUCT, p_type, elf::Elf_Word)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, flags, Flags, ELF_STRUCT, p_flags, elf::Elf_Word)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, offset, Offset, ELF_STRUCT, p_offset, elf::Elf64_Off)

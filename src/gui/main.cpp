@@ -30,6 +30,10 @@ void registerCustomQMLTypes() {
             (NMSPC_MODELS, 1, 0, "ELFSectionModelItem", UNCREATABLE_MSG);
     qmlRegisterUncreatableType<ELFSegmentModelItem>
             (NMSPC_MODELS, 1, 0, "ELFSegmentModelItem", UNCREATABLE_MSG);
+    qmlRegisterUncreatableType<ELFProgramHeaderListModel>
+            (NMSPC_MODELS, 1, 0, "ELFProgramHeaderListModel", UNCREATABLE_MSG);
+    qmlRegisterUncreatableType<ELFSectionHeaderListModel>
+            (NMSPC_MODELS, 1, 0, "ELFSectionHeaderListModel", UNCREATABLE_MSG);
 
     qmlRegisterType<OpenFilesModel>(NMSPC_MODELS, 1, 0, "OpenFilesModel");
 }

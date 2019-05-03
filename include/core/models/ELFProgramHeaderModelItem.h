@@ -21,7 +21,7 @@ class ELFProgramHeaderModelItem : public ELFIndexedModelItem {
     HEX_ELF_PROP_DECL(memsz, Memsz)
     HEX_ELF_PROP_DECL(align, Align)
 public:
-    explicit ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
+    ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 
     ~ELFProgramHeaderModelItem() override;
 
@@ -31,6 +31,5 @@ private:
     ELFSegmentModelItem *segmentModelItem;
 
 };
-
 
 #endif //PROJECTELF_ELFPROGRAMHEADERMODELITEM_H

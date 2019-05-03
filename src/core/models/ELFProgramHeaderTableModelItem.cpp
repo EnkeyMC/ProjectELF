@@ -11,20 +11,25 @@ ELFProgramHeaderTableModelItem::ELFProgramHeaderTableModelItem(ELFModel *parent,
     auto segmentCount = header->get_e_phnum();
     sizeInFile = segmentCount * header->get_e_phoff();
     addressInFile = header->get_e_phoff();
+    listModel = new ELFProgramHeaderListModel(this);
+    emit listModelChanged();
 
     for (unsigned i = 0; i < segmentCount; i++) {
         auto programHeaderModel = new ELFProgramHeaderModelItem(parent, this->elf, i);
-        programHeaderModelItems.push_back(programHeaderModel);
+        listModel->add(programHeaderModel);
         connect(programHeaderModel, &ELFProgramHeaderModelItem::dataChanged, this, &ELFProgramHeaderTableModelItem::dataChanged);
     }
 }
 
 ELFProgramHeaderTableModelItem::~ELFProgramHeaderTableModelItem() {
-    for (auto programHeaderModelItem : this->programHeaderModelItems)
-        delete programHeaderModelItem;
+    delete listModel;
 }
 
 const std::vector<ELFProgramHeaderModelItem *> &ELFProgramHeaderTableModelItem::getProgramHeaders() const
 {
-    return programHeaderModelItems;
+    return listModel->getProgramHeaderModelItems();
+}
+
+ELFProgramHeaderListModel *ELFProgramHeaderTableModelItem::getListModel() const {
+    return listModel;
 }

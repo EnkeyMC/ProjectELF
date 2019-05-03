@@ -77,7 +77,7 @@ set(SOURCE_FILES
         include/core/models/ListModelBase.h
         src/core/models/ELFIssueListModel.cpp
         include/core/models/ELFIssueListModel.h
-        include/core/models/ModelHelpers.h)
+        include/core/models/ModelHelpers.h src/core/models/ELFProgramHeaderListModel.cpp include/core/models/ELFProgramHeaderListModel.h src/core/models/ELFSectionHeaderListModel.cpp include/core/models/ELFSectionHeaderListModel.h)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
