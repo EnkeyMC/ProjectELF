@@ -7,12 +7,23 @@
 
 #include "core/models/ELFIndexedModelItem.h"
 #include "core/models/ELFSegmentModelItem.h"
+#include "core/models/ModelHelpers.h"
 
 class ELFProgramHeaderModelItem : public ELFIndexedModelItem {
+    Q_OBJECT
+
+    HEX_ELF_PROP_DECL(type, Type)
+    HEX_ELF_PROP_DECL(flags, Flags)
+    HEX_ELF_PROP_DECL(offset, Offset)
+    HEX_ELF_PROP_DECL(vaddr, Vaddr)
+    HEX_ELF_PROP_DECL(paddr, Paddr)
+    HEX_ELF_PROP_DECL(filesz, Filesz)
+    HEX_ELF_PROP_DECL(memsz, Memsz)
+    HEX_ELF_PROP_DECL(align, Align)
 public:
     explicit ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 
-    virtual ~ELFProgramHeaderModelItem();
+    ~ELFProgramHeaderModelItem() override;
 
     ELFSegmentModelItem *getSegmentModelItem() const;
 

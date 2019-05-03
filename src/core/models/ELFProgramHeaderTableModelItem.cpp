@@ -13,7 +13,9 @@ ELFProgramHeaderTableModelItem::ELFProgramHeaderTableModelItem(ELFModel *parent,
     addressInFile = header->get_e_phoff();
 
     for (unsigned i = 0; i < segmentCount; i++) {
-        programHeaderModelItems.push_back(new ELFProgramHeaderModelItem(parent, this->elf, i));
+        auto programHeaderModel = new ELFProgramHeaderModelItem(parent, this->elf, i);
+        programHeaderModelItems.push_back(programHeaderModel);
+        connect(programHeaderModel, &ELFProgramHeaderModelItem::dataChanged, this, &ELFProgramHeaderTableModelItem::dataChanged);
     }
 }
 

@@ -9,8 +9,6 @@
 #include <ELF.h>
 #include <memory>
 
-#define HEX 16
-
 class ELFModel;
 
 class ELFModelItem : public QObject {
@@ -24,6 +22,9 @@ public:
     uint64_t getSizeInFile() const;
 
     ELFModel * getModel() const;
+
+signals:
+    void dataChanged();
 
 protected:
     std::shared_ptr<elf::ELF> elf;

@@ -52,6 +52,16 @@ public:
     unsigned char get_ei_osabi() const;
     unsigned char get_ei_abiversion() const;
 
+    size_t get_sizeof_ei_mag0() const;
+    size_t get_sizeof_ei_mag1() const;
+    size_t get_sizeof_ei_mag2() const;
+    size_t get_sizeof_ei_mag3() const;
+    size_t get_sizeof_ei_class() const;
+    size_t get_sizeof_ei_data() const;
+    size_t get_sizeof_ei_version() const;
+    size_t get_sizeof_ei_osabi() const;
+    size_t get_sizeof_ei_abiversion() const;
+
     void set_ei_mag0(unsigned char value);
     void set_ei_mag1(unsigned char value);
     void set_ei_mag2(unsigned char value);

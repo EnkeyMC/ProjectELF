@@ -4,6 +4,8 @@
 
 #include "core/models/ELFProgramHeaderModelItem.h"
 
+#define ELF_STRUCT elf->get_program_headers()[index]
+
 ELFProgramHeaderModelItem::ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
     : ELFIndexedModelItem(parent, std::move(elf), index), segmentModelItem(nullptr)
 {
@@ -21,3 +23,21 @@ ELFSegmentModelItem *ELFProgramHeaderModelItem::getSegmentModelItem() const
 {
     return this->segmentModelItem;
 }
+
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, type, Type, ELF_STRUCT, p_type, elf::Elf_Word)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, flags, Flags, ELF_STRUCT, p_flags, elf::Elf_Word)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, offset, Offset, ELF_STRUCT, p_offset, elf::Elf64_Off)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, vaddr, Vaddr, ELF_STRUCT, p_vaddr, elf::Elf64_Addr)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, paddr, Paddr, ELF_STRUCT, p_paddr, elf::Elf64_Addr)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, filesz, Filesz, ELF_STRUCT, p_filesz, elf::Elf_Xword)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, memsz, Memsz, ELF_STRUCT, p_memsz, elf::Elf_Xword)
+HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, align, Align, ELF_STRUCT, p_align, elf::Elf_Xword)
+
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Type)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Flags)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Offset)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Vaddr)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Paddr)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Filesz)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Memsz)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Align)

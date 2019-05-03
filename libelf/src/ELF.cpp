@@ -5,7 +5,19 @@
 #include "ELF.h"
 #include "ELFIssueException.h"
 
+#define SIZEOF_EI_FIELD(field) size_t ELF::get_sizeof_##field() const {return sizeof(unsigned char);}
+
 namespace elf {
+
+SIZEOF_EI_FIELD(ei_mag0)
+SIZEOF_EI_FIELD(ei_mag1)
+SIZEOF_EI_FIELD(ei_mag2)
+SIZEOF_EI_FIELD(ei_mag3)
+SIZEOF_EI_FIELD(ei_class)
+SIZEOF_EI_FIELD(ei_data)
+SIZEOF_EI_FIELD(ei_version)
+SIZEOF_EI_FIELD(ei_osabi)
+SIZEOF_EI_FIELD(ei_abiversion)
 
 ELF::ELF() : file_size(0), header(nullptr) {}
 

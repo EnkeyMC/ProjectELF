@@ -43,7 +43,6 @@ public:
 signals:
     void sectionHeaderTableChanged(ELFSectionHeaderTableModelItem *value);
     void programHeaderTableChanged(ELFProgramHeaderTableModelItem *value);
-    void dataChanged();
 
 private:
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;

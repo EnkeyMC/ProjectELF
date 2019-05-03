@@ -24,10 +24,14 @@ ELFHeaderModelItem::ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::EL
 
     sizeInFile = header->get_size();
 
-    if (header->get_e_shoff() != 0)
+    if (header->get_e_shoff() != 0) {
         sectionHeaderTableModelItem = new ELFSectionHeaderTableModelItem(parent, this->elf);
-    if (header->get_e_phoff() != 0)
+        connect(sectionHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
+    }
+    if (header->get_e_phoff() != 0) {
         programHeaderTableModelItem = new ELFProgramHeaderTableModelItem(parent, this->elf);
+        connect(programHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
+    }
 }
 
 ELFHeaderModelItem::~ELFHeaderModelItem() {

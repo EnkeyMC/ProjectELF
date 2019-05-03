@@ -6,7 +6,7 @@
     Q_PROPERTY(QString disp##capitalizedName READ getDisp##capitalizedName NOTIFY name##Changed) \
     Q_PROPERTY(unsigned name##ByteSize READ get##capitalizedName##ByteSize CONSTANT) \
     public: QString get##capitalizedName(void) const; \
-            void set##capitalizedName(QString hexValue); \
+            void set##capitalizedName(const QString &hexValue); \
             QString getDisp##capitalizedName(void) const; \
             unsigned get##capitalizedName##ByteSize() const; \
     Q_SIGNALS: void name##Changed(QString hexValue); \
@@ -21,9 +21,9 @@
         if (elfStruct == nullptr) return 0; \
         return elfStruct->get_sizeof_##elfName(); \
     } \
-    void _class::set##capitalizedName(QString hexValue) { \
+    void _class::set##capitalizedName(const QString &hexValue) { \
         if (hexValue == get##capitalizedName()) return; \
-        elfStruct->set_##elfName(static_cast<elfType>(hexValue.toUInt(nullptr, 16))); \
+        elfStruct->set_##elfName(static_cast<elfType>(hexValue.toULongLong(nullptr, 16))); \
         emit name##Changed(hexValue); \
         emit dataChanged(); \
     }
@@ -32,6 +32,11 @@
     QString _class::getDisp##capitalizedName() const { \
         if (elfStruct == nullptr) return QString(); \
         return ELFValueConverter::converterFunc(elfStruct->get_##elfName()); \
+    }
+
+#define HEX_ELF_PROP_GETDISP_DEFAULT(_class, capitalizedName) \
+    QString _class::getDisp##capitalizedName() const { \
+        return QString("0x") + get##capitalizedName(); \
     }
 
 #endif // MODELHELPERS_H

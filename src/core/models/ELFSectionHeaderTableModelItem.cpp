@@ -15,7 +15,9 @@ ELFSectionHeaderTableModelItem::ELFSectionHeaderTableModelItem(ELFModel *parent,
     addressInFile = header->get_e_shoff();
 
     for (unsigned int i = 0; i < sectionCount; i++) {
-        sectionHeaderModelItems.push_back(new ELFSectionHeaderModelItem(parent, this->elf, i));
+        auto sectionHeaderModel = new ELFSectionHeaderModelItem(parent, this->elf, i);
+        sectionHeaderModelItems.push_back(sectionHeaderModel);
+        connect(sectionHeaderModel, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
     }
 }
 

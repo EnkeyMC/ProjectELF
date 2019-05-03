@@ -12,12 +12,16 @@
 #include "core/models/ELFProgramHeaderModelItem.h"
 
 class ELFProgramHeaderTableModelItem : public ELFModelItem {
+    Q_OBJECT
 public:
     explicit ELFProgramHeaderTableModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
     virtual ~ELFProgramHeaderTableModelItem();
 
     const std::vector<ELFProgramHeaderModelItem *> &getProgramHeaders() const;
+
+signals:
+    void dataChanged();
 
 private:
     std::vector<ELFProgramHeaderModelItem *> programHeaderModelItems;
