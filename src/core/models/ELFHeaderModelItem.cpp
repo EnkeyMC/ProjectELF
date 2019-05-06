@@ -56,61 +56,17 @@ HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Type, ELF_STRUCT, e_type, e
 HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Machine, ELF_STRUCT, e_machine, eMachineToDisp)
 HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Version, ELF_STRUCT, e_version, eVersionToDisp)
 
-QString ELFHeaderModelItem::getDispEntry() const
-{
-    return QString("0x") + this->getEntry();
-}
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Entry)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Phoff)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Shoff)
+HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Flags)
+HEX_ELF_PROP_GETDISP_BYTES(ELFHeaderModelItem, Ehsize, ELF_STRUCT, e_ehsize)
+HEX_ELF_PROP_GETDISP_BYTES(ELFHeaderModelItem, Phentsize, ELF_STRUCT, e_phentsize)
+HEX_ELF_PROP_GETDISP_DECIMAL(ELFHeaderModelItem, Phnum, ELF_STRUCT, e_phnum)
+HEX_ELF_PROP_GETDISP_BYTES(ELFHeaderModelItem, Shentsize, ELF_STRUCT, e_shentsize)
+HEX_ELF_PROP_GETDISP_DECIMAL(ELFHeaderModelItem, Shnum, ELF_STRUCT, e_shnum)
+HEX_ELF_PROP_GETDISP_DECIMAL(ELFHeaderModelItem, Shstrndx, ELF_STRUCT, e_shstrndx)
 
-QString ELFHeaderModelItem::getDispPhoff() const
-{
-    return QString("0x") + this->getPhoff();
-}
-
-QString ELFHeaderModelItem::getDispShoff() const
-{
-    return QString("0x") + this->getShoff();
-}
-
-QString ELFHeaderModelItem::getDispFlags() const
-{
-    return QString("0x") + this->getFlags();
-}
-
-QString ELFHeaderModelItem::getDispEhsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_ehsize());
-}
-
-QString ELFHeaderModelItem::getDispPhentsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_phentsize());
-}
-
-QString ELFHeaderModelItem::getDispPhnum() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_phnum());
-}
-
-QString ELFHeaderModelItem::getDispShentsize() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shentsize());
-}
-
-QString ELFHeaderModelItem::getDispShnum() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shnum());
-}
-
-QString ELFHeaderModelItem::getDispShstrndx() const
-{
-    DEFAULT(QString());
-    return QString::number(elf->get_header()->get_e_shstrndx());
-}
 
 ELFSectionHeaderTableModelItem *ELFHeaderModelItem::getSectionHeaderTable() const
 {
