@@ -75,7 +75,7 @@ ELFIssuesBySeverity ELF::find_issues() const
     ELFIssuesBySeverity issues;
 
     issues += find_e_ident_issues(this->e_ident);
-    issues += find_overlaping_sections();
+    issues += find_overlapping_sections();
     issues += find_string_section_issues();
     issues += header->find_issues();
 
@@ -214,7 +214,7 @@ ELFIssuesBySeverity ELF::find_e_ident_issues(const unsigned char *e_ident)
     return issues;
 }
 
-ELFIssuesBySeverity ELF::find_overlaping_sections() const {
+ELFIssuesBySeverity ELF::find_overlapping_sections() const {
     ELFIssuesBySeverity issues;
 
     for (auto section_header : section_headers) {
