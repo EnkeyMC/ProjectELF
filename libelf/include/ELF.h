@@ -42,6 +42,8 @@ public:
     void add_program_header(ELFProgramHeader *program_header);
     const vector<ELFProgramHeader *> &get_program_headers() const;
 
+    const char *get_name(unsigned index) const;
+
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;
     unsigned char get_ei_mag2() const;
@@ -77,6 +79,7 @@ public:
 protected:
     static ELFIssuesBySeverity find_e_ident_issues(const unsigned char *e_ident);
     ELFIssuesBySeverity find_overlaping_sections() const;
+    ELFIssuesBySeverity find_string_section_issues() const;
 
     endianess_converter converter;
 

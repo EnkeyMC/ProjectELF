@@ -76,6 +76,7 @@ ELFIssuesBySeverity ELF::find_issues() const
 
     issues += find_e_ident_issues(this->e_ident);
     issues += find_overlaping_sections();
+    issues += find_string_section_issues();
     issues += header->find_issues();
 
     for (auto section_header : section_headers)
@@ -235,6 +236,45 @@ ELFIssuesBySeverity ELF::find_overlaping_sections() const {
                 issues += ELFIssue(ISEV_ERROR, ISRC_SECTION, ITYPE_OVERLAPS_SECTION, section_header->get_index());
             }
         }
+    }
+
+    return issues;
+}
+
+const char *ELF::get_name(unsigned index) const {
+    if (header == nullptr) return nullptr;
+    if (header->get_e_shstrndx() >= section_headers.size()) return nullptr;
+
+    auto string_section_header = section_headers[header->get_e_shstrndx()];
+    if (index >= string_section_header->get_sh_size()) return nullptr;
+
+    if (string_section_header->get_sh_size() == 0) {
+        if (index == 0)
+            return "";
+        else
+            return nullptr;
+    }
+
+    return &string_section_header->get_section_data()[index];
+}
+
+ELFIssuesBySeverity ELF::find_string_section_issues() const {
+    ELFIssuesBySeverity issues;
+
+    if (header == nullptr) return issues;
+
+    if (header->get_e_shstrndx() >= section_headers.size())
+        issues += ELFIssue(ISEV_ERROR, ISRC_E_SHSTRNDX, ITYPE_INDEX_OUT_OF_BOUNDS);
+
+    auto string_section_header = section_headers[header->get_e_shstrndx()];
+    auto size = string_section_header->get_sh_size();
+    auto data = string_section_header->get_section_data();
+
+    if (size > 0) {
+        if (data[0] != '\0')
+            issues += ELFIssue(ISEV_WARNING, ISRC_STRING_SECTION, ITYPE_SHOULD_START_WITH_ZERO, header->get_e_shstrndx());
+        if (data[size - 1] != '\0')
+            issues += ELFIssue(ISEV_ERROR, ISRC_STRING_SECTION, ITYPE_HAS_TO_END_WITH_ZERO, header->get_e_shstrndx());
     }
 
     return issues;

@@ -33,8 +33,6 @@ public:
 
     void set_copy_of_section_data(const char *raw_data, Elf_Word size);
 
-    void set_section_data(char *raw_data, Elf_Word size);
-
     unsigned int get_index() const;
 
     void set_index(unsigned int index);
