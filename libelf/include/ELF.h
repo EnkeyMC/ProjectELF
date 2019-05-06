@@ -75,6 +75,7 @@ public:
     void set_ei_abiversion(unsigned char value);
 
     friend class ELFReader;
+    friend class ELFWriter;
 
 protected:
     static ELFIssuesBySeverity find_e_ident_issues(const unsigned char *e_ident);

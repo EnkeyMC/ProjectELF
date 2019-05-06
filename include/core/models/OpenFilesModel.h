@@ -29,6 +29,10 @@ public:
 
     Q_INVOKABLE void openFile(QString filepath);
 
+    Q_INVOKABLE void saveFile(int row);
+
+    Q_INVOKABLE void saveFileAs(int row, QString filepath);
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QHash<int, QByteArray> roleNames() const override;
@@ -44,6 +48,8 @@ private:
     QString getFilenameFromPath(QString path) const;
 
     QString getDisplayName(int row) const;
+
+    static void removeProtocol(QString &path);
 
     QVector<OpenFile> openFileList;
 };

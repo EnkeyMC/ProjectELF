@@ -28,6 +28,17 @@ ApplicationWindow {
         }
     }
 
+    Dialogs.FileDialog {
+        id: saveFileDialog
+        title: qsTr("Save As")
+        folder: shortcuts.home
+        selectExisting: false
+
+        onAccepted: {
+           openFilesModel.saveFileAs(fileTabs.currentIndex, fileUrl)
+        }
+    }
+
     Dialogs.MessageDialog {
         id: errorDialog
         icon: Dialogs.StandardIcon.Critical
@@ -56,8 +67,14 @@ ApplicationWindow {
                     text: qsTr("&Open...")
                     onTriggered: openFileDialog.open()
                 }
-                Action { text: qsTr("&Save") }
-                Action { text: qsTr("Save &As...") }
+                Action {
+                    text: qsTr("&Save")
+                    onTriggered: openFilesModel.saveFile(fileTabs.currentIndex)
+                }
+                Action {
+                    text: qsTr("Save &As...")
+                    onTriggered: saveFileDialog.open()
+                }
                 PEMenuSeparator {}
                 Action {
                     text: qsTr("&Quit")

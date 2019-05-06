@@ -3,6 +3,7 @@
 #include <QFile>
 #include <ELFReader.h>
 #include <ELFIssueException.h>
+#include <libelf/include/ELFWriter.h>
 
 #include "core/models/OpenFilesModel.h"
 #include "core/ELFIssueConverter.h"
@@ -26,7 +27,7 @@ void OpenFilesModel::openFile(QString filepath)
         return;
     }
 
-    filepath.remove(0, strlen("file:///"));
+    removeProtocol(filepath);
 
     std::ifstream file{filepath.toLocal8Bit(), std::ios_base::in | std::ios_base::binary};
     if (!file.is_open()) {
@@ -107,4 +108,39 @@ QVariant OpenFilesModel::getData(int idx, int role) const {
         default:
             return QVariant();
     }
+}
+
+void OpenFilesModel::saveFile(int row) {
+    this->saveFileAs(row, "file:///" + openFileList.at(row).filepath);
+}
+
+void OpenFilesModel::saveFileAs(int row, QString filepath) {
+    auto &openFile = openFileList.at(row);
+
+    if (!filepath.startsWith("file:///")) {
+        emit error(tr("Unsupported protocol"), tr("Application only supports file protocol."));
+        return;
+    }
+
+    removeProtocol(filepath);
+
+    std::ofstream file{filepath.toLocal8Bit(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc};
+    if (!file.is_open()) {
+        emit error(tr("Error opening file for saving"), tr("File %1 could not be opened for saving.").arg(filepath));
+        return;
+    }
+
+    if (!elf::ELFWriter::save(*openFile.elfModel->getElf(), file)) {
+        emit error(tr("Error saving to file"), tr("Could not save to file %1.").arg(filepath));
+        return;
+    }
+
+    openFile.elfModel->setModified(false);
+    openFileList[row].filepath = filepath;
+    emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
+            QVector<int>() << FilepathRole << FilenameRole << DisplayNameRole << ModifiedRole);
+}
+
+void OpenFilesModel::removeProtocol(QString &path) {
+    path.remove(0, strlen("file:///"));
 }

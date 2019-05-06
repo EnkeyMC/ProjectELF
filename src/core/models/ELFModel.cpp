@@ -115,3 +115,7 @@ void ELFModel::setModified(bool modified) {
     this->modified = modified;
     emit modifiedChanged(modified);
 }
+
+std::shared_ptr<elf::ELF> ELFModel::getElf() const {
+    return elf;
+}

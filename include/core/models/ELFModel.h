@@ -49,6 +49,8 @@ public:
 
     void setModified(bool modified);
 
+    std::shared_ptr<elf::ELF> getElf() const;
+
 signals:
     void headerChanged(ELFHeaderModelItem *);
     void issuesChanged(ELFIssueListModel *);
