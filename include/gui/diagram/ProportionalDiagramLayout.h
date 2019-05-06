@@ -39,7 +39,7 @@ protected:
     static const int COLUMNS_PER_SIDE;
     static const int HEADER_HEIGHT;
     static const int MIN_HEIGHT;
-    static const int MAX_HEIGHT;
+//    static const int MAX_HEIGHT;
 };
 
 

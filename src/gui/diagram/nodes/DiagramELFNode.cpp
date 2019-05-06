@@ -31,3 +31,7 @@ void DiagramELFNode::paintSize(QPainter *painter) const {
     painter->setPen(QColor(0, 0, 0, 100));
     painter->drawText(this->nodeRect.adjusted(5, 5, -5, -5), Qt::AlignRight, QString("Size: ") + QString::number(modelItem->getSizeInFile()) + " B");
 }
+
+bool DiagramELFNode::isValid() const {
+    return modelItem->isValid();
+}

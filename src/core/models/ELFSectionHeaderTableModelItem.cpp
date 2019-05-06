@@ -35,3 +35,7 @@ const std::vector<ELFSectionHeaderModelItem *> &ELFSectionHeaderTableModelItem::
 ELFSectionHeaderListModel *ELFSectionHeaderTableModelItem::getListModel() const {
     return listModel;
 }
+
+bool ELFSectionHeaderTableModelItem::isValid() const {
+    return addressInFile + sizeInFile <= elf->get_file_size();
+}

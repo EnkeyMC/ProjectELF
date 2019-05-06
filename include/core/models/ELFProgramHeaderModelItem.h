@@ -27,6 +27,8 @@ public:
 
     ~ELFProgramHeaderModelItem() override;
 
+    bool isValid() const override;
+
     ELFSegmentModelItem *getSegmentModelItem() const;
 
 private:

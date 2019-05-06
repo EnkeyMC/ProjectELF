@@ -16,6 +16,8 @@ public:
 
     double getProportionalSize() const override;
 
+    bool isValid() const override;
+
 protected:
     void paintAddress(QPainter *painter) const;
 

@@ -145,9 +145,13 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
         Side side,
         int level)
 {
+    if (!nodeFrom->isValid())
+        return;
+
     auto shtConnection = new Connection(this, side, level);
     shtConnection->getStartBindable().bindTo(*nodeFrom->getConnectionPoints().at(connPoint));
     shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
+    shtConnection->setValid(nodeTo->isValid());
     connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
     connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
     connect(nodeTo, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
@@ -220,12 +224,16 @@ void DiagramScene::onLayoutChanged() {
     nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->height())));
 
     auto linkNodes = this->layout->getLinkColumnSortedNodes();
-    for (auto node : linkNodes)
-        nodeTree.insert(node.first);
+    for (auto node : linkNodes) {
+        if (node.first->isValid())
+            nodeTree.insert(node.first);
+    }
 
     auto execNodes = this->layout->getExecColumnSortedNodes();
-    for (auto node : execNodes)
-        nodeTree.insert(node.first);
+    for (auto node : execNodes) {
+        if (node.first->isValid())
+            nodeTree.insert(node.first);
+    }
 
     this->update();
     emit contentSizeChanged(this->getContentSize());

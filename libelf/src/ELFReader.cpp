@@ -51,7 +51,8 @@ void ELFReader::parse_section_headers() {
     for (unsigned int i = 0; i < shnum; ++i) {
         istream.seekg(shoff + shentsize * i);
         section_header = create_section_header();
-        parse_raw(*section_header, ISRC_SECTION_HEADERS, i);
+        if (parse_raw(*section_header, ISRC_SECTION_HEADERS, i) == ELFIssue::NO_ISSUE)
+            section_header->set_header_valid(true);
         elf.add_section_header(section_header);
     }
 }
@@ -67,7 +68,8 @@ void ELFReader::parse_program_headers() {
     for (unsigned int i = 0; i < phnum; ++i) {
         istream.seekg(phoff + phentsize * i);
         program_header = create_program_header();
-        parse_raw(*program_header, ISRC_PROGRAM_HEADERS, i);
+        if (parse_raw(*program_header, ISRC_PROGRAM_HEADERS, i) == ELFIssue::NO_ISSUE)
+            program_header->set_header_valid(true);
         elf.add_program_header(program_header);
     }
 }
@@ -78,9 +80,13 @@ void ELFReader::parse_sections() {
     for (auto section_header : elf.section_headers) {
         istream.seekg(section_header->get_sh_offset());
 
-        char *buffer = new char[section_header->get_sh_size()];
-        istream.read(buffer, section_header->get_sh_size());
-        section_header->set_copy_of_section_data(buffer, section_header->get_sh_size());
+        try {
+            char *buffer = new char[section_header->get_sh_size()];
+            istream.read(buffer, section_header->get_sh_size());
+            section_header->set_copy_of_section_data(buffer, section_header->get_sh_size());
+            section_header->set_section_valid(true);
+        } catch (const std::bad_alloc &e) {
+        }
     }
 }
 
@@ -90,9 +96,13 @@ void ELFReader::parse_segments() {
     for (auto program_header : elf.program_headers) {
         istream.seekg(program_header->get_p_offset());
 
-        char *buffer = new char[program_header->get_p_filesz()];
-        istream.read(buffer, program_header->get_p_filesz());
-        program_header->set_segment_data(buffer, program_header->get_p_filesz());
+        try {
+            char *buffer = new char[program_header->get_p_filesz()];
+            istream.read(buffer, program_header->get_p_filesz());
+            program_header->set_segment_data(buffer, program_header->get_p_filesz());
+            program_header->set_segment_valid(true);
+        } catch (const std::bad_alloc &e) {
+        }
     }
 }
 

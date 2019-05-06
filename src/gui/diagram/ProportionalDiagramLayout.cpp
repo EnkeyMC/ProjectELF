@@ -9,7 +9,7 @@ const int ProportionalDiagramLayout::ARROW_SPACE_WIDTH = 50;
 const int ProportionalDiagramLayout::COLUMN_WIDTH = 200;
 const int ProportionalDiagramLayout::HEADER_HEIGHT = 100;
 const int ProportionalDiagramLayout::MIN_HEIGHT = 500;
-const int ProportionalDiagramLayout::MAX_HEIGHT = 4000;
+//const int ProportionalDiagramLayout::MAX_HEIGHT = 4000;
 const int ProportionalDiagramLayout::COLUMN_COUNT = 4;
 const int ProportionalDiagramLayout::COLUMNS_PER_SIDE = COLUMN_COUNT / 2;
 
@@ -45,11 +45,14 @@ void ProportionalDiagramLayout::layoutNodes() {
 
 void ProportionalDiagramLayout::layoutNodeInHeight(DiagramNode &node, int height) {
     QRect rect{};
-    rect.setTop(static_cast<int>(height * node.getProportionalPosition() + 0.5) + 1);
-    const double proportionalBottomPosition = node.getProportionalPosition() + node.getProportionalSize();
-    rect.setBottom(static_cast<int>(height * proportionalBottomPosition + 0.5));
-    rect.setLeft(COLUMN_WIDTH * node.getColumn());
-    rect.setWidth(COLUMN_WIDTH * node.getColspan());
+
+    if (node.isValid()) {
+        rect.setTop(static_cast<int>(height * node.getProportionalPosition() + 0.5) + 1);
+        const double proportionalBottomPosition = node.getProportionalPosition() + node.getProportionalSize();
+        rect.setBottom(static_cast<int>(height * proportionalBottomPosition + 0.5));
+        rect.setLeft(COLUMN_WIDTH * node.getColumn());
+        rect.setWidth(COLUMN_WIDTH * node.getColspan());
+    }
 
     node.setNodeRect(rect);
 
@@ -67,7 +70,8 @@ void ProportionalDiagramLayout::paint(QPainter *painter) const {
     this->paintColumnBorders(painter);
 
     for (const auto &node : nodesZOrdered)
-        node->paint(painter);
+        if (node->isValid())
+            node->paint(painter);
 
     painter->translate(-offset);
 }

@@ -37,6 +37,8 @@ public:
 
     ~ELFHeaderModelItem() override;
 
+    bool isValid() const override;
+
     ELFSectionHeaderTableModelItem *getSectionHeaderTable() const;
     ELFProgramHeaderTableModelItem *getProgramHeaderTable() const;
 

@@ -200,15 +200,15 @@ ELFIssuesBySeverity ELF::find_e_ident_issues(const unsigned char *e_ident)
         || e_ident[EI_MAG1] != ELFMAG1
         || e_ident[EI_MAG2] != ELFMAG2
         || e_ident[EI_MAG3] != ELFMAG3) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID);
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID_VALUE);
     }
 
     if (e_ident[EI_CLASS] != ELFCLASS32 && e_ident[EI_CLASS] != ELFCLASS64) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_CLASS, ITYPE_INVALID);
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_CLASS, ITYPE_INVALID_VALUE);
     }
 
     if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID);
+        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID_VALUE);
     }
 
     return issues;
@@ -246,6 +246,7 @@ const char *ELF::get_name(unsigned index) const {
     if (header->get_e_shstrndx() >= section_headers.size()) return nullptr;
 
     auto string_section_header = section_headers[header->get_e_shstrndx()];
+    if (!string_section_header->is_section_valid()) return nullptr;
     if (index >= string_section_header->get_sh_size()) return nullptr;
 
     if (string_section_header->get_sh_size() == 0) {
@@ -265,6 +266,11 @@ ELFIssuesBySeverity ELF::find_string_section_issues() const {
     if (header->get_e_shstrndx() >= section_headers.size()) return issues;
 
     auto string_section_header = section_headers[header->get_e_shstrndx()];
+    if (!string_section_header->is_section_valid()) {
+        issues += ELFIssue(ISEV_ERROR, ISRC_STRING_SECTION, ITYPE_IS_INVALID);
+        return issues;
+    }
+
     auto size = string_section_header->get_sh_size();
     auto data = string_section_header->get_section_data();
 

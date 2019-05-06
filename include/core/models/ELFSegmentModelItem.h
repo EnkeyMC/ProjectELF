@@ -11,6 +11,7 @@ class ELFSegmentModelItem : public ELFIndexedModelItem {
 public:
     ELFSegmentModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 
+    bool isValid() const override;
 };
 
 

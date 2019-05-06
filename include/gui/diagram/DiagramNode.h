@@ -40,6 +40,8 @@ public:
 
     virtual double getProportionalSize() const = 0;
 
+    virtual bool isValid() const = 0;
+
     virtual int getMinHeight() const = 0;
 
     int getColspan() const;

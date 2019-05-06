@@ -25,6 +25,10 @@ public:
 
     Bindable<QPoint> &getEndBindable();
 
+    bool isValid() const;
+
+    void setValid(bool valid);
+
 public slots:
     void setVisible();
     void setInvisible();
@@ -37,7 +41,12 @@ private:
 
     Side side;
     bool visible;
+    bool valid;
     int level;
+
+    void paintValid(QPainter *painter, int lineX) const;
+
+    void paintInvalid(QPainter *painter, int lineX) const;
 };
 
 

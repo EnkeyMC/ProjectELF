@@ -33,3 +33,7 @@ const std::vector<ELFProgramHeaderModelItem *> &ELFProgramHeaderTableModelItem::
 ELFProgramHeaderListModel *ELFProgramHeaderTableModelItem::getListModel() const {
     return listModel;
 }
+
+bool ELFProgramHeaderTableModelItem::isValid() const {
+    return addressInFile + sizeInFile <= elf->get_file_size();
+}

@@ -25,6 +25,8 @@ public:
 
     ELFProgramHeaderListModel *getListModel() const;
 
+    bool isValid() const override;
+
 signals:
     void listModelChanged();
 

@@ -77,3 +77,7 @@ ELFProgramHeaderTableModelItem *ELFHeaderModelItem::getProgramHeaderTable() cons
 {
     return this->programHeaderTableModelItem;
 }
+
+bool ELFHeaderModelItem::isValid() const {
+    return true;
+}

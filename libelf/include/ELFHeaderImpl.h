@@ -45,9 +45,9 @@ public:
         ELFIssuesBySeverity issues;
 
         if (get_e_version() == 0)
-            issues += ELFIssue(ISEV_WARNING, ISRC_E_VERSION, ITYPE_INVALID);
+            issues += ELFIssue(ISEV_WARNING, ISRC_E_VERSION, ITYPE_INVALID_VALUE);
         if (get_e_ehsize() != sizeof(header) + EI_NIDENT)
-            issues += ELFIssue(ISEV_WARNING, ISRC_E_EHSIZE, ITYPE_INVALID);
+            issues += ELFIssue(ISEV_WARNING, ISRC_E_EHSIZE, ITYPE_INVALID_VALUE);
         if (get_e_shnum() > 0) {
             if (get_e_shoff() + get_e_shentsize() * get_e_shnum() > elf.get_file_size())
                 issues += ELFIssue(ISEV_ERROR, ISRC_SECTION_HEADERS, ITYPE_OUT_OF_BOUNDS);

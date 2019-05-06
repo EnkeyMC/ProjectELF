@@ -45,3 +45,7 @@ HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Link)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Info)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Addralign)
 HEX_ELF_PROP_GETDISP_BYTES(ELFSectionHeaderModelItem, Entsize, ELF_STRUCT, sh_entsize)
+
+bool ELFSectionHeaderModelItem::isValid() const {
+    return ELF_STRUCT->is_header_valid();
+}

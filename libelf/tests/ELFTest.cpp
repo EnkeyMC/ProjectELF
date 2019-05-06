@@ -80,7 +80,7 @@ TEST_F(ELFTest, set_e_ident_mag0_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 
@@ -100,7 +100,7 @@ TEST_F(ELFTest, set_e_ident_mag1_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 
@@ -120,7 +120,7 @@ TEST_F(ELFTest, set_e_ident_mag2_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 
@@ -140,7 +140,7 @@ TEST_F(ELFTest, set_e_ident_mag3_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 
@@ -160,7 +160,7 @@ TEST_F(ELFTest, set_e_ident_class_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_CLASS) << "source of issue should be EI_CLASS";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 
@@ -180,7 +180,7 @@ TEST_F(ELFTest, set_e_ident_data_issue) {
         auto issue = ex.getIssue();
         EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
         EXPECT_EQ(issue.get_source(), elf::ISRC_EI_DATA) << "source of issue should be EI_DATA";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID) << "type of issue should be invalid";
+        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
     }
 }
 

@@ -17,6 +17,8 @@ class ELFModelItem : public QObject {
 public:
     explicit ELFModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
+    virtual bool isValid() const = 0;
+
     uint64_t getAddressInFile() const;
 
     uint64_t getSizeInFile() const;

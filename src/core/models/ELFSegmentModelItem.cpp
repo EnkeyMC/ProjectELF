@@ -11,3 +11,7 @@ ELFSegmentModelItem::ELFSegmentModelItem(ELFModel *parent, std::shared_ptr<elf::
     sizeInFile = segment->get_p_filesz();
     addressInFile = segment->get_p_offset();
 }
+
+bool ELFSegmentModelItem::isValid() const {
+    return this->elf->get_program_headers()[index]->is_segment_valid();
+}

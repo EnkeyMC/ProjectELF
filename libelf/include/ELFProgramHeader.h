@@ -37,10 +37,20 @@ public:
 
     void set_index(unsigned int index);
 
+    bool is_header_valid() const;
+
+    bool is_segment_valid() const;
+
+    void set_header_valid(bool valid);
+
+    void set_segment_valid(bool valid);
+
 protected:
     char *segment_data;
 
     unsigned index;
+    bool header_valid;
+    bool segment_valid;
 };
 
 } // namespace elf

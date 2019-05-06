@@ -31,6 +31,8 @@ public:
 
     ELFSectionModelItem *getSectionModelItem() const;
 
+    bool isValid() const override;
+
 protected:
 
     ELFSectionModelItem *sectionModelItem;

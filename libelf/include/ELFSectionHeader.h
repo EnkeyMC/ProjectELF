@@ -37,11 +37,20 @@ public:
 
     void set_index(unsigned int index);
 
+    bool is_header_valid() const;
+
+    void set_header_valid(bool valid);
+
+    bool is_section_valid() const;
+
+    void set_section_valid(bool valid);
+
 protected:
     char *section_data;
 
     unsigned index;
-
+    bool header_valid;
+    bool section_valid;
 };
 
 }

@@ -40,3 +40,7 @@ HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Paddr)
 HEX_ELF_PROP_GETDISP_BYTES(ELFProgramHeaderModelItem, Filesz, ELF_STRUCT, p_filesz)
 HEX_ELF_PROP_GETDISP_BYTES(ELFProgramHeaderModelItem, Memsz, ELF_STRUCT, p_memsz)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Align)
+
+bool ELFProgramHeaderModelItem::isValid() const {
+    return ELF_STRUCT->is_header_valid();
+}

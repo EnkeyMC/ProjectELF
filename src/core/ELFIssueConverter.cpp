@@ -89,8 +89,10 @@ QString ELFIssueConverter::typeToReadable(elf::ELFIssueType type) {
             return tr("is out of file bounds");
         case elf::ITYPE_OVERLAPS_HEADER:
             return tr("overlaps header");
-        case elf::ITYPE_INVALID:
+        case elf::ITYPE_INVALID_VALUE:
             return tr("has invalid value");
+        case elf::ITYPE_IS_INVALID:
+            return tr("is invalid");
         case elf::ITYPE_UNEXPECTED_EOF:
             return tr("could not be read from the file");
         case elf::ITYPE_INDEX_OUT_OF_BOUNDS:

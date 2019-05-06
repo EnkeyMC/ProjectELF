@@ -137,7 +137,3 @@ void DiagramNode::mouseReleaseEvent(QMouseEvent *event) {
 DiagramNode::ViewSide DiagramNode::getViewSide() const {
     return viewSide;
 }
-
-void DiagramNode::setColspan(int colspan) {
-    DiagramNode::colspan = colspan;
-}
