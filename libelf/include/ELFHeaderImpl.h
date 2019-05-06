@@ -54,7 +54,7 @@ public:
             if (get_e_shoff() < sizeof(header) + EI_NIDENT)
                 issues += ELFIssue(ISEV_ERROR, ISRC_SECTION_HEADERS, ITYPE_OVERLAPS_HEADER);
             if (get_e_shstrndx() >= get_e_shnum())
-                issues += ELFIssue(ISEV_ERROR, ISRC_E_SHSTRNDX, ITYPE_OUT_OF_BOUNDS);
+                issues += ELFIssue(ISEV_ERROR, ISRC_E_SHSTRNDX, ITYPE_INDEX_OUT_OF_BOUNDS);
         }
 
         if (get_e_phnum() > 0) {

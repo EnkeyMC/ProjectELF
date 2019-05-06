@@ -39,4 +39,11 @@
         return QString("0x") + get##capitalizedName(); \
     }
 
+#define HEX_ELF_PROP_GETDISP_NAME(_class, capitalizedName, elfStruct, elfName) \
+    QString _class::getDisp##capitalizedName() const { \
+        auto name = elf->get_name(elfStruct->get_##elfName()); \
+        if (name == nullptr) return "<<INVALID>>"; \
+        return name; \
+    }
+
 #endif // MODELHELPERS_H

@@ -74,6 +74,8 @@ QString ELFIssueConverter::sourceToReadable(elf::ELFIssueSource source, unsigned
             return tr("Section #%1").arg(QString::number(index));
         case elf::ISRC_SEGMENT:
             return tr("Segment #%1").arg(QString::number(index));
+        case elf::ISRC_STRING_SECTION:
+            return tr("String section (#%1)").arg(QString::number(index));
         default:
             return "";
     }
@@ -91,6 +93,12 @@ QString ELFIssueConverter::typeToReadable(elf::ELFIssueType type) {
             return tr("has invalid value");
         case elf::ITYPE_UNEXPECTED_EOF:
             return tr("could not be read from the file");
+        case elf::ITYPE_INDEX_OUT_OF_BOUNDS:
+            return tr("index is out of bounds");
+        case elf::ITYPE_SHOULD_START_WITH_ZERO:
+            return tr("should start with zero byte");
+        case elf::ITYPE_HAS_TO_END_WITH_ZERO:
+            return tr("has to end with zero byte");
         default:
             return "";
     }

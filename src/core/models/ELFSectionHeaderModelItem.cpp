@@ -35,7 +35,7 @@ HEX_ELF_PROP_GET_GETBYTES_SET(ELFSectionHeaderModelItem, info, Info, ELF_STRUCT,
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFSectionHeaderModelItem, addralign, Addralign, ELF_STRUCT, sh_addralign, elf::Elf_Xword)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFSectionHeaderModelItem, entsize, Entsize, ELF_STRUCT, sh_entsize, elf::Elf_Xword)
 
-HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Name)
+HEX_ELF_PROP_GETDISP_NAME(ELFSectionHeaderModelItem, Name, ELF_STRUCT, sh_name)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Type)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Flags)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFSectionHeaderModelItem, Addr)

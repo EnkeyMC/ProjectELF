@@ -262,9 +262,7 @@ ELFIssuesBySeverity ELF::find_string_section_issues() const {
     ELFIssuesBySeverity issues;
 
     if (header == nullptr) return issues;
-
-    if (header->get_e_shstrndx() >= section_headers.size())
-        issues += ELFIssue(ISEV_ERROR, ISRC_E_SHSTRNDX, ITYPE_INDEX_OUT_OF_BOUNDS);
+    if (header->get_e_shstrndx() >= section_headers.size()) return issues;
 
     auto string_section_header = section_headers[header->get_e_shstrndx()];
     auto size = string_section_header->get_sh_size();
