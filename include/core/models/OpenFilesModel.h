@@ -33,6 +33,8 @@ public:
 
     Q_INVOKABLE void saveFileAs(int row, QString filepath);
 
+    Q_INVOKABLE bool hasUnsavedChanges() const;
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QHash<int, QByteArray> roleNames() const override;

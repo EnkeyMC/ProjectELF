@@ -18,6 +18,13 @@ ApplicationWindow {
     minimumHeight: 480
     title: "ProjectELF"
 
+    onClosing: {
+        if (openFilesModel.hasUnsavedChanges()) {
+            close.accepted = false;
+            closeWithUnsavedChangesDialog.open();
+        }
+    }
+
     Dialogs.FileDialog {
         id: openFileDialog
         title: qsTr("Open file")
@@ -43,6 +50,37 @@ ApplicationWindow {
         id: errorDialog
         icon: Dialogs.StandardIcon.Critical
         standardButtons: Dialogs.StandardButton.Ok
+    }
+
+    Dialogs.MessageDialog {
+        id: saveBeforeCloseDialog
+        icon: Dialogs.StandardIcon.Warning
+        title: qsTr("Save changes")
+        text: qsTr("File you are trying to close has unsaved chagnes. Do you wish to save them?")
+        standardButtons: Dialogs.StandardButton.Save | Dialogs.StandardButton.Discard | Dialogs.StandardButton.Cancel
+
+        property int indexToClose
+
+        onAccepted: {
+            openFilesModel.saveFile(indexToClose);
+            fileTabs.tabClosed(indexToClose)
+            openFilesModel.closeFile(indexToClose);
+        }
+
+        onDiscard: {
+            fileTabs.tabClosed(indexToClose)
+            openFilesModel.closeFile(indexToClose);
+        }
+    }
+
+    Dialogs.MessageDialog {
+        id: closeWithUnsavedChangesDialog
+        icon: Dialogs.StandardIcon.Warning
+        title: qsTr("Discard unsaved changes")
+        text: qsTr("You have open files with unsaved changes. Do you really wish to quit without saving?")
+        standardButtons: Dialogs.StandardButton.Yes | Dialogs.StandardButton.No
+
+        onYes: Qt.quit();
     }
 
     OpenFilesModel {
@@ -78,7 +116,7 @@ ApplicationWindow {
                 PEMenuSeparator {}
                 Action {
                     text: qsTr("&Quit")
-                    onTriggered: Qt.quit()
+                    onTriggered: mainWindow.close()
                 }
             }
 
@@ -114,11 +152,18 @@ ApplicationWindow {
                 model: openFilesModel
 
                 PEClosableTabButton {
-                    text: model.displayName + (model.changed ? "*" : "")
+                    text: model.displayName + (changed ? "*" : "")
+                    property bool changed: model.changed
 
                     onCloseTab: {
-                        fileTabs.tabClosed(index)
-                        openFilesModel.closeFile(index)
+                        if (changed) {
+                            saveBeforeCloseDialog.indexToClose = index
+                            saveBeforeCloseDialog.open();
+                        }
+                        else {
+                            fileTabs.tabClosed(index)
+                            openFilesModel.closeFile(index)
+                        }
                     }
                 }
             }

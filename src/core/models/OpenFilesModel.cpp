@@ -138,7 +138,16 @@ void OpenFilesModel::saveFileAs(int row, QString filepath) {
     openFile.elfModel->setModified(false);
     openFileList[row].filepath = filepath;
     emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
-            QVector<int>() << FilepathRole << FilenameRole << DisplayNameRole << ModifiedRole);
+                     QVector<int>() << FilepathRole << FilenameRole << DisplayNameRole << ModifiedRole);
+}
+
+bool OpenFilesModel::hasUnsavedChanges() const
+{
+    for (auto openFile : openFileList) {
+        if (openFile.elfModel->isModified())
+            return true;
+    }
+    return false;
 }
 
 void OpenFilesModel::removeProtocol(QString &path) {
