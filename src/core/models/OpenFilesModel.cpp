@@ -29,6 +29,13 @@ void OpenFilesModel::openFile(QString filepath)
 
     removeProtocol(filepath);
 
+    for (int i = 0; i < openFileList.size(); i++) {
+        if (openFileList[i].filepath == filepath) {
+            emit fileOpened(i);
+            return;
+        }
+    }
+
     std::ifstream file{filepath.toLocal8Bit(), std::ios_base::in | std::ios_base::binary};
     if (!file.is_open()) {
         emit error(tr("Error opening file"), tr("File %1 could not be opened").arg(filepath));
