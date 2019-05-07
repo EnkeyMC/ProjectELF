@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 1.4 as QQC1
 
 import "../singletons"

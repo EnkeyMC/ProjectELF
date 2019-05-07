@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Dialogs 1.3 as Dialogs
@@ -123,6 +123,27 @@ ApplicationWindow {
             MenuPrimary {
                 title: qsTr("&Help")
                 Action { text: qsTr("&About") }
+            }
+        }
+
+        PEButton {
+            text: qsTr("Reload structure")
+            onClicked: {
+                openFilesModel.reloadStructure(fileTabs.currentIndex)
+            }
+        }
+
+        Rectangle {
+            width: 11
+            Layout.fillHeight: true
+            color: Style._ColorPrimaryDark
+
+            Rectangle {
+                x: 5
+                width: 1
+                y: 5
+                height: parent.height - 10
+                color: Qt.darker(Style._ColorAccent, 1.1)
             }
         }
 

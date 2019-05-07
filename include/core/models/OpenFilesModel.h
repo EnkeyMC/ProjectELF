@@ -35,6 +35,8 @@ public:
 
     Q_INVOKABLE bool hasUnsavedChanges() const;
 
+    Q_INVOKABLE void reloadStructure(int row);
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QHash<int, QByteArray> roleNames() const override;

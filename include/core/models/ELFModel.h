@@ -49,6 +49,8 @@ public:
 
     void setModified(bool modified);
 
+    void reloadStructure();
+
     std::shared_ptr<elf::ELF> getElf() const;
 
 signals:

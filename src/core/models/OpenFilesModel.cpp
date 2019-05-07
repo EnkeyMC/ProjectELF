@@ -154,6 +154,14 @@ bool OpenFilesModel::hasUnsavedChanges() const
     return false;
 }
 
+void OpenFilesModel::reloadStructure(int row)
+{
+    if (row >= 0 & row < openFileList.size()) {
+        auto &openFile = openFileList.at(row);
+        openFile.elfModel->reloadStructure();
+    }
+}
+
 void OpenFilesModel::removeProtocol(QString &path) {
     path.remove(0, strlen("file:///"));
 }
