@@ -1,6 +1,12 @@
-#include <ELF.h>
-#include <ELFIssueException.h>
+//
+// Created by MOmac on 24.03.2019.
+//
+
+#include <fstream>
+
 #include "gtest/gtest.h"
+#include "ELF.h"
+#include "Memstream.h"
 
 class ELFTest : public ::testing::Test {
 protected:
@@ -10,194 +16,324 @@ protected:
 
     void TearDown() override {
         delete elf;
-        elf = nullptr;
     }
 
     elf::ELF *elf;
 };
 
-TEST_F(ELFTest, set_e_ident_no_issues1) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
+TEST_F(ELFTest, parse_header_valid_32bit_msb) {
+    const char input[] = "\x7f\x45LF" // ei_mag
+            "\x01" // ei_class
+            "\x02" // ei_data
+            "\x01" // ei_version
+            "\x00" // ei_osabi
+            "\x00" // ei_abiversion
+            "\0\0\0\0\0\0\0" // padding bytes
+            "\x00\x02" // e_type (EXEC)
+            "\x00\x07" // e_machine
+            "\x00\x00\x00\x01" // e_version
+            "\x00\x00\xff\xff" // e_entry
+            "\x00\x00\x00\x00" // e_phoff
+            "\x00\x00\x00\x00" // e_shoff
+            "\x00\x00\x00\x00" // e_flags
+            "\x00\x34" // e_ehsize
+            "\x00\x00" // e_phentsize
+            "\x00\x00" // e_phnum
+            "\x00\x00" // e_shentsize
+            "\x00\x00" // e_shnum
+            "\x00\x00"; // e_shstrndx
 
-    elf->set_e_ident(e_ident);
+    memstream stream(input, sizeof(input));
+    elf->load(stream);
 
-    auto e_ident_result = elf->get_e_ident();
-    for (int i = 0; i < EI_NIDENT; ++i) {
-        EXPECT_EQ(e_ident_result[i], e_ident[i]) << "get_e_ident should return same values";
-    }
+    EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf->get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf->get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf->get_ei_class(), ELFCLASS32);
+    EXPECT_EQ(elf->get_ei_data(), ELFDATA2MSB);
 
-    EXPECT_EQ(elf->get_ei_mag0(), e_ident[EI_MAG0]);
-    EXPECT_EQ(elf->get_ei_mag1(), e_ident[EI_MAG1]);
-    EXPECT_EQ(elf->get_ei_mag2(), e_ident[EI_MAG2]);
-    EXPECT_EQ(elf->get_ei_mag3(), e_ident[EI_MAG3]);
-    EXPECT_EQ(elf->get_ei_class(), e_ident[EI_CLASS]);
-    EXPECT_EQ(elf->get_ei_data(), e_ident[EI_DATA]);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
-TEST_F(ELFTest, set_e_ident_no_issues2) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS64;
-    e_ident[EI_DATA] = ELFDATA2LSB;
+TEST_F(ELFTest, parse_header_valid_64bit_msb) {
+    const char input[] = "\x7f\x45LF" // ei_mag
+            "\x02" // ei_class
+            "\x02" // ei_data
+            "\x01" // ei_version
+            "\x00" // ei_osabi
+            "\x00" // ei_abiversion
+            "\0\0\0\0\0\0\0" // padding bytes
+            "\x00\x02" // e_type (EXEC)
+            "\x00\x07" // e_machine
+            "\x00\x00\x00\x01" // e_version
+            "\x00\x00\x00\x00\x00\x00\xff\xff" // e_entry
+            "\x00\x00\x00\x00\x00\x00\x00\x00" // e_phoff
+            "\x00\x00\x00\x00\x00\x00\x00\x00" // e_shoff
+            "\x00\x00\x00\x00" // e_flags
+            "\x00\x40" // e_ehsize
+            "\x00\x00" // e_phentsize
+            "\x00\x00" // e_phnum
+            "\x00\x00" // e_shentsize
+            "\x00\x00" // e_shnum
+            "\x00\x00"; // e_shstrndx
 
-    elf->set_e_ident(e_ident);
+    memstream stream(input, sizeof(input));
+    elf->load(stream);
 
-    auto e_ident_result = elf->get_e_ident();
-    for (int i = 0; i < EI_NIDENT; ++i) {
-        EXPECT_EQ(e_ident_result[i], e_ident[i]) << "get_e_ident should return same values";
-    }
+    EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf->get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf->get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf->get_ei_class(), ELFCLASS64);
+    EXPECT_EQ(elf->get_ei_data(), ELFDATA2MSB);
 
-    EXPECT_EQ(elf->get_ei_mag0(), e_ident[EI_MAG0]);
-    EXPECT_EQ(elf->get_ei_mag1(), e_ident[EI_MAG1]);
-    EXPECT_EQ(elf->get_ei_mag2(), e_ident[EI_MAG2]);
-    EXPECT_EQ(elf->get_ei_mag3(), e_ident[EI_MAG3]);
-    EXPECT_EQ(elf->get_ei_class(), e_ident[EI_CLASS]);
-    EXPECT_EQ(elf->get_ei_data(), e_ident[EI_DATA]);
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x40);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
-TEST_F(ELFTest, set_e_ident_mag0_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = 134;  // the issue
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
+TEST_F(ELFTest, parse_header_valid_64bit_lsb) {
+    const char input[] = "\x7f\x45LF" // ei_mag
+            "\x02" // ei_class
+            "\x01" // ei_data
+            "\x01" // ei_version
+            "\x00" // ei_osabi
+            "\x00" // ei_abiversion
+            "\0\0\0\0\0\0\0" // padding bytes
+            "\x02\x00" // e_type (EXEC)
+            "\x07\x00" // e_machine
+            "\x01\x00\x00\x00" // e_version
+            "\xff\xff\x00\x00\x00\x00\x00\x00" // e_entry
+            "\x00\x00\x00\x00\x00\x00\x00\x00" // e_phoff
+            "\x00\x00\x00\x00\x00\x00\x00\x00" // e_shoff
+            "\x00\x00\x00\x00" // e_flags
+            "\x40\x00" // e_ehsize
+            "\x00\x00" // e_phentsize
+            "\x00\x00" // e_phnum
+            "\x00\x00" // e_shentsize
+            "\x00\x00" // e_shnum
+            "\x00\x00"; // e_shstrndx
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
+    memstream stream(input, sizeof(input));
+    elf->load(stream);
+
+    EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf->get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf->get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf->get_ei_class(), ELFCLASS64);
+    EXPECT_EQ(elf->get_ei_data(), ELFDATA2LSB);
+
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x40);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
-TEST_F(ELFTest, set_e_ident_mag1_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = 134;  // the issue
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
+TEST_F(ELFTest, parse_header_valid_32bit_lsb) {
+    const char input[] = "\x7f\x45LF" // ei_mag
+            "\x01" // ei_class
+            "\x01" // ei_data
+            "\x01" // ei_version
+            "\x00" // ei_osabi
+            "\x00" // ei_abiversion
+            "\0\0\0\0\0\0\0" // padding bytes
+            "\x02\x00" // e_type (EXEC)
+            "\x07\x00" // e_machine
+            "\x01\x00\x00\x00" // e_version
+            "\xff\xff\x00\x00" // e_entry
+            "\x00\x00\x00\x00" // e_phoff
+            "\x00\x00\x00\x00" // e_shoff
+            "\x00\x00\x00\x00" // e_flags
+            "\x34\x00" // e_ehsize
+            "\x00\x00" // e_phentsize
+            "\x00\x00" // e_phnum
+            "\x00\x00" // e_shentsize
+            "\x00\x00" // e_shnum
+            "\x00\x00"; // e_shstrndx
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
+    memstream stream(input, sizeof(input));
+    elf->load(stream);
+
+    EXPECT_EQ(elf->get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf->get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf->get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf->get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf->get_ei_class(), ELFCLASS32);
+    EXPECT_EQ(elf->get_ei_data(), ELFDATA2LSB);
+
+    EXPECT_EQ(elf->get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf->get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf->get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf->get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf->get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf->get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf->get_header()->get_e_shstrndx(), 0);
 }
 
-TEST_F(ELFTest, set_e_ident_mag2_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = 134;  // the issue
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
+
+TEST(ELFReaderTestFromFile, parse_header_valid_32bit_msb) {
+    elf::ELF elf{};
+    std::ifstream in("resources/elf_header.bin", std::ios::binary);
+    elf.load(in);
+
+    EXPECT_EQ(elf.get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf.get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf.get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf.get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf.get_ei_class(), ELFCLASS32);
+    EXPECT_EQ(elf.get_ei_data(), ELFDATA2MSB);
+
+    EXPECT_EQ(elf.get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf.get_header()->get_e_machine(), EM_860);
+    EXPECT_EQ(elf.get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf.get_header()->get_e_entry(), 0xFFFF);
+    EXPECT_EQ(elf.get_header()->get_e_phoff(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shoff(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_ehsize(), 0x34);
+    EXPECT_EQ(elf.get_header()->get_e_phentsize(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_phnum(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shentsize(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shnum(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_shstrndx(), 0);
 }
 
-TEST_F(ELFTest, set_e_ident_mag3_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = 134;  // the issue
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
+TEST(ELFReaderTestFromFile, parse_helloworld_file) {
+    // ARRANGE
+    elf::ELF elf{};
+    std::ifstream in("resources/helloworld", std::ios::binary);
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_MAGN) << "source of issue should be EI_MAGN";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
-}
+    // ACT
+    elf.load(in);
 
-TEST_F(ELFTest, set_e_ident_class_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = 98;  // the issue
-    e_ident[EI_DATA] = ELFDATA2MSB;
+    // ASSERT
+    EXPECT_EQ(elf.get_ei_mag0(), ELFMAG0);
+    EXPECT_EQ(elf.get_ei_mag1(), ELFMAG1);
+    EXPECT_EQ(elf.get_ei_mag2(), ELFMAG2);
+    EXPECT_EQ(elf.get_ei_mag3(), ELFMAG3);
+    EXPECT_EQ(elf.get_ei_class(), ELFCLASS64);
+    EXPECT_EQ(elf.get_ei_data(), ELFDATA2LSB);
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_CLASS) << "source of issue should be EI_CLASS";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
-}
+    EXPECT_EQ(elf.get_header()->get_e_type(), ET_EXEC);
+    EXPECT_EQ(elf.get_header()->get_e_machine(), EM_X86_64);
+    EXPECT_EQ(elf.get_header()->get_e_version(), EV_CURRENT);
+    EXPECT_EQ(elf.get_header()->get_e_entry(), 0x400430);
+    EXPECT_EQ(elf.get_header()->get_e_phoff(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_shoff(), 6624);
+    EXPECT_EQ(elf.get_header()->get_e_flags(), 0);
+    EXPECT_EQ(elf.get_header()->get_e_ehsize(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_phentsize(), 56);
+    EXPECT_EQ(elf.get_header()->get_e_phnum(), 9);
+    EXPECT_EQ(elf.get_header()->get_e_shentsize(), 64);
+    EXPECT_EQ(elf.get_header()->get_e_shnum(), 31);
+    EXPECT_EQ(elf.get_header()->get_e_shstrndx(), 28);
 
-TEST_F(ELFTest, set_e_ident_data_issue) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = 5; // the issue
+    auto sections = elf.get_section_headers();
 
-    try {
-        elf->set_e_ident(e_ident);
-        ASSERT_FALSE(true) << "set_e_ident should throw exception";
-    } catch (const elf::ELFIssueException &ex) {
-        auto issue = ex.getIssue();
-        EXPECT_EQ(issue.get_severity(), elf::ISEV_CRITICAL) << "issues should be critical";
-        EXPECT_EQ(issue.get_source(), elf::ISRC_EI_DATA) << "source of issue should be EI_DATA";
-        EXPECT_EQ(issue.get_type(), elf::ITYPE_INVALID_VALUE) << "type of issue should be invalid";
-    }
-}
+    ASSERT_EQ(sections.size(), elf.get_header()->get_e_shnum());
 
-TEST_F(ELFTest, e_ident_clear) {
-    unsigned char e_ident[EI_NIDENT];
-    e_ident[EI_MAG0] = ELFMAG0;
-    e_ident[EI_MAG1] = ELFMAG1;
-    e_ident[EI_MAG2] = ELFMAG2;
-    e_ident[EI_MAG3] = ELFMAG3;
-    e_ident[EI_CLASS] = ELFCLASS32;
-    e_ident[EI_DATA] = ELFDATA2MSB;
+    EXPECT_EQ(sections[0]->get_sh_name(), 0);
+    EXPECT_EQ(sections[0]->get_sh_type(), SHT_NULL);
+    EXPECT_EQ(sections[0]->get_sh_addr(), 0);
+    EXPECT_EQ(sections[0]->get_sh_offset(), 0);
+    EXPECT_EQ(sections[0]->get_sh_size(), 0);
+    EXPECT_EQ(sections[0]->get_sh_entsize(), 0);
+    EXPECT_EQ(sections[0]->get_sh_flags(), 0);
+    EXPECT_EQ(sections[0]->get_sh_link(), 0);
+    EXPECT_EQ(sections[0]->get_sh_info(), 0);
+    EXPECT_EQ(sections[0]->get_sh_addralign(), 0);
 
-    elf->set_e_ident(e_ident);
-    elf->clear();
+    EXPECT_EQ(sections[1]->get_sh_name(), 0x1B);
+    EXPECT_EQ(sections[1]->get_sh_type(), SHT_PROGBITS);
+    EXPECT_EQ(sections[1]->get_sh_addr(), 0x400238);
+    EXPECT_EQ(sections[1]->get_sh_offset(), 0x238);
+    EXPECT_EQ(sections[1]->get_sh_size(), 0x1C);
+    EXPECT_EQ(sections[1]->get_sh_entsize(), 0);
+    EXPECT_TRUE(sections[1]->get_sh_flags() & SHF_ALLOC);
+    EXPECT_EQ(sections[1]->get_sh_link(), 0);
+    EXPECT_EQ(sections[1]->get_sh_info(), 0);
+    EXPECT_EQ(sections[1]->get_sh_addralign(), 1);
 
-    auto e_ident_result = elf->get_e_ident();
-    for (int i = 0; i < EI_NIDENT; ++i) {
-        EXPECT_EQ(e_ident_result[i], 0) << "get_e_ident should return zeros";
+    EXPECT_EQ(sections[2]->get_sh_name(), 0x23);
+    EXPECT_EQ(sections[2]->get_sh_type(), SHT_NOTE);
+    EXPECT_EQ(sections[2]->get_sh_addr(), 0x400254);
+    EXPECT_EQ(sections[2]->get_sh_offset(), 0x254);
+    EXPECT_EQ(sections[2]->get_sh_size(), 0x20);
+    EXPECT_EQ(sections[2]->get_sh_entsize(), 0);
+    EXPECT_TRUE(sections[2]->get_sh_flags() & SHF_ALLOC);
+    EXPECT_EQ(sections[2]->get_sh_link(), 0);
+    EXPECT_EQ(sections[2]->get_sh_info(), 0);
+    EXPECT_EQ(sections[2]->get_sh_addralign(), 4);
+
+    // ... not gonna do all section headers
+
+    ASSERT_LT(elf.get_header()->get_e_shstrndx(), sections.size());
+    auto string_section = sections[elf.get_header()->get_e_shstrndx()];
+    const char * section_data = string_section->get_section_data();
+
+    EXPECT_EQ(section_data[0], 0);
+    EXPECT_STREQ(section_data + 1, ".symtab");
+    EXPECT_STREQ(section_data + 9, ".strtab");
+    EXPECT_STREQ(section_data + 0x103, ".comment");
+
+    auto segments = elf.get_program_headers();
+
+    ASSERT_EQ(segments.size(), elf.get_header()->get_e_phnum());
+
+    EXPECT_EQ(segments[0]->get_p_type(), PT_PHDR);
+    EXPECT_EQ(segments[0]->get_p_offset(), 0x40);
+    EXPECT_EQ(segments[0]->get_p_vaddr(), 0x400040);
+    EXPECT_EQ(segments[0]->get_p_paddr(), 0x400040);
+    EXPECT_EQ(segments[0]->get_p_filesz(), 0x1F8);
+    EXPECT_EQ(segments[0]->get_p_memsz(), 0x1F8);
+    EXPECT_TRUE(segments[0]->get_p_flags() & (PF_R | PF_X));
+    EXPECT_EQ(segments[0]->get_p_align(), 8);
+
+    // test if segment contains the first program header
+    const char * segment_data = segments[0]->get_segment_data();
+    const char * raw_program_header = segments[0]->get_bytes();
+
+    for (int i = 0; i < segments[0]->get_size(); ++i) {
+        EXPECT_EQ(segment_data[i], raw_program_header[i]);
     }
 }

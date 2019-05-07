@@ -4,6 +4,9 @@
 
 #include "ELF.h"
 #include "ELFIssueException.h"
+#include "ELFHeaderImpl.h"
+#include "ELFProgramHeaderImpl.h"
+#include "ELFSectionHeaderImpl.h"
 
 #define SIZEOF_EI_FIELD(field) size_t ELF::get_sizeof_##field() const {return sizeof(unsigned char);}
 
@@ -19,17 +22,14 @@ SIZEOF_EI_FIELD(ei_version)
 SIZEOF_EI_FIELD(ei_osabi)
 SIZEOF_EI_FIELD(ei_abiversion)
 
-ELF::ELF() : file_size(0), header(nullptr) {}
+ELF::ELF() : file_bytes(nullptr), file_size(0), header(nullptr), e_ident_ptr(nullptr) {}
 
 ELF::~ELF() {
     clear();
 }
 
 void ELF::clear() {
-    for (unsigned char &field : e_ident) {
-        field = 0;
-    }
-
+    e_ident_ptr = nullptr;
     delete header;
     header = nullptr;
 
@@ -44,18 +44,30 @@ void ELF::clear() {
     }
 
     section_headers.clear();
+
+    delete[] file_bytes;
+    file_bytes = nullptr;
+    file_size = 0;
 }
 
-void ELF::set_e_ident(const unsigned char *e_ident) {
-    auto issues = find_e_ident_issues(e_ident);
-    if (issues.has_critical_issue())
-        throw ELFIssueException(*issues[ISEV_CRITICAL].begin());
+void ELF::load(std::istream &istream) {
+    this->clear();
+    this->read_file_bytes(istream);
+    this->load_structure();
+}
 
-    converter.setup(e_ident[EI_DATA]);
+void ELF::load_structure() {
+    this->load_header();
+    this->load_section_headers();
+    this->load_program_headers();
+    this->load_sections();
+    this->load_segments();
+}
 
-    for (unsigned i = 0; i < sizeof(this->e_ident); ++i) {
-        this->e_ident[i] = e_ident[i];
-    }
+bool ELF::save(std::ostream &ostream) {
+    ostream.seekp(0);
+    ostream.write(file_bytes, file_size);
+    return ostream.good();
 }
 
 const endianess_converter & ELF::get_converter() const {
@@ -66,15 +78,11 @@ size_t ELF::get_file_size() const {
     return file_size;
 }
 
-void ELF::set_file_size(size_t file_size) {
-    this->file_size = file_size;
-}
-
 ELFIssuesBySeverity ELF::find_issues() const
 {
     ELFIssuesBySeverity issues;
 
-    issues += find_e_ident_issues(this->e_ident);
+    issues += find_e_ident_issues();
     issues += find_overlapping_sections();
     issues += find_string_section_issues();
     issues += header->find_issues();
@@ -98,46 +106,46 @@ const vector<ELFSectionHeader *> &ELF::get_section_headers() const {
 }
 
 unsigned char ELF::get_ei_mag0() const {
-    return e_ident[EI_MAG0];
+    return e_ident_ptr[EI_MAG0];
 }
 
 unsigned char ELF::get_ei_mag1() const {
-    return e_ident[EI_MAG1];
+    return e_ident_ptr[EI_MAG1];
 }
 
 unsigned char ELF::get_ei_mag2() const {
-    return e_ident[EI_MAG2];
+    return e_ident_ptr[EI_MAG2];
 }
 
 unsigned char ELF::get_ei_mag3() const {
-    return e_ident[EI_MAG3];
+    return e_ident_ptr[EI_MAG3];
 }
 
 unsigned char ELF::get_ei_class() const {
-    return e_ident[EI_CLASS];
+    return e_ident_ptr[EI_CLASS];
 }
 
 unsigned char ELF::get_ei_data() const {
-    return e_ident[EI_DATA];
+    return e_ident_ptr[EI_DATA];
 }
 
 unsigned char ELF::get_ei_version() const
 {
-    return e_ident[EI_VERSION];
+    return e_ident_ptr[EI_VERSION];
 }
 
 unsigned char ELF::get_ei_osabi() const
 {
-    return e_ident[EI_OSABI];
+    return e_ident_ptr[EI_OSABI];
 }
 
 unsigned char ELF::get_ei_abiversion() const
 {
-    return e_ident[EI_ABIVERSION];
+    return e_ident_ptr[EI_ABIVERSION];
 }
 
 const unsigned char *ELF::get_e_ident() const {
-    return e_ident;
+    return e_ident_ptr;
 }
 
 ELFHeader *ELF::get_header() {
@@ -154,60 +162,60 @@ void ELF::add_program_header(ELFProgramHeader *program_header) {
 }
 
 void ELF::set_ei_mag0(unsigned char value) {
-    e_ident[EI_MAG0] = value;
+    e_ident_ptr[EI_MAG0] = value;
 }
 
 void ELF::set_ei_mag1(unsigned char value) {
-    e_ident[EI_MAG1] = value;
+    e_ident_ptr[EI_MAG1] = value;
 }
 
 void ELF::set_ei_mag2(unsigned char value) {
-    e_ident[EI_MAG2] = value;
+    e_ident_ptr[EI_MAG2] = value;
 }
 
 void ELF::set_ei_mag3(unsigned char value) {
-    e_ident[EI_MAG3] = value;
+    e_ident_ptr[EI_MAG3] = value;
 }
 
 void ELF::set_ei_class(unsigned char value) {
-    e_ident[EI_CLASS] = value;
+    e_ident_ptr[EI_CLASS] = value;
 }
 
 void ELF::set_ei_data(unsigned char value) {
-    e_ident[EI_DATA] = value;
+    e_ident_ptr[EI_DATA] = value;
 }
 
 void ELF::set_ei_version(unsigned char value)
 {
-    e_ident[EI_VERSION] = value;
+    e_ident_ptr[EI_VERSION] = value;
 }
 
 void ELF::set_ei_osabi(unsigned char value)
 {
-    e_ident[EI_OSABI] = value;
+    e_ident_ptr[EI_OSABI] = value;
 }
 
 void ELF::set_ei_abiversion(unsigned char value)
 {
-    e_ident[EI_ABIVERSION] = value;
+    e_ident_ptr[EI_ABIVERSION] = value;
 }
 
-ELFIssuesBySeverity ELF::find_e_ident_issues(const unsigned char *e_ident)
+ELFIssuesBySeverity ELF::find_e_ident_issues() const
 {
     ELFIssuesBySeverity issues;
 
-    if (e_ident[EI_MAG0] != ELFMAG0
-        || e_ident[EI_MAG1] != ELFMAG1
-        || e_ident[EI_MAG2] != ELFMAG2
-        || e_ident[EI_MAG3] != ELFMAG3) {
+    if (e_ident_ptr[EI_MAG0] != ELFMAG0
+        || e_ident_ptr[EI_MAG1] != ELFMAG1
+        || e_ident_ptr[EI_MAG2] != ELFMAG2
+        || e_ident_ptr[EI_MAG3] != ELFMAG3) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID_VALUE);
     }
 
-    if (e_ident[EI_CLASS] != ELFCLASS32 && e_ident[EI_CLASS] != ELFCLASS64) {
+    if (e_ident_ptr[EI_CLASS] != ELFCLASS32 && e_ident_ptr[EI_CLASS] != ELFCLASS64) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_CLASS, ITYPE_INVALID_VALUE);
     }
 
-    if (e_ident[EI_DATA] != ELFDATA2LSB && e_ident[EI_DATA] != ELFDATA2MSB) {
+    if (e_ident_ptr[EI_DATA] != ELFDATA2LSB && e_ident_ptr[EI_DATA] != ELFDATA2MSB) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID_VALUE);
     }
 
@@ -282,6 +290,124 @@ ELFIssuesBySeverity ELF::find_string_section_issues() const {
     }
 
     return issues;
+}
+
+void ELF::set_file_bytes(char *bytes, size_t size) {
+    this->file_bytes = bytes;
+    this->file_size = size;
+}
+
+void ELF::set_e_ident_ptr(char *ptr) {
+    this->e_ident_ptr = reinterpret_cast<unsigned char *>(ptr);
+    auto issues = find_e_ident_issues();
+    if (issues.has_critical_issue())
+        throw ELFIssueException(*issues[ISEV_CRITICAL].begin());
+
+    converter.setup(e_ident_ptr[EI_DATA]);
+}
+
+void ELF::read_file_bytes(std::istream &istream) {
+    istream.seekg(0, std::istream::end);
+    auto size = istream.tellg();
+    istream.seekg(0);
+
+    char *bytes = new char[size];
+    istream.read(bytes, size);
+    this->set_file_bytes(bytes, size);
+}
+
+void ELF::load_header() {
+    if (this->file_size < EI_NIDENT)
+        throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
+
+    this->set_e_ident_ptr(this->file_bytes);
+    this->header = create_header(this->get_ei_class());
+
+    if (this->header->get_size() + EI_NIDENT > this->file_size)
+        throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
+
+    this->header->set_header_ptr(this->file_bytes + EI_NIDENT);
+}
+
+void ELF::load_section_headers() {
+
+    Elf64_Off shoff = this->header->get_e_shoff();
+    Elf_Half shentsize = this->header->get_e_shentsize();
+    Elf_Half shnum = this->header->get_e_shnum();
+    ELFSectionHeader *section_header;
+
+    for (unsigned int i = 0; i < shnum; ++i) {
+        section_header = create_section_header();
+        if (shoff + shentsize*i + shentsize <= this->file_size) {
+            section_header->set_header_valid(true);
+            section_header->set_header_ptr(this->file_bytes + shoff + shentsize*i);
+        }
+
+        this->add_section_header(section_header);
+    }
+}
+
+void ELF::load_program_headers() {
+
+    Elf64_Off phoff = this->header->get_e_phoff();
+    Elf_Half phentsize = this->header->get_e_phentsize();
+    Elf_Half phnum = this->header->get_e_phnum();
+    ELFProgramHeader *program_header;
+
+    for (unsigned int i = 0; i < phnum; ++i) {
+        program_header = create_program_header();
+        if (phoff + phentsize*i + phentsize <= this->file_size) {
+            program_header->set_header_valid(true);
+            program_header->set_header_ptr(this->file_bytes + phoff + phentsize*i);
+        }
+
+        this->add_program_header(program_header);
+    }
+}
+
+void ELF::load_sections() {
+
+    for (auto section_header : this->section_headers) {
+        if (section_header->is_header_valid()
+            && section_header->get_sh_offset() + section_header->get_sh_size() <= this->file_size)
+        {
+            section_header->set_section_valid(true);
+            section_header->set_section_ptr(this->file_bytes + section_header->get_sh_offset());
+        }
+    }
+}
+
+void ELF::load_segments() {
+
+    for (auto program_header : this->program_headers) {
+        if (program_header->is_header_valid()
+            && program_header->get_p_offset() + program_header->get_p_filesz() <= this->file_size)
+        {
+            program_header->set_segment_valid(true);
+            program_header->set_segment_ptr(this->file_bytes + program_header->get_p_offset());
+        }
+    }
+}
+
+ELFHeader* ELF::create_header(unsigned char ei_class) {
+    if (ei_class == ELFCLASS32)
+        return new ELFHeaderImpl<Elf32_Ehdr>(*this);
+    else
+        return new ELFHeaderImpl<Elf64_Ehdr>(*this);
+}
+
+ELFSectionHeader* ELF::create_section_header() {
+    if (this->get_ei_class() == ELFCLASS32)
+        return new ELFSectionHeaderImpl<Elf32_Shdr>(*this);
+    else
+        return new ELFSectionHeaderImpl<Elf64_Shdr>(*this);
+}
+
+ELFProgramHeader* ELF::create_program_header() {
+    if (this->get_ei_class() == ELFCLASS32)
+        return new ELFProgramHeaderImpl<Elf32_Phdr>(*this);
+    else
+        return new ELFProgramHeaderImpl<Elf64_Phdr>(*this);
 }
 
 }

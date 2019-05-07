@@ -29,9 +29,11 @@ public:
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_addralign);
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_entsize);
 
-    char *get_section_data() const;
+    virtual void set_header_ptr(char *ptr) = 0;
 
-    void set_copy_of_section_data(const char *raw_data, Elf_Word size);
+    void set_section_ptr(char *ptr);
+
+    char *get_section_data() const;
 
     unsigned int get_index() const;
 
