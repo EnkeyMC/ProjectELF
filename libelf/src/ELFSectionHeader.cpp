@@ -18,20 +18,6 @@ char *ELFSectionHeader::get_section_data() const {
     return section_data;
 }
 
-void ELFSectionHeader::set_copy_of_section_data(const char *raw_data, Elf_Word size) {
-    delete[] this->section_data;
-    this->section_data = nullptr;
-
-    this->set_sh_size(size);
-
-    if (size == 0)
-        return;
-
-    this->section_data = new char[size+1];
-    std::copy(raw_data, raw_data + size, this->section_data);
-    this->section_data[size] = '\0';  // Ensure null termination
-}
-
 unsigned int ELFSectionHeader::get_index() const {
     return index;
 }
@@ -54,6 +40,10 @@ bool ELFSectionHeader::is_section_valid() const {
 
 void ELFSectionHeader::set_section_valid(bool valid) {
     section_valid = valid;
+}
+
+void ELFSectionHeader::set_section_ptr(char *ptr) {
+    this->section_data = ptr;
 }
 
 }

@@ -52,6 +52,8 @@ public:
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shentsize);
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shnum);
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Half, e_shstrndx);
+
+    virtual void set_header_ptr(char *ptr) = 0;
 };
 
 }

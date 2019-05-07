@@ -23,13 +23,17 @@ public:
 
     void clear();
 
-    void set_e_ident(const unsigned char e_ident[EI_NIDENT]);
+    void load(std::istream &istream);
+
+    void load_structure();
+
+    bool save(std::ostream &ostream);
 
     const endianess_converter & get_converter() const;
 
     size_t get_file_size() const;
 
-    void set_file_size(size_t file_size);
+    void set_file_bytes(char *bytes, size_t size);
 
     ELFIssuesBySeverity find_issues() const;
 
@@ -74,11 +78,28 @@ public:
     void set_ei_osabi(unsigned char value);
     void set_ei_abiversion(unsigned char value);
 
-    friend class ELFReader;
-    friend class ELFWriter;
+private:
+    void read_file_bytes(std::istream &istream);
 
-protected:
-    static ELFIssuesBySeverity find_e_ident_issues(const unsigned char *e_ident);
+    void load_header();
+
+    void load_section_headers();
+
+    void load_program_headers();
+
+    void load_sections();
+
+    void load_segments();
+
+    ELFHeader* create_header(unsigned char ei_class);
+
+    ELFSectionHeader* create_section_header();
+
+    ELFProgramHeader* create_program_header();
+
+    void set_e_ident_ptr(char *ptr);
+
+    ELFIssuesBySeverity find_e_ident_issues() const;
     ELFIssuesBySeverity find_overlapping_sections() const;
     ELFIssuesBySeverity find_string_section_issues() const;
 
@@ -86,7 +107,9 @@ protected:
 
     size_t file_size;
 
-    unsigned char e_ident[EI_NIDENT]{};
+    char *file_bytes;
+
+    unsigned char *e_ident_ptr;
     ELFHeader *header;
     vector<ELFSectionHeader *> section_headers;
     vector<ELFProgramHeader *> program_headers;

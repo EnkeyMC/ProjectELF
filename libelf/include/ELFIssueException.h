@@ -6,6 +6,7 @@
 #define PROJECTELF_ELFISSUEEXCEPTION_H
 
 #include <exception>
+#include "ELFIssue.h"
 
 namespace elf {
 

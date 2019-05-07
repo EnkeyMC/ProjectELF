@@ -1,9 +1,7 @@
 #include <fstream>
 #include <QDebug>
 #include <QFile>
-#include <ELFReader.h>
 #include <ELFIssueException.h>
-#include <libelf/include/ELFWriter.h>
 
 #include "core/models/OpenFilesModel.h"
 #include "core/ELFIssueConverter.h"
@@ -43,10 +41,9 @@ void OpenFilesModel::openFile(QString filepath)
     }
 
     std::shared_ptr<elf::ELF> elf = std::make_shared<elf::ELF>();
-    elf::ELFReader reader{file, *elf};
 
     try {
-        reader.parse();
+        elf->load(file);
     } catch (const elf::ELFIssueException &exception) {
         emit error(tr("Parsing error"), ELFIssueConverter::toReadable(exception.getIssue()));
         return;
@@ -137,7 +134,7 @@ void OpenFilesModel::saveFileAs(int row, QString filepath) {
         return;
     }
 
-    if (!elf::ELFWriter::save(*openFile.elfModel->getElf(), file)) {
+    if (!openFile.elfModel->getElf()->save(file)) {
         emit error(tr("Error saving to file"), tr("Could not save to file %1.").arg(filepath));
         return;
     }
