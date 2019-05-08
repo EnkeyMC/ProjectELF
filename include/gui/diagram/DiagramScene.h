@@ -72,7 +72,7 @@ signals:
     void pushNodeToFront(DiagramNode *node);
 
 public slots:
-    void scrollToAddress(elf::Elf64_Addr address);
+    void scrollTo(int y);
 
 private slots:
     void onModelChanged();

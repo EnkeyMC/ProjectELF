@@ -152,16 +152,16 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
     if (!nodeFrom->isValid())
         return;
 
-    auto shtConnection = new Connection(this, side, level);
-    shtConnection->getStartBindable().bindTo(*nodeFrom->getConnectionPoints().at(connPoint));
-    shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
-    shtConnection->setValid(nodeTo->isValid());
-    connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
-    connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
-    connect(nodeTo, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
-    connect(nodeTo, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
+    auto connection = new Connection(this, side, level);
+    nodeFrom->getConnectionPoints().at(connPoint)->bindConnection(connection);
+    connection->getEndBindable().bindTo(nodeTo->getNodeBindable());
+    connection->setValid(nodeTo->isValid());
+    connect(nodeFrom, &DiagramNode::hoverEntered, connection, &Connection::setVisible);
+    connect(nodeFrom, &DiagramNode::hoverLeaved, connection, &Connection::setInvisible);
+    connect(nodeTo, &DiagramNode::hoverEntered, connection, &Connection::setVisible);
+    connect(nodeTo, &DiagramNode::hoverLeaved, connection, &Connection::setInvisible);
     connect(nodeFrom, &DiagramNode::hoverEntered, [=]() {emit this->pushNodeToFront(nodeTo);});
-    connections.push_back(shtConnection);
+    connections.push_back(connection);
 }
 
 void DiagramScene::clearConnections() {
@@ -360,9 +360,8 @@ DiagramLayout *DiagramScene::getLayout() const {
     return layout;
 }
 
-void DiagramScene::scrollToAddress(elf::Elf64_Addr address) {
-    auto proportionalOffset = layout->getSize().height() * (static_cast<double>(address) / model->getFileSize());
-    scroll.setY(- static_cast<int>(proportionalOffset) - layout->getNodeOffset().y() - padding);
+void DiagramScene::scrollTo(int y) {
+    scroll.setY(- y - layout->getNodeOffset().y() - padding);
     clampScroll();
     emit scrollYPositionChanged(getScrollYPosition());
 }

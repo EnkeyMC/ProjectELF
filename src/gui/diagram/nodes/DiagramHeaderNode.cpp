@@ -11,13 +11,8 @@ DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *
     this->colspan = 2;
     this->headerModelItem = modelItem;
 
-    auto sht = modelItem->getSectionHeaderTable();
-    auto shtOffset = sht == nullptr ? ConnectionPoint::INVALID_ADDRESS : sht->getAddressInFile();
-    auto pht = modelItem->getProgramHeaderTable();
-    auto phtOffset = pht == nullptr ? ConnectionPoint::INVALID_ADDRESS : pht->getAddressInFile();
-
-    this->registerConnectionPoint(new ConnectionPoint("e_shoff", Side::LEFT, shtOffset));
-    this->registerConnectionPoint(new ConnectionPoint("e_phoff", Side::RIGHT, phtOffset));
+    this->registerConnectionPoint(new ConnectionPoint("e_shoff", Side::LEFT));
+    this->registerConnectionPoint(new ConnectionPoint("e_phoff", Side::RIGHT));
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {

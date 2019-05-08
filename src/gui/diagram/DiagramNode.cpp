@@ -93,7 +93,7 @@ Bindable<QPoint> & DiagramNode::getNodeBindable() {
 
 void DiagramNode::registerConnectionPoint(ConnectionPoint *connectionPoint) {
     connectionPoints[connectionPoint->getName()] = connectionPoint;
-    connect(connectionPoint, &ConnectionPoint::clicked, diagram, &DiagramScene::scrollToAddress);
+    connect(connectionPoint, &ConnectionPoint::clicked, diagram, &DiagramScene::scrollTo);
     connect(connectionPoint, &ConnectionPoint::repaintRequested, diagram, &DiagramScene::repaint);
     this->addHoverableChild(connectionPoint);
 }
