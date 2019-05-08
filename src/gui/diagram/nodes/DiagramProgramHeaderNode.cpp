@@ -24,7 +24,10 @@ void DiagramProgramHeaderNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getProgramTableNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Program header");
+    painter->drawText(nodeRect, Qt::AlignCenter,
+            "Program header #" + QString::number(programHeaderModelItem->getIndex()) + "\n" +
+            programHeaderModelItem->getDispType()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
     this->paintConnectionPoints(painter);

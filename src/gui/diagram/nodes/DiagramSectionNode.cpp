@@ -18,7 +18,10 @@ void DiagramSectionNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSectionNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Section");
+    painter->drawText(nodeRect, Qt::AlignCenter,
+            "Section #" + QString::number(sectionModel->getIndex()) + "\n" +
+            this->sectionModel->getName()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
 }

@@ -24,7 +24,11 @@ void DiagramSectionHeaderNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSectionTableNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Section header");
+    painter->drawText(nodeRect, Qt::AlignCenter,
+            "Section header #" +
+            QString::number(sectionHeaderModelItem->getIndex()) +
+            "\n" + sectionHeaderModelItem->getDispName()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
     this->paintConnectionPoints(painter);

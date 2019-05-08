@@ -17,10 +17,19 @@ bool ELFSectionModelItem::isValid() const {
 void ELFSectionModelItem::onStructureChanged() {
     auto sectionHeader = this->elf->get_section_headers()[this->index];
     if (sectionHeader->is_section_valid()) {
-        this->sizeInFile = sectionHeader->get_sh_size();
+        if (sectionHeader->get_sh_type() == SHT_NOBITS)
+            sizeInFile = 0;
+        else
+            this->sizeInFile = sectionHeader->get_sh_size();
         this->addressInFile = sectionHeader->get_sh_offset();
     } else {
         sizeInFile = 0;
         addressInFile = 0;
     }
+}
+
+QString ELFSectionModelItem::getName() const {
+    if (isValid())
+        return QString::fromStdString(elf->get_name(elf->get_section_headers()[this->index]->get_sh_name()));
+    return "";
 }

@@ -15,6 +15,8 @@ public:
 
     bool isValid() const override;
 
+    QString getName() const;
+
 protected:
     void onStructureChanged() final;
 };

@@ -13,6 +13,8 @@ public:
 
     bool isValid() const override;
 
+    QString getType() const;
+
 protected:
     void onStructureChanged() final;
 };

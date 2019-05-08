@@ -3,6 +3,7 @@
 //
 
 #include "core/models/ELFProgramHeaderModelItem.h"
+#include "core/ELFValueConverter.h"
 
 #define ELF_STRUCT this->elf->get_program_headers()[index]
 
@@ -29,7 +30,7 @@ HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, filesz, Filesz, ELF_STR
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, memsz, Memsz, ELF_STRUCT, p_memsz, elf::Elf_Xword)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFProgramHeaderModelItem, align, Align, ELF_STRUCT, p_align, elf::Elf_Xword)
 
-HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Type)
+HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFProgramHeaderModelItem, Type, ELF_STRUCT, p_type, pTypeToDisp);
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Flags)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Offset)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Vaddr)

@@ -2,6 +2,7 @@
 // Created by MOmac on 17.03.2019.
 //
 
+#include "core/ELFValueConverter.h"
 #include "core/models/ELFSegmentModelItem.h"
 
 ELFSegmentModelItem::ELFSegmentModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
@@ -23,4 +24,10 @@ void ELFSegmentModelItem::onStructureChanged() {
         sizeInFile = 0;
         addressInFile = 0;
     }
+}
+
+QString ELFSegmentModelItem::getType() const {
+    if (isValid())
+        return ELFValueConverter::pTypeToDisp(elf->get_program_headers()[index]->get_p_type());
+    return "";
 }

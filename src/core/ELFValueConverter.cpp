@@ -197,4 +197,17 @@ QString ELFValueConverter::tr(const char *s)
     return QObject::tr(s);
 }
 
+QString ELFValueConverter::pTypeToDisp(elf::Elf_Word value) {
+    switch (value) {
+        case PT_NULL: return "PT_NULL";
+        case PT_LOAD: return "PT_LOAD";
+        case PT_DYNAMIC: return "PT_DYNAMIC";
+        case PT_INTERP: return "PT_INTERP";
+        case PT_NOTE: return "PT_NOTE";
+        case PT_SHLIB: return "PT_SHLIB";
+        case PT_PHDR: return "PT_PHDR";
+        default: return unknownValue(value);
+    }
+}
+
 ELFValueConverter::ELFValueConverter() = default;
