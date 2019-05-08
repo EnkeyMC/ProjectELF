@@ -46,7 +46,12 @@ signals:
     void sectionHeaderTableChanged(ELFSectionHeaderTableModelItem *value);
     void programHeaderTableChanged(ELFProgramHeaderTableModelItem *value);
 
+private slots:
+    void onStructureChanged();
+
 private:
+    void setSizeInFile();
+
     ELFSectionHeaderTableModelItem *sectionHeaderTableModelItem;
     ELFProgramHeaderTableModelItem *programHeaderTableModelItem;
 };

@@ -8,8 +8,10 @@ ELFSegmentModelItem::ELFSegmentModelItem(ELFModel *parent, std::shared_ptr<elf::
     : ELFIndexedModelItem(parent, std::move(elf), index)
 {
     auto segment = this->elf->get_program_headers()[index];
-    sizeInFile = segment->get_p_filesz();
-    addressInFile = segment->get_p_offset();
+    if (segment->is_segment_valid()) {
+        sizeInFile = segment->get_p_filesz();
+        addressInFile = segment->get_p_offset();
+    }
 }
 
 bool ELFSegmentModelItem::isValid() const {

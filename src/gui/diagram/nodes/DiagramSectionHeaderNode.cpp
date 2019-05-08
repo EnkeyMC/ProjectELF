@@ -9,8 +9,12 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
       sectionHeaderModelItem(sectionHeaderModelItem)
 {
     this->viewSide = DiagramNode::LEFT;
+    uint64_t address = ConnectionPoint::INVALID_ADDRESS;
+    if (sectionHeaderModelItem->getSectionModelItem() != nullptr)
+        address = sectionHeaderModelItem->getSectionModelItem()->getAddressInFile();
+
     registerConnectionPoint(
-            new ConnectionPoint("sh_offset", Side::LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
+            new ConnectionPoint("sh_offset", Side::LEFT, address)
     );
 }
 

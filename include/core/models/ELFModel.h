@@ -58,6 +58,7 @@ signals:
     void issuesChanged(ELFIssueListModel *);
     void modifiedChanged(bool modified);
     void dataChanged();
+    void structureChanged();
 
 protected:
     ELFHeaderModelItem *headerModelItem;

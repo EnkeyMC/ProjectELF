@@ -13,7 +13,7 @@ ScrollView {
     property ELFModel elfModel
 
     Loader {
-        active: elfModel.header !== undefined && elfModel.header.sectionHeaderTable !== undefined && elfModel.header.sectionHeaderTable !== null
+        active: elfModel.header && elfModel.header.sectionHeaderTable && elfModel.header.sectionHeaderTable
 
         sourceComponent: Component {
             Column {

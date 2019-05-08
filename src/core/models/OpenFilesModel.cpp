@@ -14,6 +14,7 @@ OpenFilesModel::OpenFilesModel(QObject *parent)
 void OpenFilesModel::closeFile(int row)
 {
     emit beginRemoveRows(QModelIndex(), row, row);
+    delete openFileList.at(row).elfModel;
     openFileList.removeAt(row);
     emit endRemoveRows();
 }
@@ -157,8 +158,10 @@ bool OpenFilesModel::hasUnsavedChanges() const
 void OpenFilesModel::reloadStructure(int row)
 {
     if (row >= 0 & row < openFileList.size()) {
-        auto &openFile = openFileList.at(row);
+        auto openFile = openFileList.at(row);
         openFile.elfModel->reloadStructure();
+        emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
+                         QVector<int>() << ELFModelRole);
     }
 }
 

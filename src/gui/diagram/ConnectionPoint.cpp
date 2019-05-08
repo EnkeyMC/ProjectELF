@@ -63,7 +63,8 @@ bool ConnectionPoint::contains(const QPoint &point) const {
 void ConnectionPoint::mousePressEvent(QMouseEvent *event) {
     IMouseListener::mousePressEvent(event);
 
-    emit clicked(endAddress);
+    if (endAddress != INVALID_ADDRESS)
+        emit clicked(endAddress);
 }
 
 void ConnectionPoint::hoverEnteredEvent(QHoverEvent *event) {

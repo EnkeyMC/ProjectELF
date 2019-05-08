@@ -119,11 +119,17 @@ void ELFModel::setModified(bool modified) {
 void ELFModel::reloadStructure()
 {
     this->elf->load_structure();
-    delete headerModelItem;
-    this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
-    connect(this->headerModelItem, &ELFModelItem::dataChanged, [=]() {this->setModified(true);});
-    this->reloadIssues();
-    emit headerChanged(this->headerModelItem);
+
+    if (this->elf->get_header() == nullptr && this->headerModelItem != nullptr) {
+        delete this->headerModelItem;
+        this->headerModelItem = nullptr;
+        emit headerChanged(this->headerModelItem);
+    } else if (this->elf->get_header() != nullptr && this->headerModelItem == nullptr) {
+        this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
+        emit headerChanged(this->headerModelItem);
+    }
+
+    emit structureChanged();
 }
 
 std::shared_ptr<elf::ELF> ELFModel::getElf() const {

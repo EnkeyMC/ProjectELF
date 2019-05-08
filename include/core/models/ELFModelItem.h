@@ -27,6 +27,7 @@ public:
 
 signals:
     void dataChanged();
+    void structureChanged();
 
 protected:
     std::shared_ptr<elf::ELF> elf;

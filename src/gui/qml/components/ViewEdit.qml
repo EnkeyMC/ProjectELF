@@ -68,8 +68,8 @@ PESplitView {
                 Loader {
                     id: headerEditTableLoader
                     Layout.fillWidth: true
-                    sourceComponent: headerEditTableComponent
-                    active: elfModel.header !== undefined && elfModel.header !== null
+                    sourceComponent: active ? headerEditTableComponent : undefined
+                    active: elfModel.header
 
                 }
 

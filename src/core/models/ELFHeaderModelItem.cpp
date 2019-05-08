@@ -6,32 +6,18 @@
 
 #include "core/models/ELFHeaderModelItem.h"
 #include "core/ELFValueConverter.h"
+#include "core/models/ELFModel.h"
 
-#define DEFAULT(x) if (elf->get_header() == nullptr) return x
-#define ELF_STRUCT elf->get_header()
+#define ELF_STRUCT this->elf->get_header()
 
 ELFHeaderModelItem::ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
     : ELFModelItem(parent, std::move(elf)),
       sectionHeaderTableModelItem(nullptr),
       programHeaderTableModelItem(nullptr)
 {
-    addressInFile = 0;
-    auto header = this->elf->get_header();
-    if (header == nullptr) {
-        sizeInFile = 0;
-        return;
-    }
+    onStructureChanged();
 
-    sizeInFile = header->get_size();
-
-    if (header->get_e_shoff() != 0) {
-        sectionHeaderTableModelItem = new ELFSectionHeaderTableModelItem(parent, this->elf);
-        connect(sectionHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
-    }
-    if (header->get_e_phoff() != 0) {
-        programHeaderTableModelItem = new ELFProgramHeaderTableModelItem(parent, this->elf);
-        connect(programHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
-    }
+    connect(parent, &ELFModel::structureChanged, this, &ELFHeaderModelItem::onStructureChanged);
 }
 
 ELFHeaderModelItem::~ELFHeaderModelItem() {
@@ -80,4 +66,39 @@ ELFProgramHeaderTableModelItem *ELFHeaderModelItem::getProgramHeaderTable() cons
 
 bool ELFHeaderModelItem::isValid() const {
     return true;
+}
+
+void ELFHeaderModelItem::onStructureChanged() {
+    addressInFile = 0;
+    setSizeInFile();
+
+    auto header = this->elf->get_header();
+    if (header->get_e_shoff() != 0 && sectionHeaderTableModelItem == nullptr) {
+        sectionHeaderTableModelItem = new ELFSectionHeaderTableModelItem(this->getModel(), this->elf);
+        connect(sectionHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
+        emit sectionHeaderTableChanged(sectionHeaderTableModelItem);
+    } else if (header->get_e_shoff() == 0 && sectionHeaderTableModelItem != nullptr) {
+        delete sectionHeaderTableModelItem;
+        sectionHeaderTableModelItem = nullptr;
+        emit sectionHeaderTableChanged(sectionHeaderTableModelItem);
+    }
+
+    if (header->get_e_phoff() != 0 && programHeaderTableModelItem == nullptr) {
+        programHeaderTableModelItem = new ELFProgramHeaderTableModelItem(this->getModel(), this->elf);
+        connect(programHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
+        emit programHeaderTableChanged(programHeaderTableModelItem);
+    } else if (header->get_e_phoff() == 0 && programHeaderTableModelItem != nullptr) {
+        delete programHeaderTableModelItem;
+        programHeaderTableModelItem = nullptr;
+        emit programHeaderTableChanged(programHeaderTableModelItem);
+    }
+}
+
+void ELFHeaderModelItem::setSizeInFile() {
+    auto header = this->elf->get_header();
+    if (header == nullptr) {
+        sizeInFile = 0;
+    } else {
+        sizeInFile = header->get_size();
+    }
 }

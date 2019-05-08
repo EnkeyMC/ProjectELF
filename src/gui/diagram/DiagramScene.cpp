@@ -111,11 +111,13 @@ void DiagramScene::onModelChanged() {
         createConnection(headerNode, "e_shoff", sectionHeaderTableNode, LEFT, 0);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
-            auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
-            this->layout->addNode(sectionNode);
+            if (sectionHeader->getSectionModelItem() != nullptr) {
+                auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
+                this->layout->addNode(sectionNode);
 
-            auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
-            createConnection(sectionHeaderNode, "sh_offset", sectionNode, LEFT, 1);
+                auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
+                createConnection(sectionHeaderNode, "sh_offset", sectionNode, LEFT, 1);
+            }
         }
     }
 
@@ -127,11 +129,13 @@ void DiagramScene::onModelChanged() {
         createConnection(headerNode, "e_phoff", programHeaderTableNode, RIGHT, 0);
 
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
-            auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
-            this->layout->addNode(segmentNode);
+            if (programHeader->getSegmentModelItem() != nullptr) {
+                auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
+                this->layout->addNode(segmentNode);
 
-            auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
-            createConnection(programHeaderNode, "p_offset", segmentNode, RIGHT, 1);
+                auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
+                createConnection(programHeaderNode, "p_offset", segmentNode, RIGHT, 1);
+            }
         }
     }
 

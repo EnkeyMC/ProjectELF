@@ -105,44 +105,25 @@ const vector<ELFSectionHeader *> &ELF::get_section_headers() const {
     return section_headers;
 }
 
-unsigned char ELF::get_ei_mag0() const {
-    return e_ident_ptr[EI_MAG0];
-}
+unsigned char ELF::get_ei_mag0() const          {return e_ident_ptr[EI_MAG0];}
+unsigned char ELF::get_ei_mag1() const          {return e_ident_ptr[EI_MAG1];}
+unsigned char ELF::get_ei_mag2() const          {return e_ident_ptr[EI_MAG2];}
+unsigned char ELF::get_ei_mag3() const          {return e_ident_ptr[EI_MAG3];}
+unsigned char ELF::get_ei_class() const         {return e_ident_ptr[EI_CLASS];}
+unsigned char ELF::get_ei_data() const          {return e_ident_ptr[EI_DATA];}
+unsigned char ELF::get_ei_version() const       {return e_ident_ptr[EI_VERSION];}
+unsigned char ELF::get_ei_osabi() const         {return e_ident_ptr[EI_OSABI];}
+unsigned char ELF::get_ei_abiversion() const    {return e_ident_ptr[EI_ABIVERSION];}
 
-unsigned char ELF::get_ei_mag1() const {
-    return e_ident_ptr[EI_MAG1];
-}
-
-unsigned char ELF::get_ei_mag2() const {
-    return e_ident_ptr[EI_MAG2];
-}
-
-unsigned char ELF::get_ei_mag3() const {
-    return e_ident_ptr[EI_MAG3];
-}
-
-unsigned char ELF::get_ei_class() const {
-    return e_ident_ptr[EI_CLASS];
-}
-
-unsigned char ELF::get_ei_data() const {
-    return e_ident_ptr[EI_DATA];
-}
-
-unsigned char ELF::get_ei_version() const
-{
-    return e_ident_ptr[EI_VERSION];
-}
-
-unsigned char ELF::get_ei_osabi() const
-{
-    return e_ident_ptr[EI_OSABI];
-}
-
-unsigned char ELF::get_ei_abiversion() const
-{
-    return e_ident_ptr[EI_ABIVERSION];
-}
+void ELF::set_ei_mag0(unsigned char value)          {e_ident_ptr[EI_MAG0] = value;}
+void ELF::set_ei_mag1(unsigned char value)          {e_ident_ptr[EI_MAG1] = value;}
+void ELF::set_ei_mag2(unsigned char value)          {e_ident_ptr[EI_MAG2] = value;}
+void ELF::set_ei_mag3(unsigned char value)          {e_ident_ptr[EI_MAG3] = value;}
+void ELF::set_ei_class(unsigned char value)         {e_ident_ptr[EI_CLASS] = value;}
+void ELF::set_ei_data(unsigned char value)          {e_ident_ptr[EI_DATA] = value;}
+void ELF::set_ei_version(unsigned char value)       {e_ident_ptr[EI_VERSION] = value;}
+void ELF::set_ei_osabi(unsigned char value)         {e_ident_ptr[EI_OSABI] = value;}
+void ELF::set_ei_abiversion(unsigned char value)    {e_ident_ptr[EI_ABIVERSION] = value;}
 
 const unsigned char *ELF::get_e_ident() const {
     return e_ident_ptr;
@@ -159,45 +140,6 @@ const vector<ELFProgramHeader *> &ELF::get_program_headers() const {
 void ELF::add_program_header(ELFProgramHeader *program_header) {
     program_header->set_index(program_headers.size());
     this->program_headers.push_back(program_header);
-}
-
-void ELF::set_ei_mag0(unsigned char value) {
-    e_ident_ptr[EI_MAG0] = value;
-}
-
-void ELF::set_ei_mag1(unsigned char value) {
-    e_ident_ptr[EI_MAG1] = value;
-}
-
-void ELF::set_ei_mag2(unsigned char value) {
-    e_ident_ptr[EI_MAG2] = value;
-}
-
-void ELF::set_ei_mag3(unsigned char value) {
-    e_ident_ptr[EI_MAG3] = value;
-}
-
-void ELF::set_ei_class(unsigned char value) {
-    e_ident_ptr[EI_CLASS] = value;
-}
-
-void ELF::set_ei_data(unsigned char value) {
-    e_ident_ptr[EI_DATA] = value;
-}
-
-void ELF::set_ei_version(unsigned char value)
-{
-    e_ident_ptr[EI_VERSION] = value;
-}
-
-void ELF::set_ei_osabi(unsigned char value)
-{
-    e_ident_ptr[EI_OSABI] = value;
-}
-
-void ELF::set_ei_abiversion(unsigned char value)
-{
-    e_ident_ptr[EI_ABIVERSION] = value;
 }
 
 ELFIssuesBySeverity ELF::find_e_ident_issues() const
@@ -271,6 +213,7 @@ ELFIssuesBySeverity ELF::find_string_section_issues() const {
     ELFIssuesBySeverity issues;
 
     if (header == nullptr) return issues;
+    if (header->get_e_shstrndx() == SHN_UNDEF) return issues;
     if (header->get_e_shstrndx() >= section_headers.size()) return issues;
 
     auto string_section_header = section_headers[header->get_e_shstrndx()];
@@ -327,6 +270,7 @@ void ELF::load_header() {
         throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
 
     this->header->set_header_ptr(this->file_bytes + EI_NIDENT);
+    this->header->set_header_valid(true);
 }
 
 void ELF::load_section_headers() {

@@ -8,8 +8,10 @@ ELFSectionModelItem::ELFSectionModelItem(ELFModel *parent, std::shared_ptr<elf::
     : ELFIndexedModelItem(parent, std::move(elf), index)
 {
     auto sectionHeader = this->elf->get_section_headers()[this->index];
-    this->sizeInFile = sectionHeader->get_sh_size();
-    this->addressInFile = sectionHeader->get_sh_offset();
+    if (sectionHeader->is_section_valid()) {
+        this->sizeInFile = sectionHeader->get_sh_size();
+        this->addressInFile = sectionHeader->get_sh_offset();
+    }
 }
 
 bool ELFSectionModelItem::isValid() const {

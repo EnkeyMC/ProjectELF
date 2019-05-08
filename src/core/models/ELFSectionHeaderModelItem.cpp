@@ -4,15 +4,16 @@
 
 #include "core/models/ELFSectionHeaderModelItem.h"
 
-#define ELF_STRUCT elf->get_section_headers()[index]
+#define ELF_STRUCT this->elf->get_section_headers()[index]
 
 ELFSectionHeaderModelItem::ELFSectionHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
-    : ELFIndexedModelItem(parent, std::move(elf), index)
+    : ELFIndexedModelItem(parent, std::move(elf), index), sectionModelItem(nullptr)
 {
     auto header = this->elf->get_header();
     sizeInFile = header->get_e_shentsize();
     addressInFile = header->get_e_shoff() + index * header->get_e_shentsize();
-    sectionModelItem = new ELFSectionModelItem(parent, this->elf, this->index);
+    if (ELF_STRUCT->is_header_valid())
+        sectionModelItem = new ELFSectionModelItem(parent, this->elf, this->index);
 }
 
 ELFSectionHeaderModelItem::~ELFSectionHeaderModelItem() {
