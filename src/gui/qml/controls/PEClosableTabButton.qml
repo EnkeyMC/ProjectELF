@@ -10,6 +10,8 @@ TabButton {
     padding: 0
     width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
 
+    property alias color: label.color
+
     signal closeTab
 
     contentItem: RowLayout {
@@ -25,6 +27,7 @@ TabButton {
             }
 
             Text {
+                id: label
                 text: tabButton.text
                 font: tabButton.font
                 color: Style._ColorTextDark

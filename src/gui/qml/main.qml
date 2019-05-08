@@ -178,6 +178,7 @@ ApplicationWindow {
 
                 PEClosableTabButton {
                     text: model.displayName + (changed ? "*" : "")
+                    color: model.elfModel && model.elfModel.issueListModel.size > 0 ? Style._ColorError : Style._ColorTextDark
                     property bool changed: model.changed
 
                     onCloseTab: {
