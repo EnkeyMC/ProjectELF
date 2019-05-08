@@ -9,6 +9,7 @@
 #include "ELFSectionHeaderImpl.h"
 
 #define SIZEOF_EI_FIELD(field) size_t ELF::get_sizeof_##field() const {return sizeof(unsigned char);}
+#define INVALID_NAME "<<INVALID_NAME>>"
 
 namespace elf {
 
@@ -191,22 +192,24 @@ ELFIssuesBySeverity ELF::find_overlapping_sections() const {
     return issues;
 }
 
-const char *ELF::get_name(unsigned index) const {
-    if (header == nullptr) return nullptr;
-    if (header->get_e_shstrndx() >= section_headers.size()) return nullptr;
+std::string ELF::get_name(unsigned index) const {
+    if (header == nullptr) return INVALID_NAME;
+    if (header->get_e_shstrndx() >= section_headers.size()) return INVALID_NAME;
 
     auto string_section_header = section_headers[header->get_e_shstrndx()];
-    if (!string_section_header->is_section_valid()) return nullptr;
-    if (index >= string_section_header->get_sh_size()) return nullptr;
+    if (!string_section_header->is_section_valid()) return INVALID_NAME;
+    if (index >= string_section_header->get_sh_size()) return INVALID_NAME;
 
     if (string_section_header->get_sh_size() == 0) {
         if (index == 0)
             return "";
         else
-            return nullptr;
+            return INVALID_NAME;
     }
 
-    return &string_section_header->get_section_data()[index];
+    const char *buffer = &string_section_header->get_section_data()[index];
+    const char *string_end = std::find(buffer, buffer + string_section_header->get_sh_size() - index, 0);
+    return std::string(buffer, string_end);
 }
 
 ELFIssuesBySeverity ELF::find_string_section_issues() const {

@@ -46,7 +46,7 @@ public:
     void add_program_header(ELFProgramHeader *program_header);
     const vector<ELFProgramHeader *> &get_program_headers() const;
 
-    const char *get_name(unsigned index) const;
+    std::string get_name(unsigned index) const;
 
     unsigned char get_ei_mag0() const;
     unsigned char get_ei_mag1() const;
