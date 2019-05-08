@@ -106,6 +106,7 @@ void ELFHeaderModelItem::onStructureChanged() {
     emit phnumChanged(getPhnum());
     emit shentsizeChanged(getShentsize());
     emit shnumChanged(getShnum());
+    emit validChanged();
 }
 
 void ELFHeaderModelItem::setSizeInFile() {

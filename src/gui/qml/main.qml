@@ -108,10 +108,12 @@ ApplicationWindow {
                 Action {
                     text: qsTr("&Save")
                     onTriggered: openFilesModel.saveFile(fileTabs.currentIndex)
+                    enabled: openFilesModel.size > 0
                 }
                 Action {
                     text: qsTr("Save &As...")
                     onTriggered: saveFileDialog.open()
+                    enabled: openFilesModel.size > 0
                 }
                 PEMenuSeparator {}
                 Action {
@@ -128,6 +130,8 @@ ApplicationWindow {
 
         PEButton {
             text: qsTr("Reload structure")
+            enabled: openFilesModel.size > 0
+
             onClicked: {
                 openFilesModel.reloadStructure(fileTabs.currentIndex)
             }

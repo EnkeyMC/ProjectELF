@@ -70,4 +70,5 @@ void ELFSectionHeaderModelItem::onStructureChanged() {
     emit infoChanged(getInfo());
     emit addralignChanged(getAddralign());
     emit entsizeChanged(getEntsize());
+    emit validChanged();
 }

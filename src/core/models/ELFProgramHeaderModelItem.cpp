@@ -64,4 +64,5 @@ void ELFProgramHeaderModelItem::onStructureChanged() {
     emit fileszChanged(getFilesz());
     emit memszChanged(getMemsz());
     emit alignChanged(getAlign());
+    emit validChanged();
 }

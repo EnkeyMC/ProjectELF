@@ -20,8 +20,6 @@ class ELFProgramHeaderModelItem : public ELFIndexedModelItem {
     HEX_ELF_PROP_DECL(filesz, Filesz)
     HEX_ELF_PROP_DECL(memsz, Memsz)
     HEX_ELF_PROP_DECL(align, Align)
-
-    Q_PROPERTY(unsigned index READ getIndex CONSTANT)
 public:
     ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 

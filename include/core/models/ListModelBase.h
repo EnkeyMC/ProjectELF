@@ -9,6 +9,8 @@
 
 class ListModelBase : public QAbstractItemModel {
     Q_OBJECT
+
+    Q_PROPERTY(int size READ rowCount NOTIFY sizeChanged)
 public:
     explicit ListModelBase(QObject *parent = nullptr);
 
@@ -20,8 +22,13 @@ public:
 
     QVariant data(const QModelIndex &index, int role) const final;
 
+signals:
+    void sizeChanged();
+
 protected:
     virtual QVariant getData(int idx, int role) const = 0;
+
+
 };
 
 

@@ -5,7 +5,8 @@
 #include "core/models/ListModelBase.h"
 
 ListModelBase::ListModelBase(QObject *parent) : QAbstractItemModel(parent) {
-
+    connect(this, &ListModelBase::rowsInserted, this, &ListModelBase::sizeChanged);
+    connect(this, &ListModelBase::rowsRemoved, this, &ListModelBase::sizeChanged);
 }
 
 QModelIndex ListModelBase::index(int row, int column, const QModelIndex &parent) const {

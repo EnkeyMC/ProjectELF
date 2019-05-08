@@ -24,6 +24,8 @@ void ELFSegmentModelItem::onStructureChanged() {
         sizeInFile = 0;
         addressInFile = 0;
     }
+
+    emit validChanged();
 }
 
 QString ELFSegmentModelItem::getType() const {

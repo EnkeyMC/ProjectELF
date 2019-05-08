@@ -15,7 +15,7 @@ Button {
         id: buttonText
         text: button.text
         font.pixelSize: Style.button._FontSize
-        color: Style._ColorTextLight
+        color: button.enabled ? Style._ColorTextLight : "gray"
         horizontalAlignment: Text.AlignHCenter
     }
 

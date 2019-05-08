@@ -43,4 +43,6 @@ void ELFSectionHeaderTableModelItem::onStructureChanged() {
         listModel->add(sectionHeaderModel);
         connect(sectionHeaderModel, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
     }
+
+    emit validChanged();
 }

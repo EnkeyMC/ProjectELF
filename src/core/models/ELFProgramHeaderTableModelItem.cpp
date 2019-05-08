@@ -41,4 +41,6 @@ void ELFProgramHeaderTableModelItem::onStructureChanged() {
         listModel->add(programHeaderModel);
         connect(programHeaderModel, &ELFProgramHeaderModelItem::dataChanged, this, &ELFProgramHeaderTableModelItem::dataChanged);
     }
+
+    emit validChanged();
 }

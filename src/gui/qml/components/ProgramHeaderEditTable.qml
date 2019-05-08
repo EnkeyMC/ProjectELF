@@ -7,7 +7,7 @@ import "../singletons"
 import "../controls"
 
 PEExpandablePane {
-    title: headerModel ? "Segment #" + headerModel.index : ""
+    title: headerModel ? (headerModel.valid ? "" : "INVALID ") + "Segment #" + headerModel.index + " " + headerModel.dispType : ""
     minWidth: programHeaderEditTable.implicitWidth
 
     property ELFProgramHeaderModelItem headerModel

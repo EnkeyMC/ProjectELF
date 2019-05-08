@@ -26,6 +26,8 @@ void ELFSectionModelItem::onStructureChanged() {
         sizeInFile = 0;
         addressInFile = 0;
     }
+
+    emit validChanged();
 }
 
 QString ELFSectionModelItem::getName() const {

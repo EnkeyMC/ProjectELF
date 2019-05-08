@@ -14,6 +14,7 @@ class ELFModel;
 class ELFModelItem : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(bool valid READ isValid NOTIFY validChanged)
 public:
     explicit ELFModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
 
@@ -28,6 +29,7 @@ public:
 signals:
     void dataChanged();
     void structureChanged();
+    void validChanged();
 
 protected slots:
     virtual void onStructureChanged() = 0;
