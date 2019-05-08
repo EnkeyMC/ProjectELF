@@ -61,6 +61,8 @@ signals:
     void structureChanged();
 
 protected:
+    void loadStructure();
+
     ELFHeaderModelItem *headerModelItem;
 
     std::shared_ptr<elf::ELF> elf;

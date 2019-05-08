@@ -29,14 +29,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.mag0
-        byteSize: elfModel.mag0ByteSize
-        onEditingFinished: elfModel.mag0 = text
+        text: elfModel ? elfModel.mag0 : ""
+        byteSize: elfModel ? elfModel.mag0ByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.mag0 = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispMag0
+            text: elfModel ? elfModel.dispMag0 : ""
         }
     }
 
@@ -48,14 +48,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.mag1
-        byteSize: elfModel.mag1ByteSize
-        onEditingFinished: elfModel.mag1 = text
+        text: elfModel ? elfModel.mag1 : ""
+        byteSize: elfModel ? elfModel.mag1ByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.mag1 = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispMag1
+            text: elfModel ? elfModel.dispMag1 : ""
         }
     }
 
@@ -67,14 +67,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.mag2
-        byteSize: elfModel.mag2ByteSize
-        onEditingFinished: elfModel.mag2 = text
+        text: elfModel ? elfModel.mag2 : ""
+        byteSize: elfModel ? elfModel.mag2ByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.mag2 = text
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispMag2
+            text: elfModel ? elfModel.dispMag2 : ""
         }
     }
 
@@ -86,14 +86,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.mag3
-        byteSize: elfModel.mag3ByteSize
-        onEditingFinished: elfModel.mag3 = text
+        text: elfModel ? elfModel.mag3 : ""
+        byteSize: elfModel ? elfModel.mag3ByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.mag3 = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispMag3
+            text: elfModel ? elfModel.dispMag3 : ""
         }
     }
 
@@ -105,14 +105,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.fileClass
-        byteSize: elfModel.fileClassByteSize
-        onEditingFinished: elfModel.fileClass = text
+        text: elfModel ? elfModel.fileClass : ""
+        byteSize: elfModel ? elfModel.fileClassByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.fileClass = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispFileClass
+            text: elfModel ? elfModel.dispFileClass : ""
         }
     }
 
@@ -124,14 +124,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.dataEncoding
-        byteSize: elfModel.dataEncodingByteSize
-        onEditingFinished: elfModel.dataEncoding = text
+        text: elfModel ? elfModel.dataEncoding : ""
+        byteSize: elfModel ?  elfModel.dataEncodingByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.dataEncoding = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispDataEncoding
+            text: elfModel ? elfModel.dispDataEncoding : ""
         }
     }
 
@@ -143,14 +143,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.version
-        byteSize: elfModel.versionByteSize
-        onEditingFinished: elfModel.version = text
+        text: elfModel ? elfModel.version : ""
+        byteSize: elfModel ? elfModel.versionByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.version = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispVersion
+            text: elfModel ? elfModel.dispVersion : ""
         }
     }
 
@@ -162,14 +162,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.osabi
-        byteSize: elfModel.osabiByteSize
-        onEditingFinished: elfModel.osabi = text
+        text: elfModel ? elfModel.osabi : ""
+        byteSize: elfModel ? elfModel.osabiByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.osabi = text;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispOsabi
+            text: elfModel ? elfModel.dispOsabi : ""
         }
     }
 
@@ -181,14 +181,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: elfModel.abiversion
-        byteSize: elfModel.abiversionByteSize
-        onEditingFinished: elfModel.abiversion = text
+        text: elfModel ? elfModel.abiversion : ""
+        byteSize: elfModel ? elfModel.abiversionByteSize : 0
+        onEditingFinished: if (elfModel) elfModel.abiversion = text ;
     }
 
     PETableCell {
         Text {
-            text: elfModel.dispAbiversion
+            text: elfModel ? elfModel.dispAbiversion : ""
         }
     }
 }

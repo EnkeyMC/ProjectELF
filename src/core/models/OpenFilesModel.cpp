@@ -48,6 +48,9 @@ void OpenFilesModel::openFile(QString filepath)
     } catch (const elf::ELFIssueException &exception) {
         emit error(tr("Parsing error"), ELFIssueConverter::toReadable(exception.getIssue()));
         return;
+    } catch (const std::bad_alloc &excepction) {
+        emit error(tr("Allocation error"), tr("File is too large to load"));
+        return;
     }
 
     auto *model = new ELFModel(elf, this);
@@ -120,6 +123,8 @@ void OpenFilesModel::saveFile(int row) {
 }
 
 void OpenFilesModel::saveFileAs(int row, QString filepath) {
+    if (row < 0 || row >= openFileList.size())
+        return;
     auto &openFile = openFileList.at(row);
 
     if (!filepath.startsWith("file:///")) {

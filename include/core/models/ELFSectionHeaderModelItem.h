@@ -34,6 +34,7 @@ public:
     bool isValid() const override;
 
 protected:
+    void onStructureChanged() final;
 
     ELFSectionModelItem *sectionModelItem;
 

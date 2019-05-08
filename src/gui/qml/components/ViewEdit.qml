@@ -68,8 +68,8 @@ PESplitView {
                 Loader {
                     id: headerEditTableLoader
                     Layout.fillWidth: true
-                    sourceComponent: active ? headerEditTableComponent : undefined
-                    active: elfModel.header
+                    sourceComponent: headerEditTableComponent
+                    active: elfModel && elfModel.header
 
                 }
 
@@ -78,7 +78,7 @@ PESplitView {
 
                     HeaderEditTable {
                         id: headerEditTable
-                        headerModel: viewEdit.elfModel.header
+                        headerModel: elfModel ? elfModel.header : null
                         width: parent.width
 
                         onChildrenRectChanged: tableColumnLayout.recalculateWidth()

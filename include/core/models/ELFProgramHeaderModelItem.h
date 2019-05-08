@@ -31,6 +31,9 @@ public:
 
     ELFSegmentModelItem *getSegmentModelItem() const;
 
+protected:
+    void onStructureChanged() final;
+
 private:
     ELFSegmentModelItem *segmentModelItem;
 

@@ -33,14 +33,14 @@ PETable {
     }
     
     PETableEditableCell {
-        text: headerModel.type
-        byteSize: headerModel.typeByteSize
-        onEditingFinished: headerModel.type = text
+        text: headerModel ? headerModel.type : ""
+        byteSize: headerModel ? headerModel.typeByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.type = text;
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispType
+            text: headerModel ? headerModel.dispType : ""
         }
     }
 
@@ -53,15 +53,14 @@ PETable {
     }
     
     PETableEditableCell {
-        text: headerModel.machine
-        dispText: headerModel.dispMachine
-        byteSize: headerModel.machineByteSize
-        onEditingFinished: headerModel.machine = text
+        text: headerModel ? headerModel.machine : ""
+        byteSize: headerModel ? headerModel.machineByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.machine = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispMachine
+            text: headerModel ? headerModel.dispMachine : ""
         }
     }
 
@@ -74,15 +73,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.version
-        dispText: headerModel.dispVersion
-        byteSize: headerModel.versionByteSize
-        onEditingFinished: headerModel.version = text
+        text: headerModel ? headerModel.version : ""
+        byteSize: headerModel ? headerModel.versionByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.version = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispVersion
+            text: headerModel ? headerModel.dispVersion : ""
         }
     }
 
@@ -95,14 +93,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.entry
-        byteSize: headerModel.entryByteSize
-        onEditingFinished: headerModel.entry = text
+        text: headerModel ? headerModel.entry : ""
+        byteSize: headerModel ? headerModel.entryByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.entry = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispEntry
+            text: headerModel ? headerModel.dispEntry : ""
         }
     }
 
@@ -115,14 +113,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.phoff
-        byteSize: headerModel.phoffByteSize
-        onEditingFinished: headerModel.phoff = text
+        text: headerModel ? headerModel.phoff : ""
+        byteSize: headerModel ? headerModel.phoffByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.phoff = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispPhoff
+            text: headerModel ? headerModel.dispPhoff : ""
         }
     }
 
@@ -135,14 +133,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.shoff
-        byteSize: headerModel.shoffByteSize
-        onEditingFinished: headerModel.shoff = text
+        text: headerModel ? headerModel.shoff : ""
+        byteSize: headerModel ? headerModel.shoffByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.shoff = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispShoff
+            text: headerModel ? headerModel.dispShoff : ""
         }
     }
 
@@ -155,15 +153,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.flags
-        dispText: headerModel.dispFlags
-        byteSize: headerModel.flagsByteSize
-        onEditingFinished: headerModel.flags = text
+        text: headerModel ? headerModel.flags : ""
+        byteSize: headerModel ? headerModel.flagsByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.flags = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispFlags
+            text: headerModel ? headerModel.dispFlags : ""
         }
     }
 
@@ -176,15 +173,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.ehsize
-        dispText: headerModel.dispEhsize
-        byteSize: headerModel.ehsizeByteSize
-        onEditingFinished: headerModel.ehsize = text
+        text: headerModel ? headerModel.ehsize : ""
+        byteSize: headerModel ? headerModel.ehsizeByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.ehsize = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispEhsize
+            text: headerModel ? headerModel.dispEhsize : ""
         }
     }
 
@@ -197,15 +193,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.phentsize
-        dispText: headerModel.dispPhentsize
-        byteSize: headerModel.phentsizeByteSize
-        onEditingFinished: headerModel.phentsize = text
+        text: headerModel ? headerModel.phentsize : ""
+        byteSize: headerModel ? headerModel.phentsizeByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.phentsize = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispPhentsize
+            text: headerModel ? headerModel.dispPhentsize : ""
         }
     }
 
@@ -218,15 +213,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.phnum
-        dispText: headerModel.dispPhnum
-        byteSize: headerModel.phnumByteSize
-        onEditingFinished: headerModel.phnum = text
+        text: headerModel ? headerModel.phnum : ""
+        byteSize: headerModel ? headerModel.phnumByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.phnum = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispPhnum
+            text: headerModel ? headerModel.dispPhnum : ""
         }
     }
 
@@ -239,15 +233,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.shentsize
-        dispText: headerModel.dispShentsize
-        byteSize: headerModel.shentsizeByteSize
-        onEditingFinished: headerModel.shentsize = text
+        text: headerModel ? headerModel.shentsize : ""
+        byteSize: headerModel ? headerModel.shentsizeByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.shentsize = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispShentsize
+            text: headerModel ? headerModel.dispShentsize : ""
         }
     }
 
@@ -260,15 +253,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.shnum
-        dispText: headerModel.dispShnum
-        byteSize: headerModel.shnumByteSize
-        onEditingFinished: headerModel.shnum = text
+        text: headerModel ? headerModel.shnum : ""
+        byteSize: headerModel ? headerModel.shnumByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.shnum = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispShnum
+            text: headerModel ? headerModel.dispShnum : ""
         }
     }
 
@@ -281,15 +273,14 @@ PETable {
     }
 
     PETableEditableCell {
-        text: headerModel.shstrndx
-        dispText: headerModel.dispShstrndx
-        byteSize: headerModel.shstrndxByteSize
-        onEditingFinished: headerModel.shstrndx = text
+        text: headerModel ? headerModel.shstrndx : ""
+        byteSize: headerModel ? headerModel.shstrndxByteSize : 0
+        onEditingFinished: if (headerModel) headerModel.shstrndx = text
     }
 
     PETableCell {
         Text {
-            text: headerModel.dispShstrndx
+            text: headerModel ? headerModel.dispShstrndx : ""
         }
     }
 }

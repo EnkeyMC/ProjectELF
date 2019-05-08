@@ -25,6 +25,8 @@ public:
 
     void add(ELFProgramHeaderModelItem *modelItem);
 
+    void clear();
+
     QHash<int, QByteArray> roleNames() const override;
 
 protected:

@@ -29,7 +29,7 @@ ColumnLayout {
 
     StatusBar {
         Layout.fillWidth: true
-        issueListModel: filePane.elfModel.issueListModel
+        issueListModel: filePane.elfModel ? filePane.elfModel.issueListModel : undefined
     }
 }
 

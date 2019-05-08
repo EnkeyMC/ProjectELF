@@ -9,11 +9,7 @@
 ELFSectionHeaderModelItem::ELFSectionHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
     : ELFIndexedModelItem(parent, std::move(elf), index), sectionModelItem(nullptr)
 {
-    auto header = this->elf->get_header();
-    sizeInFile = header->get_e_shentsize();
-    addressInFile = header->get_e_shoff() + index * header->get_e_shentsize();
-    if (ELF_STRUCT->is_header_valid())
-        sectionModelItem = new ELFSectionModelItem(parent, this->elf, this->index);
+    onStructureChanged();
 }
 
 ELFSectionHeaderModelItem::~ELFSectionHeaderModelItem() {
@@ -49,4 +45,29 @@ HEX_ELF_PROP_GETDISP_BYTES(ELFSectionHeaderModelItem, Entsize, ELF_STRUCT, sh_en
 
 bool ELFSectionHeaderModelItem::isValid() const {
     return ELF_STRUCT->is_header_valid();
+}
+
+void ELFSectionHeaderModelItem::onStructureChanged() {
+    auto header = this->elf->get_header();
+    sizeInFile = header->get_e_shentsize();
+    addressInFile = header->get_e_shoff() + index * header->get_e_shentsize();
+    if (ELF_STRUCT->is_header_valid() && sectionModelItem == nullptr) {
+        sectionModelItem = new ELFSectionModelItem(this->getModel(), this->elf, this->index);
+    } else if (!ELF_STRUCT->is_header_valid() && sectionModelItem != nullptr) {
+        delete sectionModelItem;
+        sectionModelItem = nullptr;
+    } else if (sectionModelItem != nullptr) {
+        emit sectionModelItem->structureChanged();
+    }
+
+    emit nameChanged(getName());
+    emit typeChanged(getType());
+    emit flagsChanged(getFlags());
+    emit addrChanged(getAddr());
+    emit offsetChanged(getOffset());
+    emit sizeChanged(getSize());
+    emit linkChanged(getLink());
+    emit infoChanged(getInfo());
+    emit addralignChanged(getAddralign());
+    emit entsizeChanged(getEntsize());
 }

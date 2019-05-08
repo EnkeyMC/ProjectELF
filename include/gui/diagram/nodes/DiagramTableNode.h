@@ -56,7 +56,9 @@ int DiagramTableNode<T>::getMinHeight() const {
 
 template <typename T>
 void DiagramTableNode<T>::onNodeRectChanged() {
-    int entryHeight = nodeRect.height() / getTableEntries().size();
+    int entryHeight = 0;
+    if (getTableEntries().size() > 0)
+        entryHeight = nodeRect.height() / getTableEntries().size();
     QRect tmpRect{nodeRect.left(), nodeRect.top(), nodeRect.width(), entryHeight};
     auto tableEntries = getTableEntries();
     for (int i = 0; i < tableEntries.size(); i++) {

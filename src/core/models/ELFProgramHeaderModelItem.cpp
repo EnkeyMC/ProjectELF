@@ -9,11 +9,7 @@
 ELFProgramHeaderModelItem::ELFProgramHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index)
     : ELFIndexedModelItem(parent, std::move(elf), index), segmentModelItem(nullptr)
 {
-    auto header = this->elf->get_header();
-    sizeInFile = header->get_e_phentsize();
-    addressInFile = header->get_e_phoff() + index * header->get_e_phentsize();
-    if (ELF_STRUCT->is_header_valid())
-        segmentModelItem = new ELFSegmentModelItem(parent, this->elf, this->index);
+    onStructureChanged();
 }
 
 ELFProgramHeaderModelItem::~ELFProgramHeaderModelItem() {
@@ -44,4 +40,27 @@ HEX_ELF_PROP_GETDISP_DEFAULT(ELFProgramHeaderModelItem, Align)
 
 bool ELFProgramHeaderModelItem::isValid() const {
     return ELF_STRUCT->is_header_valid();
+}
+
+void ELFProgramHeaderModelItem::onStructureChanged() {
+    auto header = this->elf->get_header();
+    sizeInFile = header->get_e_phentsize();
+    addressInFile = header->get_e_phoff() + index * header->get_e_phentsize();
+    if (ELF_STRUCT->is_header_valid() && segmentModelItem == nullptr) {
+        segmentModelItem = new ELFSegmentModelItem(this->getModel(), this->elf, this->index);
+    } else if (!ELF_STRUCT->is_header_valid() && segmentModelItem != nullptr) {
+        delete segmentModelItem;
+        segmentModelItem = nullptr;
+    } else if (segmentModelItem != nullptr) {
+        emit segmentModelItem->structureChanged();
+    }
+
+    emit typeChanged(getType());
+    emit flagsChanged(getFlags());
+    emit offsetChanged(getOffset());
+    emit vaddrChanged(getVaddr());
+    emit paddrChanged(getPaddr());
+    emit fileszChanged(getFilesz());
+    emit memszChanged(getMemsz());
+    emit alignChanged(getAlign());
 }

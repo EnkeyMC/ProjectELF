@@ -13,8 +13,6 @@ PETableCell {
     bottomPadding: 0
 
     property alias text: textField.text
-//    property alias dispText: dispText.text
-    property string dispText: ""
     property int byteSize: 0
 
     signal editingFinished()

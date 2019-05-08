@@ -24,6 +24,8 @@ public:
 
     void add(ELFSectionHeaderModelItem *modelItem);
 
+    void clear();
+
     QHash<int, QByteArray> roleNames() const override;
 
 protected:

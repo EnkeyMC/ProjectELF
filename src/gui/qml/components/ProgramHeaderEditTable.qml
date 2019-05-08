@@ -7,7 +7,7 @@ import "../singletons"
 import "../controls"
 
 PEExpandablePane {
-    title: "Segment #" + headerModel.index
+    title: headerModel ? "Segment #" + headerModel.index : ""
     minWidth: programHeaderEditTable.implicitWidth
 
     property ELFProgramHeaderModelItem headerModel
@@ -38,14 +38,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.type
-            byteSize: headerModel.typeByteSize
-            onEditingFinished: headerModel.type = text
+            text: headerModel ? headerModel.type : ""
+            byteSize: headerModel ? headerModel.typeByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.type = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispType
+                text: headerModel ? headerModel.dispType : ""
             }
         }
 
@@ -58,14 +58,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.flags
-            byteSize: headerModel.flagsByteSize
-            onEditingFinished: headerModel.flags = text
+            text: headerModel ? headerModel.flags : ""
+            byteSize: headerModel ? headerModel.flagsByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.flags = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispFlags
+                text: headerModel ? headerModel.dispFlags : ""
             }
         }
 
@@ -78,14 +78,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.offset
-            byteSize: headerModel.offsetByteSize
-            onEditingFinished: headerModel.offset = text
+            text: headerModel ? headerModel.offset : ""
+            byteSize: headerModel ? headerModel.offsetByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.offset = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispOffset
+                text: headerModel ? headerModel.dispOffset : ""
             }
         }
 
@@ -98,14 +98,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.vaddr
-            byteSize: headerModel.vaddrByteSize
-            onEditingFinished: headerModel.vaddr = text
+            text: headerModel ? headerModel.vaddr : ""
+            byteSize: headerModel ? headerModel.vaddrByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.vaddr = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispVaddr
+                text: headerModel ? headerModel.dispVaddr : ""
             }
         }
 
@@ -118,14 +118,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.paddr
-            byteSize: headerModel.paddrByteSize
-            onEditingFinished: headerModel.paddr = text
+            text: headerModel ? headerModel.paddr : ""
+            byteSize: headerModel ? headerModel.paddrByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.paddr = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispPaddr
+                text: headerModel ? headerModel.dispPaddr : ""
             }
         }
 
@@ -138,14 +138,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.filesz
-            byteSize: headerModel.fileszByteSize
-            onEditingFinished: headerModel.filesz = text
+            text: headerModel ? headerModel.filesz : ""
+            byteSize: headerModel ? headerModel.fileszByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.filesz = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispFilesz
+                text: headerModel ? headerModel.dispFilesz : ""
             }
         }
 
@@ -158,14 +158,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.memsz
-            byteSize: headerModel.memszByteSize
-            onEditingFinished: headerModel.memsz = text
+            text: headerModel ? headerModel.memsz : ""
+            byteSize: headerModel ? headerModel.memszByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.memsz = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispMemsz
+                text: headerModel ? headerModel.dispMemsz : ""
             }
         }
 
@@ -178,14 +178,14 @@ PEExpandablePane {
         }
 
         PETableEditableCell {
-            text: headerModel.align
-            byteSize: headerModel.alignByteSize
-            onEditingFinished: headerModel.align = text
+            text: headerModel ? headerModel.align : ""
+            byteSize: headerModel ? headerModel.alignByteSize : 0
+            onEditingFinished: if (headerModel) headerModel.align = text
         }
 
         PETableCell {
             Text {
-                text: headerModel.dispAlign
+                text: headerModel ? headerModel.dispAlign : ""
             }
         }
     }

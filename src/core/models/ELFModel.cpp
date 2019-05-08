@@ -14,13 +14,12 @@ ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr
 }
 
 ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent)
-        : ModelBase(parent), elf(std::move(elf)), modified(false)
+        : ModelBase(parent), elf(std::move(elf)), headerModelItem(nullptr), issueListModel(), modified(false)
 {
-    this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
+    loadStructure();
     this->reloadIssues();
     connect(this, &ELFModel::modifiedChanged, this, &ELFModel::reloadIssues);
     connect(this, &ELFModel::dataChanged, [=]() {this->setModified(true);});
-    connect(this->headerModelItem, &ELFModelItem::dataChanged, [=]() {this->setModified(true);});
 }
 
 ELFModel::~ELFModel() {
@@ -118,20 +117,25 @@ void ELFModel::setModified(bool modified) {
 
 void ELFModel::reloadStructure()
 {
-    this->elf->load_structure();
-
-    if (this->elf->get_header() == nullptr && this->headerModelItem != nullptr) {
-        delete this->headerModelItem;
-        this->headerModelItem = nullptr;
-        emit headerChanged(this->headerModelItem);
-    } else if (this->elf->get_header() != nullptr && this->headerModelItem == nullptr) {
-        this->headerModelItem = new ELFHeaderModelItem(this, this->elf);
-        emit headerChanged(this->headerModelItem);
-    }
-
-    emit structureChanged();
+    elf->load_structure();
+    loadStructure();
 }
 
 std::shared_ptr<elf::ELF> ELFModel::getElf() const {
     return elf;
+}
+
+void ELFModel::loadStructure() {
+    if (elf->get_header() == nullptr && headerModelItem != nullptr) {
+        delete headerModelItem;
+        headerModelItem = nullptr;
+    } else if (elf->get_header() != nullptr && headerModelItem == nullptr) {
+        headerModelItem = new ELFHeaderModelItem(this, elf);
+        connect(headerModelItem, &ELFModelItem::dataChanged, [=]() {setModified(true);});
+    } else if (headerModelItem != nullptr) {
+        emit headerModelItem->structureChanged();
+    }
+    emit structureChanged();
+    emit headerChanged(headerModelItem);
+    reloadIssues();
 }

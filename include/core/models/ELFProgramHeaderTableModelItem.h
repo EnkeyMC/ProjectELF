@@ -30,6 +30,9 @@ public:
 signals:
     void listModelChanged();
 
+protected:
+    void onStructureChanged() final;
+
 private:
     ELFProgramHeaderListModel *listModel;
 };

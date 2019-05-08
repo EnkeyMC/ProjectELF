@@ -43,3 +43,13 @@ QHash<int, QByteArray> ELFProgramHeaderListModel::roleNames() const {
     return names;
 }
 
+void ELFProgramHeaderListModel::clear() {
+    if (!programHeaderModelItems.empty()) {
+        emit beginRemoveRows(QModelIndex(), 0, programHeaderModelItems.size() - 1);
+        for (auto programHeaderModelItem : this->programHeaderModelItems)
+            delete programHeaderModelItem;
+        programHeaderModelItems.clear();
+        emit endRemoveRows();
+    }
+}
+

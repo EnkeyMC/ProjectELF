@@ -8,7 +8,7 @@
 ELFModelItem::ELFModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
     : QObject(parent), elf(std::move(elf))
 {
-
+    connect(this, &ELFModelItem::structureChanged, this, &ELFModelItem::onStructureChanged);
 }
 
 uint64_t ELFModelItem::getAddressInFile() const {

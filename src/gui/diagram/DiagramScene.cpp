@@ -34,9 +34,7 @@ DiagramScene::DiagramScene(QQuickItem *parent)
 }
 
 DiagramScene::~DiagramScene() {
-    for (auto connection : connections)
-        delete connection;
-
+    this->clearConnections();
     delete layout;
 }
 
@@ -56,6 +54,7 @@ void DiagramScene::paint(QPainter *painter) {
 void DiagramScene::setModel(ELFModel *model) {
     if (model != this->model) {
         this->model = model;
+        connect(this->model, &ELFModel::structureChanged, this, &DiagramScene::onModelChanged);
         emit modelChanged(this->model);
     }
 }
@@ -87,6 +86,7 @@ void DiagramScene::setMinWidth(int minWidth) {
 
 void DiagramScene::onModelChanged() {
     this->layout->clearNodes();
+    this->clearConnections();
 
     if (this->model == nullptr) {
         this->setImplicitHeight(2*getPadding());
@@ -164,6 +164,12 @@ void DiagramScene::createConnection(DiagramNode *nodeFrom,
     connections.push_back(shtConnection);
 }
 
+void DiagramScene::clearConnections() {
+    for (auto connection : connections)
+        delete connection;
+    connections.clear();
+}
+
 void DiagramScene::mousePressEvent(QMouseEvent *event) {
     QMouseEvent translatedEvent {
             event->type(),
@@ -225,6 +231,7 @@ void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
 }
 
 void DiagramScene::onLayoutChanged() {
+    nodeTree.clear();
     nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->height())));
 
     auto linkNodes = this->layout->getLinkColumnSortedNodes();

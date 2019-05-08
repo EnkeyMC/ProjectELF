@@ -30,22 +30,7 @@ ELF::~ELF() {
 }
 
 void ELF::clear() {
-    e_ident_ptr = nullptr;
-    delete header;
-    header = nullptr;
-
-    for (auto pheader : program_headers) {
-        delete pheader;
-    }
-
-    program_headers.clear();
-
-    for (auto sheader : section_headers) {
-        delete sheader;
-    }
-
-    section_headers.clear();
-
+    clear_structure();
     delete[] file_bytes;
     file_bytes = nullptr;
     file_size = 0;
@@ -58,6 +43,7 @@ void ELF::load(std::istream &istream) {
 }
 
 void ELF::load_structure() {
+    this->clear_structure();
     this->load_header();
     this->load_section_headers();
     this->load_program_headers();
@@ -93,6 +79,11 @@ ELFIssuesBySeverity ELF::find_issues() const
 
     for (auto program_header : program_headers)
         issues += program_header->find_issues();
+
+    if (header->get_e_shnum() > MAX_STRUCTURES)
+        issues += ELFIssue(ISEV_ERROR, ISRC_SECTION_HEADERS, ITYPE_TOO_MANY);
+    if (header->get_e_phnum() > MAX_STRUCTURES)
+        issues += ELFIssue(ISEV_ERROR, ISRC_PROGRAM_HEADERS, ITYPE_TOO_MANY);
 
     return issues;
 }
@@ -262,6 +253,24 @@ void ELF::read_file_bytes(std::istream &istream) {
     this->set_file_bytes(bytes, size);
 }
 
+void ELF::clear_structure() {
+    e_ident_ptr = nullptr;
+    delete header;
+    header = nullptr;
+
+    for (auto pheader : program_headers) {
+        delete pheader;
+    }
+
+    program_headers.clear();
+
+    for (auto sheader : section_headers) {
+        delete sheader;
+    }
+
+    section_headers.clear();
+}
+
 void ELF::load_header() {
     if (this->file_size < EI_NIDENT)
         throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
@@ -283,7 +292,7 @@ void ELF::load_section_headers() {
     Elf_Half shnum = this->header->get_e_shnum();
     ELFSectionHeader *section_header;
 
-    for (unsigned int i = 0; i < shnum; ++i) {
+    for (unsigned int i = 0; i < shnum && i < MAX_STRUCTURES; ++i) {
         section_header = create_section_header();
         if (shoff + shentsize*i + shentsize <= this->file_size) {
             section_header->set_header_valid(true);
@@ -301,7 +310,7 @@ void ELF::load_program_headers() {
     Elf_Half phnum = this->header->get_e_phnum();
     ELFProgramHeader *program_header;
 
-    for (unsigned int i = 0; i < phnum; ++i) {
+    for (unsigned int i = 0; i < phnum && i < MAX_STRUCTURES; ++i) {
         program_header = create_program_header();
         if (phoff + phentsize*i + phentsize <= this->file_size) {
             program_header->set_header_valid(true);

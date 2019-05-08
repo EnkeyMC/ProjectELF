@@ -14,6 +14,9 @@ public:
     ELFSectionModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 
     bool isValid() const override;
+
+protected:
+    void onStructureChanged() final;
 };
 
 

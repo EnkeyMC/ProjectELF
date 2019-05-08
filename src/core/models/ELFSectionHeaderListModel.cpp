@@ -41,3 +41,13 @@ QHash<int, QByteArray> ELFSectionHeaderListModel::roleNames() const {
     names[SectionHeaderModelRole] = "sectionHeaderModel";
     return names;
 }
+
+void ELFSectionHeaderListModel::clear() {
+    if (!sectionHeaderModelItems.empty()) {
+        emit beginRemoveRows(QModelIndex(), 0, sectionHeaderModelItems.size() - 1);
+        for (auto sectionHeaderModelItem : this->sectionHeaderModelItems)
+            delete sectionHeaderModelItem;
+        sectionHeaderModelItems.clear();
+        emit endRemoveRows();
+    }
+}

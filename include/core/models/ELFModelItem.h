@@ -29,6 +29,9 @@ signals:
     void dataChanged();
     void structureChanged();
 
+protected slots:
+    virtual void onStructureChanged() = 0;
+
 protected:
     std::shared_ptr<elf::ELF> elf;
 

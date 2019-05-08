@@ -3,6 +3,7 @@
 //
 
 #include <QObject>
+#include <libelf/include/ELF.h>
 
 #include "core/ELFIssueConverter.h"
 
@@ -101,6 +102,8 @@ QString ELFIssueConverter::typeToReadable(elf::ELFIssueType type) {
             return tr("should start with zero byte");
         case elf::ITYPE_HAS_TO_END_WITH_ZERO:
             return tr("has to end with zero byte");
+        case elf::ITYPE_TOO_MANY:
+            return tr("has too many entries, showing only first %1").arg(elf::ELF::MAX_STRUCTURES);
         default:
             return "";
     }

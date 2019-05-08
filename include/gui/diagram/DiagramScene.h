@@ -96,6 +96,8 @@ protected:
     void createConnection(DiagramNode *nodeFrom, const QString &connPoint,
             DiagramNode *nodeTo, Side side, int level);
 
+    void clearConnections();
+
     QPoint translateMousePos(QPoint point) const;
     QPointF translateMousePos(QPointF point) const;
 

@@ -7,20 +7,11 @@
 #include "core/models/ELFSectionHeaderTableModelItem.h"
 
 ELFSectionHeaderTableModelItem::ELFSectionHeaderTableModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf)
-    : ELFModelItem(parent, std::move(elf))
+    : ELFModelItem(parent, std::move(elf)), listModel(nullptr)
 {
-    auto header = this->elf->get_header();
-    auto sectionCount = header->get_e_shnum();
-    sizeInFile = sectionCount * header->get_e_shentsize();
-    addressInFile = header->get_e_shoff();
     listModel = new ELFSectionHeaderListModel(this);
     emit listModelChanged();
-
-    for (unsigned int i = 0; i < sectionCount; i++) {
-        auto sectionHeaderModel = new ELFSectionHeaderModelItem(parent, this->elf, i);
-        listModel->add(sectionHeaderModel);
-        connect(sectionHeaderModel, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
-    }
+    onStructureChanged();
 }
 
 ELFSectionHeaderTableModelItem::~ELFSectionHeaderTableModelItem() {
@@ -38,4 +29,18 @@ ELFSectionHeaderListModel *ELFSectionHeaderTableModelItem::getListModel() const 
 
 bool ELFSectionHeaderTableModelItem::isValid() const {
     return addressInFile + sizeInFile <= elf->get_file_size();
+}
+
+void ELFSectionHeaderTableModelItem::onStructureChanged() {
+    auto header = this->elf->get_header();
+    auto sectionCount = this->elf->get_section_headers().size();
+    sizeInFile = sectionCount * header->get_e_shentsize();
+    addressInFile = header->get_e_shoff();
+    listModel->clear();
+
+    for (unsigned int i = 0; i < sectionCount; i++) {
+        auto sectionHeaderModel = new ELFSectionHeaderModelItem(this->getModel(), this->elf, i);
+        listModel->add(sectionHeaderModel);
+        connect(sectionHeaderModel, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
+    }
 }

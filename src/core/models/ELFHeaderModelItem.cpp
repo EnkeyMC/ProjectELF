@@ -16,8 +16,6 @@ ELFHeaderModelItem::ELFHeaderModelItem(ELFModel *parent, std::shared_ptr<elf::EL
       programHeaderTableModelItem(nullptr)
 {
     onStructureChanged();
-
-    connect(parent, &ELFModel::structureChanged, this, &ELFHeaderModelItem::onStructureChanged);
 }
 
 ELFHeaderModelItem::~ELFHeaderModelItem() {
@@ -37,11 +35,11 @@ HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, phentsize, Phentsize, ELF_STRU
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, phnum, Phnum, ELF_STRUCT, e_phnum, elf::Elf_Half)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shentsize, Shentsize, ELF_STRUCT, e_shentsize, elf::Elf_Half)
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shnum, Shnum, ELF_STRUCT, e_shnum, elf::Elf_Half)
+
 HEX_ELF_PROP_GET_GETBYTES_SET(ELFHeaderModelItem, shstrndx, Shstrndx, ELF_STRUCT, e_shstrndx, elf::Elf_Half)
 HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Type, ELF_STRUCT, e_type, eTypeToDisp)
 HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Machine, ELF_STRUCT, e_machine, eMachineToDisp)
 HEX_ELF_PROP_GETDISP_W_CONVERTER(ELFHeaderModelItem, Version, ELF_STRUCT, e_version, eVersionToDisp)
-
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Entry)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Phoff)
 HEX_ELF_PROP_GETDISP_DEFAULT(ELFHeaderModelItem, Shoff)
@@ -76,22 +74,38 @@ void ELFHeaderModelItem::onStructureChanged() {
     if (header->get_e_shoff() != 0 && sectionHeaderTableModelItem == nullptr) {
         sectionHeaderTableModelItem = new ELFSectionHeaderTableModelItem(this->getModel(), this->elf);
         connect(sectionHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
-        emit sectionHeaderTableChanged(sectionHeaderTableModelItem);
     } else if (header->get_e_shoff() == 0 && sectionHeaderTableModelItem != nullptr) {
         delete sectionHeaderTableModelItem;
         sectionHeaderTableModelItem = nullptr;
-        emit sectionHeaderTableChanged(sectionHeaderTableModelItem);
+    } else if (sectionHeaderTableModelItem != nullptr) {
+        emit sectionHeaderTableModelItem->structureChanged();
     }
 
     if (header->get_e_phoff() != 0 && programHeaderTableModelItem == nullptr) {
         programHeaderTableModelItem = new ELFProgramHeaderTableModelItem(this->getModel(), this->elf);
         connect(programHeaderTableModelItem, &ELFModelItem::dataChanged, this, &ELFModelItem::dataChanged);
-        emit programHeaderTableChanged(programHeaderTableModelItem);
     } else if (header->get_e_phoff() == 0 && programHeaderTableModelItem != nullptr) {
         delete programHeaderTableModelItem;
         programHeaderTableModelItem = nullptr;
-        emit programHeaderTableChanged(programHeaderTableModelItem);
+    } else if (programHeaderTableModelItem != nullptr) {
+        emit programHeaderTableModelItem->structureChanged();
     }
+
+    emit programHeaderTableChanged(programHeaderTableModelItem);
+    emit sectionHeaderTableChanged(sectionHeaderTableModelItem);
+
+    emit typeChanged(getType());
+    emit machineChanged(getMachine());
+    emit versionChanged(getVersion());
+    emit entryChanged(getEntry());
+    emit phoffChanged(getPhoff());
+    emit shoffChanged(getShoff());
+    emit flagsChanged(getFlags());
+    emit ehsizeChanged(getEhsize());
+    emit phentsizeChanged(getPhentsize());
+    emit phnumChanged(getPhnum());
+    emit shentsizeChanged(getShentsize());
+    emit shnumChanged(getShnum());
 }
 
 void ELFHeaderModelItem::setSizeInFile() {
