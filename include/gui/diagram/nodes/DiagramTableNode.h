@@ -59,7 +59,12 @@ void DiagramTableNode<T>::onNodeRectChanged() {
     double entryHeight = 0;
     if (getTableEntries().size() > 0)
         entryHeight = static_cast<double>(nodeRect.height()) / getTableEntries().size();
-    QRectF tmpRect{nodeRect.left(), nodeRect.top(), nodeRect.width(), entryHeight};
+    QRectF tmpRect{
+        static_cast<qreal>(nodeRect.left()),
+        static_cast<qreal>(nodeRect.top()),
+        static_cast<qreal>(nodeRect.width()),
+        entryHeight
+    };
     auto tableEntries = getTableEntries();
     for (int i = 0; i < tableEntries.size(); i++) {
         auto node = tableEntries[i];
