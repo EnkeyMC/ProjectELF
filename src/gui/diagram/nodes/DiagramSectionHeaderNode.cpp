@@ -33,7 +33,7 @@ void DiagramSectionHeaderNode::paint(QPainter *painter) const
 
 int DiagramSectionHeaderNode::getMinHeight() const
 {
-    return 20;
+    return 40;
 }
 
 void DiagramSectionHeaderNode::hoverEnteredEvent(QHoverEvent *event) {

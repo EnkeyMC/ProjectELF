@@ -32,7 +32,7 @@ bool ELFProgramHeaderTableModelItem::isValid() const {
 void ELFProgramHeaderTableModelItem::onStructureChanged() {
     auto header = this->elf->get_header();
     auto segmentCount = this->elf->get_program_headers().size();
-    sizeInFile = segmentCount * header->get_e_phoff();
+    sizeInFile = segmentCount * header->get_e_phentsize();
     addressInFile = header->get_e_phoff();
     listModel->clear();
 
