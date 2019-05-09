@@ -171,5 +171,9 @@ void OpenFilesModel::reloadStructure(int row)
 }
 
 void OpenFilesModel::removeProtocol(QString &path) {
+#if defined(_WIN32) || defined (_WIN64)
     path.remove(0, strlen("file:///"));
+#else
+    path.remove(0, strlen("file://"));
+#endif
 }
