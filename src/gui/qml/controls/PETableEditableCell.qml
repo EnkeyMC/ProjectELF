@@ -14,6 +14,7 @@ PETableCell {
 
     property alias text: textField.text
     property int byteSize: 0
+    property alias enabled: textField.enabled
 
     signal editingFinished()
 

@@ -12,6 +12,8 @@ Column {
     property string title: ""
     property int minWidth: 0
     default property alias __items: expandableItem.data
+    property alias titleColor: title.color
+    property bool valid: true
 
     Pane {
         id: expandableHeader
@@ -48,8 +50,18 @@ Column {
             }
 
             Text {
+                id: title
                 text: expandable.title
                 color: Style._ColorTextLight
+            }
+
+            Rectangle {
+                id: invalidIndicator
+                color: Style._ColorError
+                width: 10
+                height: 10
+                radius: 5
+                visible: !valid
             }
         }
 
