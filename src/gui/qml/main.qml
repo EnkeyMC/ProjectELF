@@ -121,11 +121,6 @@ ApplicationWindow {
                     onTriggered: mainWindow.close()
                 }
             }
-
-            MenuPrimary {
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
-            }
         }
 
         PEButton {
