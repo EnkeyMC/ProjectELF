@@ -16,22 +16,24 @@ ScrollView {
         active: elfModel && elfModel.header && elfModel.header.sectionHeaderTable
 
         sourceComponent: Component {
-            Column {
-                id: tableColumnLayout
+            ListView {
+                id: listView
                 width: 0
                 spacing: 1
+                height: scroll.availableHeight
+                model: elfModel.header.sectionHeaderTable.sectionHeaderListModel
 
                 Connections {
                     target: scroll
-                    onAvailableWidthChanged: tableColumnLayout.recalculateWidth()
+                    onAvailableWidthChanged: listView.recalculateWidth()
                 }
 
                 signal recalculateWidth()
 
                 onRecalculateWidth: {
                     var minWidth = scroll.availableWidth;
-                    for (var i = 0; i < visibleChildren.length; i++) {
-                        var child = visibleChildren[i];
+                    for (var i = 0; i < contentItem.visibleChildren.length; i++) {
+                        var child = contentItem.visibleChildren[i];
                         if (child.minWidth > minWidth)
                             minWidth = child.minWidth;
                     }
@@ -41,14 +43,11 @@ ScrollView {
 
                 Component.onCompleted: recalculateWidth()
 
-                Repeater {
-                    model: elfModel.header.sectionHeaderTable.sectionHeaderListModel
 
-                    SectionHeaderEditTable {
-                        headerModel: model.sectionHeaderModel
-                        width: parent.width
-                        onImplicitWidthChanged: tableColumnLayout.recalculateWidth()
-                    }
+                delegate: SectionHeaderEditTable {
+                    headerModel: model.sectionHeaderModel
+                    width: parent.width
+                    onImplicitWidthChanged: listView.recalculateWidth()
                 }
             }
         }
