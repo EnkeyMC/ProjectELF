@@ -21,6 +21,10 @@ public:
 
     virtual ELFIssuesBySeverity find_issues() const = 0;
 
+    virtual size_t get_size() const = 0;
+
+    virtual char * get_bytes() = 0;
+
 protected:
     ELF &elf;
 };

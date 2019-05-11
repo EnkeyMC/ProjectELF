@@ -31,18 +31,18 @@ ELF::~ELF() {
 
 void ELF::clear() {
     clear_structure();
-    delete[] file_bytes;
-    file_bytes = nullptr;
-    file_size = 0;
+    clear_data();
+    e_ident_ptr = nullptr;
 }
 
 void ELF::load(std::istream &istream) {
-    this->clear();
+    this->clear_data();
     this->read_file_bytes(istream);
     this->load_structure();
 }
 
 void ELF::load_structure() {
+    this->load_identification();
     this->clear_structure();
     this->load_header();
     this->load_section_headers();
@@ -142,7 +142,7 @@ ELFIssuesBySeverity ELF::find_e_ident_issues() const
         || e_ident_ptr[EI_MAG1] != ELFMAG1
         || e_ident_ptr[EI_MAG2] != ELFMAG2
         || e_ident_ptr[EI_MAG3] != ELFMAG3) {
-        issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_MAGN, ITYPE_INVALID_VALUE);
+        issues += ELFIssue(ISEV_ERROR, ISRC_EI_MAGN, ITYPE_INVALID_VALUE);
     }
 
     if (e_ident_ptr[EI_CLASS] != ELFCLASS32 && e_ident_ptr[EI_CLASS] != ELFCLASS64) {
@@ -151,6 +151,10 @@ ELFIssuesBySeverity ELF::find_e_ident_issues() const
 
     if (e_ident_ptr[EI_DATA] != ELFDATA2LSB && e_ident_ptr[EI_DATA] != ELFDATA2MSB) {
         issues += ELFIssue(ISEV_CRITICAL, ISRC_EI_DATA, ITYPE_INVALID_VALUE);
+    }
+
+    if (e_ident_ptr[EI_VERSION] == EV_NONE) {
+        issues += ELFIssue(ISEV_WARNING, ISRC_EI_VERSION, ITYPE_INVALID_VALUE);
     }
 
     return issues;
@@ -253,8 +257,15 @@ void ELF::read_file_bytes(std::istream &istream) {
     this->set_file_bytes(bytes, size);
 }
 
+void ELF::load_identification()
+{
+    if (this->file_size < EI_NIDENT)
+        throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
+
+    this->set_e_ident_ptr(this->file_bytes);
+}
+
 void ELF::clear_structure() {
-    e_ident_ptr = nullptr;
     delete header;
     header = nullptr;
 
@@ -271,11 +282,14 @@ void ELF::clear_structure() {
     section_headers.clear();
 }
 
-void ELF::load_header() {
-    if (this->file_size < EI_NIDENT)
-        throw ELFIssueException(ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_UNEXPECTED_EOF));
+void ELF::clear_data()
+{
+    delete[] file_bytes;
+    file_bytes = nullptr;
+    file_size = 0;
+}
 
-    this->set_e_ident_ptr(this->file_bytes);
+void ELF::load_header() {
     this->header = create_header(this->get_ei_class());
 
     if (this->header->get_size() + EI_NIDENT > this->file_size)

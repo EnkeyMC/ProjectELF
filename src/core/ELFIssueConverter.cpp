@@ -35,6 +35,8 @@ QString ELFIssueConverter::sourceToReadable(elf::ELFIssueSource source, unsigned
             return "EI_CLASS";
         case elf::ISRC_EI_DATA:
             return "EI_DATA";
+        case elf::ISRC_EI_VERSION:
+            return "EI_VERSION";
         case elf::ISRC_E_VERSION:
             return "E_VERSION";
         case elf::ISRC_E_ENTRY:

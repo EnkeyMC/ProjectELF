@@ -5,7 +5,6 @@
 #ifndef PROJECTELF_ELFPROGRAMHEADER_H
 #define PROJECTELF_ELFPROGRAMHEADER_H
 
-#include "IRawParsable.h"
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
 #include "ELFStructureBase.h"
@@ -14,7 +13,7 @@ namespace elf {
 
 class ELF;
 
-class ELFProgramHeader : public IRawParsable, public ELFStructureBase {
+class ELFProgramHeader : public ELFStructureBase {
 public:
     explicit ELFProgramHeader(ELF &elf);
 

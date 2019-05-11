@@ -7,14 +7,13 @@
 
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
-#include "IRawParsable.h"
 #include "ELFStructureBase.h"
 
 namespace elf {
 
 class ELF;
 
-class ELFSectionHeader : public IRawParsable, public ELFStructureBase {
+class ELFSectionHeader : public ELFStructureBase {
 public:
     explicit ELFSectionHeader(ELF &elf);
 

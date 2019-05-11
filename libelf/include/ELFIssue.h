@@ -22,6 +22,7 @@ enum ELFIssueSource {
     ISRC_EI_MAGN,
     ISRC_EI_CLASS,
     ISRC_EI_DATA,
+    ISRC_EI_VERSION,
     ISRC_E_VERSION,
     ISRC_E_ENTRY,
     ISRC_E_PHOFF,

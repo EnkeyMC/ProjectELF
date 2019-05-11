@@ -8,7 +8,7 @@ import "../controls"
 
 PEExpandablePane {
     title: headerModel ? (headerModel.valid ? "" : "INVALID ") + "Section #" + headerModel.index + " " + headerModel.dispName : ""
-    valid: headerModel.valid
+    valid: headerModel ? headerModel.valid : true
     minWidth: sectionHeaderEditTable.implicitWidth
 
     property ELFSectionHeaderModelItem headerModel
@@ -42,7 +42,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.name : ""
             byteSize: headerModel ? headerModel.nameByteSize : 0
             onEditingFinished: if (headerModel) headerModel.name = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -63,7 +63,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.type : ""
             byteSize: headerModel ? headerModel.typeByteSize : 0
             onEditingFinished: if (headerModel) headerModel.type = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -84,7 +84,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.flags : ""
             byteSize: headerModel ? headerModel.flagsByteSize : 0
             onEditingFinished: if (headerModel) headerModel.flags = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -105,7 +105,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.addr : ""
             byteSize: headerModel ? headerModel.addrByteSize : 0
             onEditingFinished: if (headerModel) headerModel.addr = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -126,7 +126,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.offset : ""
             byteSize: headerModel ? headerModel.offsetByteSize : 0
             onEditingFinished: if (headerModel) headerModel.offset = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -147,7 +147,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.size : ""
             byteSize: headerModel ? headerModel.sizeByteSize : 0
             onEditingFinished: if (headerModel) headerModel.size = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -168,7 +168,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.link : ""
             byteSize: headerModel ? headerModel.linkByteSize : 0
             onEditingFinished: if (headerModel) headerModel.link = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -189,7 +189,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.info : ""
             byteSize: headerModel ? headerModel.infoByteSize : 0
             onEditingFinished: if (headerModel) headerModel.info = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -210,7 +210,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.addralign : ""
             byteSize: headerModel ? headerModel.addralignByteSize : 0
             onEditingFinished: if (headerModel) headerModel.addralign = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -231,7 +231,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.entsize : ""
             byteSize: headerModel ? headerModel.entsizeByteSize : 0
             onEditingFinished: if (headerModel) headerModel.entsize = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {

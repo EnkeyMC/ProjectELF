@@ -33,17 +33,13 @@ public:
 
     size_t get_file_size() const;
 
-    void set_file_bytes(char *bytes, size_t size);
-
     ELFIssuesBySeverity find_issues() const;
 
     const unsigned char *get_e_ident() const;
     ELFHeader *get_header();
 
-    void add_section_header(ELFSectionHeader *section_header);
     const vector<ELFSectionHeader *> &get_section_headers() const;
 
-    void add_program_header(ELFProgramHeader *program_header);
     const vector<ELFProgramHeader *> &get_program_headers() const;
 
     std::string get_name(unsigned index) const;
@@ -83,7 +79,11 @@ public:
 private:
     void read_file_bytes(std::istream &istream);
 
+    void load_identification();
+
     void clear_structure();
+
+    void clear_data();
 
     void load_header();
 
@@ -100,6 +100,12 @@ private:
     ELFSectionHeader* create_section_header();
 
     ELFProgramHeader* create_program_header();
+
+    void add_section_header(ELFSectionHeader *section_header);
+
+    void add_program_header(ELFProgramHeader *program_header);
+
+    void set_file_bytes(char *bytes, size_t size);
 
     void set_e_ident_ptr(char *ptr);
 

@@ -8,7 +8,7 @@ import "../controls"
 
 PEExpandablePane {
     title: headerModel ? (headerModel.valid ? "" : "INVALID ") + "Segment #" + headerModel.index + " " + headerModel.dispType : ""
-    valid: headerModel.valid
+    valid: headerModel ? headerModel.valid : true
     minWidth: programHeaderEditTable.implicitWidth
 
     property ELFProgramHeaderModelItem headerModel
@@ -42,7 +42,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.type : ""
             byteSize: headerModel ? headerModel.typeByteSize : 0
             onEditingFinished: if (headerModel) headerModel.type = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -63,7 +63,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.flags : ""
             byteSize: headerModel ? headerModel.flagsByteSize : 0
             onEditingFinished: if (headerModel) headerModel.flags = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -84,7 +84,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.offset : ""
             byteSize: headerModel ? headerModel.offsetByteSize : 0
             onEditingFinished: if (headerModel) headerModel.offset = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -105,7 +105,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.vaddr : ""
             byteSize: headerModel ? headerModel.vaddrByteSize : 0
             onEditingFinished: if (headerModel) headerModel.vaddr = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -126,7 +126,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.paddr : ""
             byteSize: headerModel ? headerModel.paddrByteSize : 0
             onEditingFinished: if (headerModel) headerModel.paddr = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -147,7 +147,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.filesz : ""
             byteSize: headerModel ? headerModel.fileszByteSize : 0
             onEditingFinished: if (headerModel) headerModel.filesz = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -168,7 +168,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.memsz : ""
             byteSize: headerModel ? headerModel.memszByteSize : 0
             onEditingFinished: if (headerModel) headerModel.memsz = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {
@@ -189,7 +189,7 @@ PEExpandablePane {
             text: headerModel ? headerModel.align : ""
             byteSize: headerModel ? headerModel.alignByteSize : 0
             onEditingFinished: if (headerModel) headerModel.align = text
-            enabled: headerModel.valid
+            enabled: headerModel ? headerModel.valid : false
         }
 
         PETableCell {

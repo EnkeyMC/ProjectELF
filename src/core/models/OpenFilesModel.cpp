@@ -164,7 +164,13 @@ void OpenFilesModel::reloadStructure(int row)
 {
     if (row >= 0 & row < openFileList.size()) {
         auto openFile = openFileList.at(row);
-        openFile.elfModel->reloadStructure();
+
+        try {
+            openFile.elfModel->reloadStructure();
+        } catch (const elf::ELFIssueException &exception) {
+            emit error(tr("Parsing error"), ELFIssueConverter::toReadable(exception.getIssue()) + tr("\nCannot reload structure."));
+            return;
+        }
         emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
                          QVector<int>() << ELFModelRole);
     }
