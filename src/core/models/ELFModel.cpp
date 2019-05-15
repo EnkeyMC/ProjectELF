@@ -8,13 +8,13 @@
 #define DEFAULT(x) if (elf == nullptr) return x
 #define ELF_STRUCT elf
 
-ELFModel::ELFModel(QObject *parent) : ModelBase(parent), headerModelItem(nullptr), issueListModel(), modified(false)
+ELFModel::ELFModel(QObject *parent) : QObject(parent), headerModelItem(nullptr), issueListModel(), modified(false)
 {
 
 }
 
 ELFModel::ELFModel(std::shared_ptr<elf::ELF> elf, QObject *parent)
-        : ModelBase(parent), elf(std::move(elf)), headerModelItem(nullptr), issueListModel(), modified(false)
+        : QObject(parent), elf(std::move(elf)), headerModelItem(nullptr), issueListModel(), modified(false)
 {
     loadStructure();
     this->reloadIssues();

@@ -9,12 +9,11 @@
 #include <QObject>
 #include <ELF.h>
 
-#include "core/ModelBase.h"
 #include "core/models/ELFHeaderModelItem.h"
 #include "core/models/ELFIssueListModel.h"
 #include "core/models/ModelHelpers.h"
 
-class ELFModel : public ModelBase {
+class ELFModel : public QObject {
     Q_OBJECT
 
     HEX_ELF_PROP_DECL(mag0, Mag0)

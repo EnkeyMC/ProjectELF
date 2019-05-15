@@ -28,8 +28,6 @@ set(SOURCE_FILES
         include/core/models/ELFModelItem.h
         src/core/models/ELFHeaderModelItem.cpp
         include/core/models/ELFHeaderModelItem.h
-        src/core/ModelBase.cpp
-        include/core/ModelBase.h
         src/core/models/ELFSectionHeaderTableModelItem.cpp
         include/core/models/ELFSectionHeaderTableModelItem.h
         src/core/models/ELFSectionHeaderModelItem.cpp

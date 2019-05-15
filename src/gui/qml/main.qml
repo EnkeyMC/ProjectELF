@@ -104,21 +104,29 @@ ApplicationWindow {
                 Action {
                     text: qsTr("&Open...")
                     onTriggered: openFileDialog.open()
+
+                    shortcut: 3 // Open
                 }
                 Action {
                     text: qsTr("&Save")
                     onTriggered: openFilesModel.saveFile(fileTabs.currentIndex)
                     enabled: openFilesModel.size > 0
+
+                    shortcut: 5 // Save
                 }
                 Action {
                     text: qsTr("Save &As...")
                     onTriggered: saveFileDialog.open()
                     enabled: openFilesModel.size > 0
+
+                    shortcut: 63 // SaveAs
                 }
                 PEMenuSeparator {}
                 Action {
                     text: qsTr("&Quit")
                     onTriggered: mainWindow.close()
+
+                    shortcut: 65 // Quit
                 }
             }
         }
