@@ -174,10 +174,13 @@ ELFIssuesBySeverity ELF::find_overlapping_sections() const {
                 && other_section_header->get_sh_type() != SHT_NOBITS
                 && section_header->get_sh_size() > 0
                 && other_section_header->get_sh_size() > 0
-                && shoff > oshoff
-                && shoff < oshoff + oshsize
-                && shoff + shsize > oshoff
-                && shoff + shsize < oshoff + oshsize)
+                && (
+                        (shoff > oshoff && shoff < oshoff + oshsize)
+                        || (shoff + shsize > oshoff && shoff + shsize < oshoff + oshsize)
+                        || (oshoff > shoff && oshoff < shoff + shsize)
+                        || (oshoff + oshsize > shoff && oshoff + oshsize < shoff + shsize)
+                   )
+                )
             {
                 issues += ELFIssue(ISEV_ERROR, ISRC_SECTION, ITYPE_OVERLAPS_SECTION, section_header->get_index());
             }

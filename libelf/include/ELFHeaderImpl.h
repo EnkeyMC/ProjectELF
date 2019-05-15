@@ -64,7 +64,7 @@ public:
         if (get_e_phnum() > 0) {
             if (get_e_phoff() + get_e_phentsize() * get_e_phnum() > elf.get_file_size())
                 issues += ELFIssue(ISEV_ERROR, ISRC_PROGRAM_HEADERS, ITYPE_OUT_OF_BOUNDS);
-            if (get_e_phoff() < sizeof(header) + EI_NIDENT)
+            if (get_e_phoff() < get_size() + EI_NIDENT)
                 issues += ELFIssue(ISEV_ERROR, ISRC_PROGRAM_HEADERS, ITYPE_OVERLAPS_HEADER);
         }
 

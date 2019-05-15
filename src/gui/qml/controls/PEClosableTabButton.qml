@@ -8,7 +8,7 @@ TabButton {
     id: tabButton
 
     padding: 0
-    width: Math.max(100, layout.childrenRect.x + layout.childrenRect.width)
+    width: Math.max(100, layout.implicitWidth)
 
     property alias color: label.color
 

@@ -114,6 +114,6 @@ void ELFHeaderModelItem::setSizeInFile() {
     if (header == nullptr) {
         sizeInFile = 0;
     } else {
-        sizeInFile = header->get_size();
+        sizeInFile = header->get_e_ehsize();
     }
 }

@@ -12,7 +12,7 @@ Rectangle {
     radius: height / 2
 
     height: 14
-    width: label.text.length > 1 ? label.paintedWidth + height / 2 : height
+    implicitWidth: label.text.length > 1 ? label.paintedWidth + height / 2 : height
 
     Label {
         id: label
