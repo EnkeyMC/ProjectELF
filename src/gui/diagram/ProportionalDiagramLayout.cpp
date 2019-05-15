@@ -20,18 +20,15 @@ ProportionalDiagramLayout::ProportionalDiagramLayout(DiagramScene *diagram) : Di
 }
 
 void ProportionalDiagramLayout::layoutNodes() {
-    this->forEachNode([this](DiagramNode &node) {
-        this->layoutNodeInHeight(node, MIN_HEIGHT);
-    });
-
     double maxStretchRatio = 1;
 
     this->forEachNode([&maxStretchRatio](DiagramNode &node) {
-        if (node.getNodeRect().height() < node.getMinHeight()
-                && node.getNodeRect().height() > 0)
+        if (node.getProportionalSize() * MIN_HEIGHT < node.getMinHeight()
+                && node.getProportionalSize() > 0.0)
         {
-            if (node.getMinHeight() / static_cast<double>(node.getNodeRect().height()) > maxStretchRatio) {
-                maxStretchRatio = static_cast<double>(node.getMinHeight()) / node.getNodeRect().height();
+            double ratio = node.getMinHeight() / (node.getProportionalSize() * MIN_HEIGHT);
+            if (ratio > maxStretchRatio) {
+                maxStretchRatio = ratio;
             }
         }
     });

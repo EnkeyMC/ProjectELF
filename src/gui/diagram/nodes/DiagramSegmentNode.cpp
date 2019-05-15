@@ -18,7 +18,7 @@ void DiagramSegmentNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSegmentNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect.adjusted(5, 5, -5, -5), Qt::AlignTop | Qt::AlignHCenter,
+    painter->drawText(nodeRect.adjusted(5, 5, -5, 0), Qt::AlignTop | Qt::AlignHCenter,
             "Segment #" + QString::number(segmentModel->getIndex()) + "\n" +
             segmentModel->getType()
     );
@@ -28,5 +28,5 @@ void DiagramSegmentNode::paint(QPainter *painter) const
 
 int DiagramSegmentNode::getMinHeight() const
 {
-    return 40;
+    return 30;
 }

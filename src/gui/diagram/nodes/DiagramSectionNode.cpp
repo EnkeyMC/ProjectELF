@@ -18,7 +18,7 @@ void DiagramSectionNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSectionNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(this->nodeRect.adjusted(5, 5, -5, -5), Qt::AlignTop | Qt::AlignHCenter,
+    painter->drawText(this->nodeRect.adjusted(5, 5, -5, 0), Qt::AlignTop | Qt::AlignHCenter,
             "Section #" + QString::number(sectionModel->getIndex()) + "\n" +
             this->sectionModel->getName()
     );
@@ -28,5 +28,5 @@ void DiagramSectionNode::paint(QPainter *painter) const
 
 int DiagramSectionNode::getMinHeight() const
 {
-    return 40;
+    return 30;
 }
