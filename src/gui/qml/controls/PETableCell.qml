@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 
@@ -13,6 +13,7 @@ Pane {
     rightPadding: 10
 
     Layout.fillWidth: true
+    Layout.minimumWidth: contentWidth + leftPadding + rightPadding
 
     background: Rectangle {
         color: Qt.lighter(Style._ColorPrimaryLight)

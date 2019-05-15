@@ -19,7 +19,7 @@ public:
 protected:
     void addHoverableChild(Hoverable *hoverable);
 
-    virtual void hoverEnteredEvent();
+    virtual void hoverEnteredEvent(QHoverEvent *event);
 
     virtual void hoverLeavedEvent();
 

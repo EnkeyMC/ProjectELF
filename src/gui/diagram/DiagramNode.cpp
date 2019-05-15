@@ -5,9 +5,11 @@
 #include "gui/diagram/DiagramNode.h"
 #include "gui/diagram/DiagramScene.h"
 
-DiagramNode::DiagramNode(DiagramScene *diagram) : QObject (), column(0) {
+DiagramNode::DiagramNode(DiagramScene *diagram) : QObject () {
     this->diagram = diagram;
     this->colspan = 1;
+    this->column = 0;
+    this->viewSide = LEFT;
 
     connect(this, &DiagramNode::nodeRectChanged, this, &DiagramNode::onNodeRectChanged);
 }
@@ -18,7 +20,7 @@ DiagramNode::~DiagramNode() {
 }
 
 void DiagramNode::paint(QPainter *painter) const {
-    painter->setClipRect(nodeRect);
+    painter->setClipRect(nodeRect.adjusted(0, 0, 1, 1));
 }
 
 int DiagramNode::getColspan() const {
@@ -35,27 +37,6 @@ const QRect &DiagramNode::getNodeRect() const {
 
 void DiagramNode::setNodeRect(const QRect &nodeRect) {
     this->nodeRect = nodeRect;
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::setHeight(int height) {
-    this->nodeRect.setHeight(height);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::moveTop(int y) {
-    this->nodeRect.moveTop(y);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::setBottom(int y) {
-    this->nodeRect.setBottom(y);
-    emit nodeRectChanged(this->nodeRect);
-}
-
-void DiagramNode::stretch(double factor) {
-    this->nodeRect.setTop(static_cast<int>(this->nodeRect.top() * factor));
-    this->nodeRect.setBottom(static_cast<int>(this->nodeRect.bottom() * factor));
     emit nodeRectChanged(this->nodeRect);
 }
 
@@ -84,10 +65,10 @@ map<QString, ConnectionPoint*> &DiagramNode::getConnectionPoints() {
 }
 
 void DiagramNode::onNodeRectChanged() {
-    if (column == 0)
-        nodeBindable = nodeRect.topLeft();
-    else
+    if (viewSide == DiagramNode::RIGHT)
         nodeBindable = nodeRect.topRight();
+    else
+        nodeBindable = nodeRect.topLeft();
 
     QPoint leftPoint{nodeRect.left() + 15, nodeRect.bottom() - 15};
     QPoint rightPoint{nodeRect.right() - 15, nodeRect.bottom() - 15};
@@ -96,7 +77,7 @@ void DiagramNode::onNodeRectChanged() {
     int rightIdx = 0;
 
     for (auto &nameConnPointPair : connectionPoints) {
-        if (nameConnPointPair.second->getSide() == ConnectionPoint::LEFT) {
+        if (nameConnPointPair.second->getSide() == Side::LEFT) {
             nameConnPointPair.second->set(leftPoint + QPoint(0, - leftIdx * CONN_POINT_GAP));
             leftIdx++;
         } else {
@@ -112,7 +93,7 @@ Bindable<QPoint> & DiagramNode::getNodeBindable() {
 
 void DiagramNode::registerConnectionPoint(ConnectionPoint *connectionPoint) {
     connectionPoints[connectionPoint->getName()] = connectionPoint;
-    connect(connectionPoint, &ConnectionPoint::clicked, diagram, &DiagramScene::scrollToAddress);
+    connect(connectionPoint, &ConnectionPoint::clicked, diagram, &DiagramScene::scrollTo);
     connect(connectionPoint, &ConnectionPoint::repaintRequested, diagram, &DiagramScene::repaint);
     this->addHoverableChild(connectionPoint);
 }
@@ -123,9 +104,11 @@ void DiagramNode::paintConnectionPoints(QPainter *painter) const {
     }
 }
 
-void DiagramNode::hoverEnteredEvent() {
+void DiagramNode::hoverEnteredEvent(QHoverEvent *event) {
     emit hoverEntered();
-    Hoverable::hoverEnteredEvent();
+    emit diagram->pushNodeToFront(this);
+    event->accept();
+    Hoverable::hoverEnteredEvent(event);
 }
 
 void DiagramNode::hoverLeavedEvent() {
@@ -149,4 +132,8 @@ void DiagramNode::mouseReleaseEvent(QMouseEvent *event) {
         if (nameConnPointPair.second->contains(event->pos()))
             nameConnPointPair.second->mouseReleaseEvent(event);
     }
+}
+
+DiagramNode::ViewSide DiagramNode::getViewSide() const {
+    return viewSide;
 }

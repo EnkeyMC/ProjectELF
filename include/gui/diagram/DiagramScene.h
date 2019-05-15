@@ -69,9 +69,10 @@ signals:
     void scrollYPositionChanged(qreal pos);
     void scrollXPositionChanged(qreal pos);
     void repaint();
+    void pushNodeToFront(DiagramNode *node);
 
 public slots:
-    void scrollToAddress(elf::Elf64_Addr address);
+    void scrollTo(int y);
 
 private slots:
     void onModelChanged();
@@ -93,7 +94,9 @@ protected:
     void clampScroll();
 
     void createConnection(DiagramNode *nodeFrom, const QString &connPoint,
-            DiagramNode *nodeTo, Connection::Side side, int level);
+            DiagramNode *nodeTo, Side side, int level);
+
+    void clearConnections();
 
     QPoint translateMousePos(QPoint point) const;
     QPointF translateMousePos(QPointF point) const;

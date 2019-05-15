@@ -12,7 +12,7 @@ void Hoverable::hoverMoveEvent(QHoverEvent *event) {
     if (this->contains(event->pos())) {
         if (!hovered) {
             hovered = true;
-            hoverEnteredEvent();
+            hoverEnteredEvent(event);
         }
     } else {
         if (hovered) {
@@ -29,7 +29,7 @@ void Hoverable::addHoverableChild(Hoverable *hoverable) {
     hoverableChildren.push_back(hoverable);
 }
 
-void Hoverable::hoverEnteredEvent() {
+void Hoverable::hoverEnteredEvent(QHoverEvent *event) {
 }
 
 void Hoverable::hoverLeavedEvent() {

@@ -9,8 +9,10 @@ DiagramProgramHeaderNode::DiagramProgramHeaderNode(DiagramScene *diagram, ELFPro
     : DiagramELFNode (diagram, programHeaderModel),
       programHeaderModelItem(programHeaderModel)
 {
+    this->viewSide = DiagramNode::RIGHT;
+
     registerConnectionPoint(
-            new ConnectionPoint("p_offset", ConnectionPoint::RIGHT, programHeaderModel->getSegmentModelItem()->getAddressInFile())
+            new ConnectionPoint("p_offset", Side::RIGHT)
     );
 }
 
@@ -20,7 +22,10 @@ void DiagramProgramHeaderNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getProgramTableNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Program header");
+    painter->drawText(nodeRect, Qt::AlignCenter,
+            "Program header #" + QString::number(programHeaderModelItem->getIndex()) + "\n" +
+            programHeaderModelItem->getDispType()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
     this->paintConnectionPoints(painter);
@@ -28,5 +33,9 @@ void DiagramProgramHeaderNode::paint(QPainter *painter) const
 
 int DiagramProgramHeaderNode::getMinHeight() const
 {
-    return 20;
+    return 40;
+}
+
+void DiagramProgramHeaderNode::hoverEnteredEvent(QHoverEvent *event) {
+    emit hoverEntered();
 }

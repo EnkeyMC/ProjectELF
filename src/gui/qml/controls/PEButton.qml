@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 
 import "../singletons"
@@ -6,10 +6,16 @@ import "../singletons"
 Button {
     id: button
 
+    property color bgrColor: Style._ColorPrimaryDark
+    property color bgrHoveredColor: Qt.darker(Style._ColorAccent, 1.1)
+    property color bgrCheckedColor: Style._ColorAccent
+    property alias color: buttonText.color
+
     contentItem: Text {
+        id: buttonText
         text: button.text
         font.pixelSize: Style.button._FontSize
-        color: Style._ColorTextLight
+        color: button.enabled ? Style._ColorTextLight : "gray"
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -20,14 +26,14 @@ Button {
         color: (button.down ||
                button.checked)
             ?
-                   Style._ColorAccent
+                   button.bgrCheckedColor
             :
                (button.highlighted ||
                button.visualFocus ||
                button.hovered)
             ?
-                   Qt.darker(Style._ColorAccent, 1.1)
+                   button.bgrHoveredColor
             :
-                   Style._ColorPrimaryDark
+                   button.bgrColor
     }
 }

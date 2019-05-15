@@ -1,20 +1,23 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 
 import "../singletons"
 import "../controls"
 
-ColumnLayout {
+Column {
     id: expandable
-    spacing: 0
+    spacing: 1
 
     property string title: ""
+    property int minWidth: 0
     default property alias __items: expandableItem.data
+    property alias titleColor: title.color
+    property bool valid: true
 
     Pane {
         id: expandableHeader
-        Layout.fillWidth: true
+        width: parent.width
         leftPadding: 10
         rightPadding: 10
         topPadding: 5
@@ -47,8 +50,18 @@ ColumnLayout {
             }
 
             Text {
+                id: title
                 text: expandable.title
                 color: Style._ColorTextLight
+            }
+
+            Rectangle {
+                id: invalidIndicator
+                color: Style._ColorError
+                width: 10
+                height: 10
+                radius: 5
+                visible: !valid
             }
         }
 
@@ -62,39 +75,27 @@ ColumnLayout {
         }
     }
 
-    Item {
+    Column {
         id: expandableItem
-        Layout.fillWidth: true
-        height: 0
+        width: parent.width
+        height: state == "" ? 0 : implicitHeight
         clip: true
 
         onStateChanged: indicator.requestPaint()
 
         states: [
             State {
+                name: ""
+                PropertyChanges {
+                    target: expandableItem
+                    height: 0
+                }
+            },
+            State {
                 name: "expanded"
                 PropertyChanges {
                     target: expandableItem
-                    height: expandableItem.childrenRect.height
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                to: "expanded"
-                NumberAnimation {
-                    duration: 400
-                    properties: "height"
-                    easing.type: Easing.OutCubic
-                }
-            },
-            Transition {
-                to: ""
-                NumberAnimation {
-                    duration: 400
-                    properties: "height"
-                    easing.type: Easing.OutCubic
+                    height: expandableItem.implicitHeight
                 }
             }
         ]

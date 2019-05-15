@@ -10,7 +10,6 @@
         <file>qml/singletons/Style.qml</file>
         <file>qml/components/MenuPrimary.qml</file>
         <file>qml/js/utils.js</file>
-        <file>qml/components/StatusBarText.qml</file>
         <file>qml/controls/PEButton.qml</file>
         <file>qml/controls/PEClosableTabButton.qml</file>
         <file>qml/controls/PEMenuSeparator.qml</file>
@@ -31,5 +30,17 @@
         <file>qml/controls/PEToolBarText.qml</file>
         <file>qml/controls/PEExpandablePane.qml</file>
         <file>qml/controls/Spacer.qml</file>
+        <file>qml/controls/PEStatusBarButton.qml</file>
+        <file>qml/controls/PEStatusBarText.qml</file>
+        <file>qml/controls/PEBadge.qml</file>
+        <file>qml/controls/PEDropdown.qml</file>
+        <file>qml/components/IssueItem.qml</file>
+        <file>qml/components/HeaderEditTable.qml</file>
+        <file>qml/components/IdentificationEditTable.qml</file>
+        <file>qml/components/SectionHeadersEdit.qml</file>
+        <file>qml/controls/PEToolBarButton.qml</file>
+        <file>qml/components/SectionHeaderEditTable.qml</file>
+        <file>qml/components/ProgramHeadersEdit.qml</file>
+        <file>qml/components/ProgramHeaderEditTable.qml</file>
     </qresource>
 </RCC>

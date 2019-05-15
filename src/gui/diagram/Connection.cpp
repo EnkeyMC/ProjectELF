@@ -5,8 +5,8 @@
 #include "gui/diagram/Connection.h"
 #include "gui/diagram/DiagramScene.h"
 
-Connection::Connection(DiagramScene* diagram, Connection::Side side, int level)
-    : diagram(diagram), side(side), visible(false), level(level)
+Connection::Connection(DiagramScene* diagram, Side side, int level)
+    : diagram(diagram), side(side), visible(false), level(level), valid(true)
 {
 
 }
@@ -20,10 +20,34 @@ void Connection::paint(QPainter *painter) const {
         lineX = diagram->getLayout()->getContentWidth() - lineX;
     }
 
+    painter->setClipping(false);
+
+    if (valid)
+        paintValid(painter, lineX);
+    else
+        paintInvalid(painter, lineX);
+
+    painter->setClipping(true);
+}
+
+void Connection::paintInvalid(QPainter *painter, int lineX) const {
+    const auto startPoint = startBindable.get();
+
+    painter->setPen(QPen(QColor(0, 0, 0), 2));
+    painter->setBrush(Qt::black);
+
+    painter->drawLine(lineX, startPoint.y(), startPoint.x(), startPoint.y());
+
+    painter->setPen(QPen(QColor(230, 0, 0), 2));
+    constexpr int crossSize = 5;
+    painter->drawLine(lineX - crossSize, startPoint.y() - crossSize, lineX + crossSize, startPoint.y() + crossSize);
+    painter->drawLine(lineX - crossSize, startPoint.y() + crossSize, lineX + crossSize, startPoint.y() - crossSize);
+}
+
+void Connection::paintValid(QPainter *painter, int lineX) const {
     const auto startPoint = startBindable.get();
     const auto endPoint = endBindable.get();
 
-    painter->setClipping(false);
     painter->setPen(QPen(QColor(0, 0, 0), 2));
     painter->setBrush(Qt::black);
 
@@ -37,7 +61,6 @@ void Connection::paint(QPainter *painter) const {
         painter->drawLine(endPoint.x() + 5, endPoint.y() - 5, endPoint.x(), endPoint.y());
         painter->drawLine(endPoint.x() + 5, endPoint.y() + 5, endPoint.x(), endPoint.y());
     }
-    painter->setClipping(true);
 }
 
 Bindable<QPoint> &Connection::getStartBindable() {
@@ -56,4 +79,12 @@ void Connection::setVisible() {
 void Connection::setInvisible() {
     visible = false;
     emit diagram->repaint();
+}
+
+bool Connection::isValid() const {
+    return valid;
+}
+
+void Connection::setValid(bool valid) {
+    this->valid = valid;
 }

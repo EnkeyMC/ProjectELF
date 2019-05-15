@@ -14,6 +14,8 @@ DiagramSectionHeaderTableNode::DiagramSectionHeaderTableNode(
         : DiagramTableNode(diagram, sectionHeaderTableModelItem),
           sectionHeaderTableModelItem(sectionHeaderTableModelItem)
 {
+    this->viewSide = DiagramNode::LEFT;
+    this->column = 1;
     auto headerModels = sectionHeaderTableModelItem->getSectionHeaders();
     for (auto headerModel : headerModels) {
         auto sectionHeaderNode = new DiagramSectionHeaderNode(diagram, headerModel);

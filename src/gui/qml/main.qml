@@ -1,7 +1,7 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.3 as Dialogs
 
 import projectelf.models 1.0
 
@@ -14,9 +14,18 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+    minimumWidth: 600
+    minimumHeight: 480
     title: "ProjectELF"
 
-    FileDialog {
+    onClosing: {
+        if (openFilesModel.hasUnsavedChanges()) {
+            close.accepted = false;
+            closeWithUnsavedChangesDialog.open();
+        }
+    }
+
+    Dialogs.FileDialog {
         id: openFileDialog
         title: qsTr("Open file")
         folder: shortcuts.home
@@ -26,8 +35,61 @@ ApplicationWindow {
         }
     }
 
+    Dialogs.FileDialog {
+        id: saveFileDialog
+        title: qsTr("Save As")
+        folder: shortcuts.home
+        selectExisting: false
+
+        onAccepted: {
+           openFilesModel.saveFileAs(fileTabs.currentIndex, fileUrl)
+        }
+    }
+
+    Dialogs.MessageDialog {
+        id: errorDialog
+        icon: Dialogs.StandardIcon.Critical
+        standardButtons: Dialogs.StandardButton.Ok
+    }
+
+    Dialogs.MessageDialog {
+        id: saveBeforeCloseDialog
+        icon: Dialogs.StandardIcon.Warning
+        title: qsTr("Save changes")
+        text: qsTr("File you are trying to close has unsaved chagnes. Do you wish to save them?")
+        standardButtons: Dialogs.StandardButton.Save | Dialogs.StandardButton.Discard | Dialogs.StandardButton.Cancel
+
+        property int indexToClose
+
+        onAccepted: {
+            openFilesModel.saveFile(indexToClose);
+            fileTabs.tabClosed(indexToClose)
+            openFilesModel.closeFile(indexToClose);
+        }
+
+        onDiscard: {
+            fileTabs.tabClosed(indexToClose)
+            openFilesModel.closeFile(indexToClose);
+        }
+    }
+
+    Dialogs.MessageDialog {
+        id: closeWithUnsavedChangesDialog
+        icon: Dialogs.StandardIcon.Warning
+        title: qsTr("Discard unsaved changes")
+        text: qsTr("You have open files with unsaved changes. Do you really wish to quit without saving?")
+        standardButtons: Dialogs.StandardButton.Yes | Dialogs.StandardButton.No
+
+        onYes: Qt.quit();
+    }
+
     OpenFilesModel {
         id: openFilesModel
+        onError: {
+            errorDialog.title = title;
+            errorDialog.text = description;
+            errorDialog.open();
+        }
     }
 
     menuBar: RowLayout {
@@ -42,29 +104,53 @@ ApplicationWindow {
                 Action {
                     text: qsTr("&Open...")
                     onTriggered: openFileDialog.open()
+
+                    shortcut: 3 // Open
                 }
-                Action { text: qsTr("&Save") }
-                Action { text: qsTr("Save &As...") }
+                Action {
+                    text: qsTr("&Save")
+                    onTriggered: openFilesModel.saveFile(fileTabs.currentIndex)
+                    enabled: openFilesModel.size > 0
+
+                    shortcut: 5 // Save
+                }
+                Action {
+                    text: qsTr("Save &As...")
+                    onTriggered: saveFileDialog.open()
+                    enabled: openFilesModel.size > 0
+
+                    shortcut: 63 // SaveAs
+                }
                 PEMenuSeparator {}
                 Action {
                     text: qsTr("&Quit")
-                    onTriggered: Qt.quit()
-                }
-            }
+                    onTriggered: mainWindow.close()
 
-            MenuPrimary {
-                title: qsTr("&Edit")
-                Action { text: qsTr("Cu&t") }
-                Action { text: qsTr("&Copy") }
-                Action { text: qsTr("&Paste") }
-            }
-            MenuPrimary {
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
-                MenuPrimary {
-                    title: "ASfgs"
-                    Action { text: "AS" }
+                    shortcut: 65 // Quit
                 }
+            }
+        }
+
+        PEButton {
+            text: qsTr("Reload structure")
+            enabled: openFilesModel.size > 0
+
+            onClicked: {
+                openFilesModel.reloadStructure(fileTabs.currentIndex)
+            }
+        }
+
+        Rectangle {
+            width: 11
+            Layout.fillHeight: true
+            color: Style._ColorPrimaryDark
+
+            Rectangle {
+                x: 5
+                width: 1
+                y: 5
+                height: parent.height - 10
+                color: Qt.darker(Style._ColorAccent, 1.1)
             }
         }
 
@@ -72,10 +158,6 @@ ApplicationWindow {
             Layout.fillHeight: true
             id: viewSwitch
         }
-    }
-
-    footer: StatusBar {
-        width: mainWindow.width
     }
 
     ColumnLayout {
@@ -98,11 +180,19 @@ ApplicationWindow {
                 model: openFilesModel
 
                 PEClosableTabButton {
-                    text: model.displayName + (model.changed ? "*" : "")
+                    text: model.displayName + (changed ? "*" : "")
+                    color: model.elfModel && model.elfModel.issueListModel.size > 0 ? Style._ColorError : Style._ColorTextDark
+                    property bool changed: model.changed
 
                     onCloseTab: {
-                        fileTabs.tabClosed(index)
-                        openFilesModel.closeFile(index)
+                        if (changed) {
+                            saveBeforeCloseDialog.indexToClose = index
+                            saveBeforeCloseDialog.open();
+                        }
+                        else {
+                            fileTabs.tabClosed(index)
+                            openFilesModel.closeFile(index)
+                        }
                     }
                 }
             }

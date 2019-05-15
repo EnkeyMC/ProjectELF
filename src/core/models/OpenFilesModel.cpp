@@ -1,18 +1,20 @@
 #include <fstream>
 #include <QDebug>
 #include <QFile>
-#include <ELFReader.h>
+#include <ELFIssueException.h>
 
-#include "include/core/models/OpenFilesModel.h"
+#include "core/models/OpenFilesModel.h"
+#include "core/ELFIssueConverter.h"
 
 OpenFilesModel::OpenFilesModel(QObject *parent)
-    : QAbstractItemModel(parent)
+    : ListModelBase(parent)
 {
 }
 
 void OpenFilesModel::closeFile(int row)
 {
     emit beginRemoveRows(QModelIndex(), row, row);
+    delete openFileList.at(row).elfModel;
     openFileList.removeAt(row);
     emit endRemoveRows();
 }
@@ -20,112 +22,56 @@ void OpenFilesModel::closeFile(int row)
 void OpenFilesModel::openFile(QString filepath)
 {
     if (!filepath.startsWith("file:///")) {
-        qDebug() << "ERROR: Application only supports file protocol.";
-        return;  // TODO handle error
+        emit error(tr("Unsupported protocol"), tr("Application only supports file protocol."));
+        return;
     }
 
-    filepath.remove(0, strlen("file:///"));
+    removeProtocol(filepath);
+
+    for (int i = 0; i < openFileList.size(); i++) {
+        if (openFileList[i].filepath == filepath) {
+            emit fileOpened(i);
+            return;
+        }
+    }
 
     std::ifstream file{filepath.toLocal8Bit(), std::ios_base::in | std::ios_base::binary};
     if (!file.is_open()) {
-        qDebug() << "ERROR: File " << filepath << " could not be opened";
-        return;  // TODO handle error
+        emit error(tr("Error opening file"), tr("File %1 could not be opened").arg(filepath));
+        return;
     }
 
     std::shared_ptr<elf::ELF> elf = std::make_shared<elf::ELF>();
-    elf::ELFReader reader{file, *elf};
 
-    reader.parse_header();
-    reader.parse_section_headers();
-    reader.parse_program_headers();
-    reader.parse_sections();
-    reader.parse_segments();
+    try {
+        elf->load(file);
+    } catch (const elf::ELFIssueException &exception) {
+        emit error(tr("Parsing error"), ELFIssueConverter::toReadable(exception.getIssue()));
+        return;
+    } catch (const std::bad_alloc &excepction) {
+        emit error(tr("Allocation error"), tr("File is too large to load"));
+        return;
+    }
 
     auto *model = new ELFModel(elf, this);
 
     int index = openFileList.size();
+    connect(model, &ELFModel::modifiedChanged, [=]() {
+        emit dataChanged(
+                this->index(0, 0, QModelIndex()),
+                this->index(openFileList.size() - 1, 0, QModelIndex()),
+                QVector<int>() << ModifiedRole
+        );
+    });
     emit beginInsertRows(QModelIndex(), index, index);
-    openFileList.append({filepath, false, model});
+    openFileList.append({filepath, model});
     emit endInsertRows();
     emit fileOpened(index);
-}
-
-QModelIndex OpenFilesModel::index(int row, int column, const QModelIndex &parent) const
-{
-    return createIndex(row, column, nullptr);
-}
-
-QModelIndex OpenFilesModel::parent(const QModelIndex &index) const
-{
-    return QModelIndex();
 }
 
 int OpenFilesModel::rowCount(const QModelIndex &parent) const
 {
     return openFileList.size();
-}
-
-int OpenFilesModel::columnCount(const QModelIndex &parent) const
-{
-    return 0;
-}
-
-QVariant OpenFilesModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
-
-    const OpenFile item = openFileList.at(index.row());
-
-    switch (role) {
-    case FilenameRole:
-        return QVariant(this->getFilenameFromPath(item.filepath));
-    case ChangedRole:
-        return QVariant(item.changed);
-    case DisplayNameRole:
-        return QVariant(this->getDisplayName(index.row()));
-    case FilepathRole:
-        return QVariant(item.filepath);
-    case ELFModelRole:
-    {
-        QVariant var;
-        var.setValue(item.elfModel);
-        return var;
-    }
-    default:
-        return QVariant();
-    }
-}
-
-bool OpenFilesModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    if (data(index, role) != value) {
-        switch (role) {
-        case FilepathRole:
-            openFileList[index.row()].filepath = value.toString();
-            break;
-        case ChangedRole:
-            openFileList[index.row()].changed = value.toBool();
-            break;
-        case ELFModelRole:
-            openFileList[index.row()].elfModel = value.value<ELFModel*>();
-            break;
-        default:  // Read only roles
-            return false;
-        }
-
-        emit dataChanged(index, index, QVector<int>() << role);
-        return true;
-    }
-    return false;
-}
-
-Qt::ItemFlags OpenFilesModel::flags(const QModelIndex &index) const
-{
-    if (!index.isValid())
-        return Qt::NoItemFlags;
-
-    return Qt::ItemIsEditable;
 }
 
 QHash<int, QByteArray> OpenFilesModel::roleNames() const
@@ -134,7 +80,7 @@ QHash<int, QByteArray> OpenFilesModel::roleNames() const
     names[FilenameRole] = "filename";
     names[FilepathRole] = "filepath";
     names[DisplayNameRole] = "displayName";
-    names[ChangedRole] = "changed";
+    names[ModifiedRole] = "changed";
     names[ELFModelRole] = "elfModel";
     return names;
 }
@@ -147,4 +93,93 @@ QString OpenFilesModel::getFilenameFromPath(QString path) const
 QString OpenFilesModel::getDisplayName(int row) const
 {
     return this->getFilenameFromPath(this->openFileList.at(row).filepath);
+}
+
+QVariant OpenFilesModel::getData(int idx, int role) const {
+    const OpenFile item = openFileList.at(idx);
+
+    switch (role) {
+        case FilenameRole:
+            return QVariant(this->getFilenameFromPath(item.filepath));
+        case ModifiedRole:
+            return QVariant(item.elfModel->isModified());
+        case DisplayNameRole:
+            return QVariant(this->getDisplayName(idx));
+        case FilepathRole:
+            return QVariant(item.filepath);
+        case ELFModelRole:
+        {
+            QVariant var;
+            var.setValue(item.elfModel);
+            return var;
+        }
+        default:
+            return QVariant();
+    }
+}
+
+void OpenFilesModel::saveFile(int row) {
+    this->saveFileAs(row, "file:///" + openFileList.at(row).filepath);
+}
+
+void OpenFilesModel::saveFileAs(int row, QString filepath) {
+    if (row < 0 || row >= openFileList.size())
+        return;
+    auto &openFile = openFileList.at(row);
+
+    if (!filepath.startsWith("file:///")) {
+        emit error(tr("Unsupported protocol"), tr("Application only supports file protocol."));
+        return;
+    }
+
+    removeProtocol(filepath);
+
+    std::ofstream file{filepath.toLocal8Bit(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc};
+    if (!file.is_open()) {
+        emit error(tr("Error opening file for saving"), tr("File %1 could not be opened for saving.").arg(filepath));
+        return;
+    }
+
+    if (!openFile.elfModel->getElf()->save(file)) {
+        emit error(tr("Error saving to file"), tr("Could not save to file %1.").arg(filepath));
+        return;
+    }
+
+    openFile.elfModel->setModified(false);
+    openFileList[row].filepath = filepath;
+    emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
+                     QVector<int>() << FilepathRole << FilenameRole << DisplayNameRole << ModifiedRole);
+}
+
+bool OpenFilesModel::hasUnsavedChanges() const
+{
+    for (auto openFile : openFileList) {
+        if (openFile.elfModel->isModified())
+            return true;
+    }
+    return false;
+}
+
+void OpenFilesModel::reloadStructure(int row)
+{
+    if (row >= 0 & row < openFileList.size()) {
+        auto openFile = openFileList.at(row);
+
+        try {
+            openFile.elfModel->reloadStructure();
+        } catch (const elf::ELFIssueException &exception) {
+            emit error(tr("Parsing error"), ELFIssueConverter::toReadable(exception.getIssue()) + tr("\nCannot reload structure."));
+            return;
+        }
+        emit dataChanged(index(row, 0, QModelIndex()), index(row, 0, QModelIndex()),
+                         QVector<int>() << ELFModelRole);
+    }
+}
+
+void OpenFilesModel::removeProtocol(QString &path) {
+#if defined(_WIN32) || defined (_WIN64)
+    path.remove(0, strlen("file:///"));
+#else
+    path.remove(0, strlen("file://"));
+#endif
 }

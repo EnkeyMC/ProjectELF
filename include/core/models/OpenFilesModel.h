@@ -1,17 +1,15 @@
 #ifndef OPENFILESMODEL_H
 #define OPENFILESMODEL_H
 
-#include <QAbstractItemModel>
-
+#include "core/models/ListModelBase.h"
 #include "core/models/ELFModel.h"
 
 typedef struct {
     QString filepath;
-    bool changed;
     ELFModel *elfModel;
 } OpenFile;
 
-class OpenFilesModel : public QAbstractItemModel
+class OpenFilesModel : public ListModelBase
 {
     Q_OBJECT
 
@@ -21,7 +19,7 @@ public:
         FilenameRole = Qt::UserRole + 1,
         FilepathRole,
         DisplayNameRole,
-        ChangedRole,
+        ModifiedRole,
         ELFModelRole
     };
 
@@ -31,31 +29,31 @@ public:
 
     Q_INVOKABLE void openFile(QString filepath);
 
-    // Basic functionality:
-    QModelIndex index(int row, int column,
-                      const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &index) const override;
+    Q_INVOKABLE void saveFile(int row);
+
+    Q_INVOKABLE void saveFileAs(int row, QString filepath);
+
+    Q_INVOKABLE bool hasUnsavedChanges() const;
+
+    Q_INVOKABLE void reloadStructure(int row);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-    // Editable:
-    bool setData(const QModelIndex &index, const QVariant &value,
-                 int role = Qt::EditRole) override;
-
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     QHash<int, QByteArray> roleNames() const override;
 
 signals:
     void fileOpened(int index);
+    void error(QString title, QString description);
+
+protected:
+    QVariant getData(int idx, int role) const override;
 
 private:
     QString getFilenameFromPath(QString path) const;
 
     QString getDisplayName(int row) const;
+
+    static void removeProtocol(QString &path);
 
     QVector<OpenFile> openFileList;
 };

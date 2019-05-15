@@ -9,21 +9,30 @@
 #include <ELF.h>
 #include <memory>
 
-#define HEX 16
-
 class ELFModel;
 
 class ELFModelItem : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(bool valid READ isValid NOTIFY validChanged)
 public:
     explicit ELFModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf);
+
+    virtual bool isValid() const = 0;
 
     uint64_t getAddressInFile() const;
 
     uint64_t getSizeInFile() const;
 
     ELFModel * getModel() const;
+
+signals:
+    void dataChanged();
+    void structureChanged();
+    void validChanged();
+
+protected slots:
+    virtual void onStructureChanged() = 0;
 
 protected:
     std::shared_ptr<elf::ELF> elf;

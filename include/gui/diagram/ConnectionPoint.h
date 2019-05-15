@@ -12,18 +12,14 @@
 #include "core/Bindable.h"
 #include "core/Hoverable.h"
 #include "core/IMouseListener.h"
+#include "core/Side.h"
+#include "gui/diagram/Connection.h"
 
 class ConnectionPoint : public QObject, public Bindable<QPoint>, public Hoverable, public IMouseListener {
     Q_OBJECT
 public:
-    enum Side {
-        LEFT,
-        RIGHT
-    };
 
-    static const elf::Elf64_Addr INVALID_ADDRESS = -1;
-
-    explicit ConnectionPoint(const QString &name = "", enum Side side = LEFT, elf::Elf64_Addr endAddress = INVALID_ADDRESS);
+    explicit ConnectionPoint(const QString &name = "", Side side = LEFT);
 
     void paint(QPainter *painter) const;
 
@@ -31,19 +27,19 @@ public:
 
     Side getSide() const;
 
-    int getEndAddress() const;
+    void bindConnection(Connection *connection);
 
     bool contains(const QPoint &point) const override;
 
     void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-    void clicked(elf::Elf64_Addr address);
+    void clicked(int scrollTo);
 
     void repaintRequested();
 
 protected:
-    void hoverEnteredEvent() override;
+    void hoverEnteredEvent(QHoverEvent *event) override;
 
     void hoverLeavedEvent() override;
 
@@ -52,9 +48,9 @@ private:
     static const int GAP = 10;
     static const int PADDING = 3;
 
-    enum Side side;
+    Side side;
     QString name;
-    elf::Elf64_Addr endAddress;
+    Connection *connection;
 };
 
 

@@ -8,8 +8,10 @@ DiagramSectionHeaderNode::DiagramSectionHeaderNode(
     : DiagramELFNode (diagram, sectionHeaderModelItem),
       sectionHeaderModelItem(sectionHeaderModelItem)
 {
+    this->viewSide = DiagramNode::LEFT;
+
     registerConnectionPoint(
-            new ConnectionPoint("sh_offset", ConnectionPoint::LEFT, sectionHeaderModelItem->getSectionModelItem()->getAddressInFile())
+            new ConnectionPoint("sh_offset", Side::LEFT)
     );
 }
 
@@ -19,7 +21,11 @@ void DiagramSectionHeaderNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSectionTableNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Section header");
+    painter->drawText(nodeRect, Qt::AlignCenter,
+            "Section header #" +
+            QString::number(sectionHeaderModelItem->getIndex()) +
+            "\n" + sectionHeaderModelItem->getDispName()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
     this->paintConnectionPoints(painter);
@@ -27,5 +33,9 @@ void DiagramSectionHeaderNode::paint(QPainter *painter) const
 
 int DiagramSectionHeaderNode::getMinHeight() const
 {
-    return 20;
+    return 40;
+}
+
+void DiagramSectionHeaderNode::hoverEnteredEvent(QHoverEvent *event) {
+    emit hoverEntered();
 }

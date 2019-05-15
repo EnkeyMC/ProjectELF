@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
         src/ELF.cpp
-        src/ELFReader.cpp
-        src/ELFWriter.cpp
         src/ELFIssue.cpp
         src/ELFHeader.cpp
         src/ELFIssuesBySeverity.cpp
@@ -20,9 +18,8 @@ add_library(${PROJECT_NAME} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 set(TEST_FILES
-        tests/ELFTest.cpp
         tests/ELFIssuesBySeverityTest.cpp
-        tests/ELFReaderTest.cpp
+        tests/ELFTest.cpp
         tests/Memstream.h
         tests/MemstreamTest.cpp)
 

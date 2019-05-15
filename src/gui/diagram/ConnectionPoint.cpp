@@ -4,8 +4,8 @@
 
 #include "gui/diagram/ConnectionPoint.h"
 
-ConnectionPoint::ConnectionPoint(const QString &name, enum Side side, elf::Elf64_Addr endAddress)
-    : name(name), side(side), endAddress(endAddress)
+ConnectionPoint::ConnectionPoint(const QString &name, Side side)
+    : name(name), side(side), connection(nullptr)
 {
 
 }
@@ -47,12 +47,8 @@ const QString &ConnectionPoint::getName() const {
     return name;
 }
 
-ConnectionPoint::Side ConnectionPoint::getSide() const {
+Side ConnectionPoint::getSide() const {
     return side;
-}
-
-int ConnectionPoint::getEndAddress() const {
-    return endAddress;
 }
 
 bool ConnectionPoint::contains(const QPoint &point) const {
@@ -63,15 +59,21 @@ bool ConnectionPoint::contains(const QPoint &point) const {
 void ConnectionPoint::mousePressEvent(QMouseEvent *event) {
     IMouseListener::mousePressEvent(event);
 
-    emit clicked(endAddress);
+    if (connection != nullptr && connection->isValid())
+        emit clicked(connection->getEndBindable().get().y());
 }
 
-void ConnectionPoint::hoverEnteredEvent() {
-    Hoverable::hoverEnteredEvent();
+void ConnectionPoint::hoverEnteredEvent(QHoverEvent *event) {
+    Hoverable::hoverEnteredEvent(event);
     emit repaintRequested();
 }
 
 void ConnectionPoint::hoverLeavedEvent() {
     Hoverable::hoverLeavedEvent();
     emit repaintRequested();
+}
+
+void ConnectionPoint::bindConnection(Connection *connection) {
+    this->connection = connection;
+    connection->getStartBindable().bindTo(*this);
 }

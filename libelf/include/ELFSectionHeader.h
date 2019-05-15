@@ -7,14 +7,13 @@
 
 #include "ELFUtils.h"
 #include "ELFIssuesBySeverity.h"
-#include "IRawParsable.h"
 #include "ELFStructureBase.h"
 
 namespace elf {
 
 class ELF;
 
-class ELFSectionHeader : public IRawParsable, public ELFStructureBase {
+class ELFSectionHeader : public ELFStructureBase {
 public:
     explicit ELFSectionHeader(ELF &elf);
 
@@ -29,15 +28,30 @@ public:
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_addralign);
     ELFIO_GET_SET_SIZE_ACCESS_DECL(Elf_Xword, sh_entsize);
 
+    virtual void set_header_ptr(char *ptr) = 0;
+
+    void set_section_ptr(char *ptr);
+
     char *get_section_data() const;
 
-    void set_copy_of_section_data(const char *raw_data, Elf_Word size);
+    unsigned int get_index() const;
 
-    void set_section_data(char *raw_data, Elf_Word size);
+    void set_index(unsigned int index);
+
+    bool is_header_valid() const;
+
+    void set_header_valid(bool valid);
+
+    bool is_section_valid() const;
+
+    void set_section_valid(bool valid);
 
 protected:
     char *section_data;
 
+    unsigned index;
+    bool header_valid;
+    bool section_valid;
 };
 
 }

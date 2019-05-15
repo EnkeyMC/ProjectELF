@@ -30,24 +30,15 @@ This file is taken from ELFIO project with few modifications: https://github.com
 
 #include "ELFTypes.h"
 
-#define ELFIO_GET_ACCESS( TYPE, NAME, FIELD ) \
-    TYPE get_##NAME() const override          \
-    {                                         \
-        return elf.get_converter()( FIELD );         \
-    }
-#define ELFIO_SET_ACCESS( TYPE, NAME, FIELD ) \
-    void set_##NAME( TYPE value ) override    \
-    {                                         \
-        FIELD = value;                        \
-        FIELD = elf.get_converter()( FIELD );        \
-    }
 #define ELFIO_GET_SET_SIZE_ACCESS( TYPE, NAME, FIELD ) \
     TYPE get_##NAME() const override              \
     {                                             \
+        if (!header_valid) return 0;              \
         return elf.get_converter()( FIELD );      \
     }                                             \
     void set_##NAME( TYPE value ) override        \
     {                                             \
+        if (!header_valid) return;                \
         FIELD = value;                            \
         FIELD = elf.get_converter()( FIELD );     \
     }                                             \
@@ -55,12 +46,6 @@ This file is taken from ELFIO project with few modifications: https://github.com
     {                                             \
         return sizeof(FIELD);                     \
     }
-
-#define ELFIO_GET_ACCESS_DECL( TYPE, NAME ) \
-    virtual TYPE get_##NAME() const = 0
-
-#define ELFIO_SET_ACCESS_DECL( TYPE, NAME ) \
-    virtual void set_##NAME( TYPE value ) = 0
 
 #define ELFIO_GET_SET_SIZE_ACCESS_DECL( TYPE, NAME ) \
     virtual TYPE get_##NAME() const = 0;             \

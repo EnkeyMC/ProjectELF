@@ -75,3 +75,5 @@ Thumbs.db
 *.dll
 *.exe
 
+
+libelf/tests/resources/fdas

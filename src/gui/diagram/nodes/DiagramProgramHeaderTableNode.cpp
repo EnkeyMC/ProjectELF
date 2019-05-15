@@ -12,6 +12,8 @@ DiagramProgramHeaderTableNode::DiagramProgramHeaderTableNode(
         : DiagramTableNode(diagram, programHeaderTableModelItem),
           programHeaderTableModelItem(programHeaderTableModelItem)
 {
+    this->viewSide = DiagramNode::RIGHT;
+    this->column = 2;
     auto headerModels = programHeaderTableModelItem->getProgramHeaders();
     for (auto headerModel : headerModels) {
         auto programHeaderNode = new DiagramProgramHeaderNode(diagram, headerModel);

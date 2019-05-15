@@ -22,21 +22,21 @@ TEST_F(ELFIssuesBySeverityTest, empty) {
 }
 
 TEST_F(ELFIssuesBySeverityTest, add_issue) {
-    *issues += ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID);
+    *issues += ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID_VALUE);
 
     ASSERT_EQ(issues->size(), 1);
     ASSERT_EQ((*issues)[ISEV_CRITICAL].size(), 1);
 
     auto issue = (*issues)[ISEV_CRITICAL][0];
     ASSERT_EQ(issue.get_severity(), ISEV_CRITICAL);
-    ASSERT_EQ(issue.get_type(), ITYPE_INVALID);
+    ASSERT_EQ(issue.get_type(), ITYPE_INVALID_VALUE);
     ASSERT_EQ(issue.get_source(), ISRC_E_EHSIZE);
 }
 
 TEST_F(ELFIssuesBySeverityTest, add_multiple_issues) {
-    auto issue1 = ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID);
+    auto issue1 = ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID_VALUE);
     auto issue2 = ELFIssue(ISEV_CRITICAL, ISRC_SH_SIZE, ITYPE_UNEXPECTED_EOF);
-    auto issue3 = ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_INVALID);
+    auto issue3 = ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_INVALID_VALUE);
     *issues += issue1;
     *issues += issue2;
     *issues += issue3;
@@ -51,9 +51,9 @@ TEST_F(ELFIssuesBySeverityTest, add_multiple_issues) {
 }
 
 TEST_F(ELFIssuesBySeverityTest, add_multiple_severities) {
-    auto issue1 = ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID);
+    auto issue1 = ELFIssue(ISEV_CRITICAL, ISRC_E_EHSIZE, ITYPE_INVALID_VALUE);
     auto issue2 = ELFIssue(ISEV_WARNING, ISRC_SH_SIZE, ITYPE_UNEXPECTED_EOF);
-    auto issue3 = ELFIssue(ISEV_ERROR, ISRC_HEADER, ITYPE_INVALID);
+    auto issue3 = ELFIssue(ISEV_ERROR, ISRC_HEADER, ITYPE_INVALID_VALUE);
     *issues += issue1;
     *issues += issue2;
     *issues += issue3;
@@ -69,11 +69,11 @@ TEST_F(ELFIssuesBySeverityTest, add_multiple_severities) {
 }
 
 TEST_F(ELFIssuesBySeverityTest, has_critical_issue_true) {
-    *issues += ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_INVALID);
+    *issues += ELFIssue(ISEV_CRITICAL, ISRC_HEADER, ITYPE_INVALID_VALUE);
     ASSERT_TRUE(issues->has_critical_issue());
 }
 
 TEST_F(ELFIssuesBySeverityTest, has_critical_issue_false) {
-    *issues += ELFIssue(ISEV_ERROR, ISRC_HEADER, ITYPE_INVALID);
+    *issues += ELFIssue(ISEV_ERROR, ISRC_HEADER, ITYPE_INVALID_VALUE);
     ASSERT_FALSE(issues->has_critical_issue());
 }

@@ -8,8 +8,9 @@
 #include <QPainter>
 #include <QPointer>
 #include <QObject>
-#include <set>
+#include <map>
 #include <functional>
+#include <deque>
 #include <ELFTypes.h>
 
 #include "DiagramNode.h"
@@ -20,6 +21,8 @@ class DiagramLayout : public QObject {
     Q_OBJECT
 
 public:
+    typedef std::multimap<DiagramNode *, int, DiagramNode::PtrComparer> SortedNodesType;
+
     explicit DiagramLayout(DiagramScene *diagram);
 
     virtual ~DiagramLayout() {}
@@ -36,15 +39,15 @@ public:
 
     int getMinWidth() const;
 
-    void addLinkNode(DiagramNode *node);
-
-    void addExecNode(DiagramNode *node);
+    void addNode(DiagramNode *node);
 
     void clearNodes();
 
-    const std::set<DiagramNode *> &getLinkColumnSortedNodes() const;
+    const SortedNodesType &getLinkColumnSortedNodes() const;
 
-    const std::set<DiagramNode *> &getExecColumnSortedNodes() const;
+    const SortedNodesType &getExecColumnSortedNodes() const;
+
+    const std::deque<DiagramNode *> &getNodesZOrdered() const;
 
     virtual QPoint getNodeOffset() const = 0;
 
@@ -55,12 +58,28 @@ public:
 
 signals:
     void layoutChanged();
+    void zOrderChanged();
+
+public slots:
+    void pushToFront(DiagramNode *node);
 
 protected:
+    std::function<bool(const SortedNodesType::value_type &)> getPairEqualityComparer(DiagramNode *node) const;
+
+    SortedNodesType::iterator findNode(SortedNodesType &nodes, DiagramNode *node);
+    SortedNodesType::const_iterator findNode(const SortedNodesType &nodes, DiagramNode *node) const;
+
+    SortedNodesType::iterator getNodeIterator(DiagramNode *node);
+    SortedNodesType::const_iterator getNodeIterator(DiagramNode *node) const;
+
+    SortedNodesType::iterator getEndIterator(DiagramNode::ViewSide side);
+    SortedNodesType::const_iterator getEndIterator(DiagramNode::ViewSide side) const;
 
     DiagramScene *diagram;
-    std::set<DiagramNode *> linkColumnSortedNodes;
-    std::set<DiagramNode *> execColumnSortedNodes;
+    SortedNodesType linkColumnSortedNodes;
+    SortedNodesType execColumnSortedNodes;
+
+    std::deque<DiagramNode *> nodesZOrdered;
 
     QSize size;
     int minWidth;

@@ -8,6 +8,8 @@
 
 namespace elf {
 
+const ELFIssue ELFIssue::NO_ISSUE = ELFIssue();
+
 ELFIssue::ELFIssue(enum ELFIssueSeverity severity, enum ELFIssueSource source, enum ELFIssueType type, unsigned index)
                                 : severity(severity),
                                 source(source),
@@ -32,8 +34,14 @@ bool ELFIssue::operator==(const ELFIssue &rhs) const {
     return severity == rhs.severity && source == rhs.source && type == rhs.type && index == rhs.index;
 }
 
-unsigned int ELFIssue::getIndex() const {
+bool ELFIssue::operator!=(const ELFIssue &rhs) const {
+    return !(*this == rhs);
+}
+
+unsigned int ELFIssue::get_index() const {
     return index;
 }
+
+ELFIssue::ELFIssue() : severity(ISEV_NONE), source(ISRC_NONE), type(ITYPE_NONE), index(0) {}
 
 }  // namespace elf

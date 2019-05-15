@@ -17,6 +17,9 @@ public:
 
     int getMinHeight() const override;
 
+protected:
+    void hoverEnteredEvent(QHoverEvent *event) override;
+
 private:
     ELFProgramHeaderModelItem *programHeaderModelItem;
 };

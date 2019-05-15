@@ -8,7 +8,8 @@
 DiagramSectionNode::DiagramSectionNode(DiagramScene *diagram, ELFSectionModelItem *sectionModel)
     : DiagramELFNode (diagram, sectionModel), sectionModel(sectionModel)
 {
-
+    this->viewSide = DiagramNode::LEFT;
+    this->column = 0;
 }
 
 void DiagramSectionNode::paint(QPainter *painter) const
@@ -17,12 +18,15 @@ void DiagramSectionNode::paint(QPainter *painter) const
     painter->setBrush(diagram->getStyle()->getSectionNodeBgr());
     painter->setPen(diagram->getStyle()->getDefaultPen());
     painter->drawRect(nodeRect);
-    painter->drawText(nodeRect, Qt::AlignCenter, "Section");
+    painter->drawText(this->nodeRect.adjusted(5, 5, -5, 0), Qt::AlignTop | Qt::AlignHCenter,
+            "Section #" + QString::number(sectionModel->getIndex()) + "\n" +
+            this->sectionModel->getName()
+    );
     this->paintAddress(painter);
     this->paintSize(painter);
 }
 
 int DiagramSectionNode::getMinHeight() const
 {
-    return 20;
+    return 30;
 }

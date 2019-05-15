@@ -6,16 +6,13 @@
 #include "gui/diagram/DiagramScene.h"
 
 DiagramHeaderNode::DiagramHeaderNode(DiagramScene *diagram, ELFHeaderModelItem *modelItem) : DiagramELFNode(diagram, modelItem) {
+    this->viewSide = BOTH;
+    this->column = 1;
     this->colspan = 2;
     this->headerModelItem = modelItem;
 
-    auto sht = modelItem->getSectionHeaderTable();
-    auto shtOffset = sht == nullptr ? ConnectionPoint::INVALID_ADDRESS : sht->getAddressInFile();
-    auto pht = modelItem->getProgramHeaderTable();
-    auto phtOffset = pht == nullptr ? ConnectionPoint::INVALID_ADDRESS : pht->getAddressInFile();
-
-    this->registerConnectionPoint(new ConnectionPoint("e_shoff", ConnectionPoint::LEFT, shtOffset));
-    this->registerConnectionPoint(new ConnectionPoint("e_phoff", ConnectionPoint::RIGHT, phtOffset));
+    this->registerConnectionPoint(new ConnectionPoint("e_shoff", Side::LEFT));
+    this->registerConnectionPoint(new ConnectionPoint("e_phoff", Side::RIGHT));
 }
 
 void DiagramHeaderNode::paint(QPainter *painter) const {
@@ -30,7 +27,7 @@ void DiagramHeaderNode::paint(QPainter *painter) const {
 }
 
 int DiagramHeaderNode::getMinHeight() const {
-    return 30;
+    return 40;
 }
 
 void DiagramHeaderNode::mousePressEvent(QMouseEvent *event) {

@@ -14,6 +14,7 @@ public:
     static QString eTypeToDisp(elf::Elf_Half value);
     static QString eMachineToDisp(elf::Elf_Half value);
     static QString eVersionToDisp(elf::Elf_Word value);
+    static QString pTypeToDisp(elf::Elf_Word value);
 
 private:
     template<typename TInt>

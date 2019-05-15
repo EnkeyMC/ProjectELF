@@ -1,6 +1,7 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import projectelf.models 1.0
 
 import "../singletons"
 import "../controls"
@@ -9,12 +10,12 @@ PESplitView {
     id: viewEdit
     orientation: Qt.Horizontal
 
-    property QtObject elfModel
+    property ELFModel elfModel
 
     ColumnLayout {
         id: elfHeaderColumn
         Layout.fillHeight: true
-        width: 250
+        width: 400
         spacing: 0
 
         PEToolBar {
@@ -31,41 +32,56 @@ PESplitView {
             Layout.fillHeight: true
             clip: true
 
-            PEExpandablePane {
-                title: "Expandable"
-                width: Math.max(150, scroll.availableWidth)
+            ColumnLayout {
+                id: tableColumnLayout
+                width: 0
+                spacing: 0
 
-                PETable {
-                    id: table
-                    columns: 2
-                    width: parent.width
+                Connections {
+                    target: scroll
+                    onAvailableWidthChanged: tableColumnLayout.recalculateWidth()
+                }
 
-                    PETableHeader {
-                        text: "Key"
+                signal recalculateWidth()
+
+                onRecalculateWidth: {
+                    var minWidth = scroll.availableWidth;
+                    for (var i = 0; i < visibleChildren.length; i++) {
+                        var child = visibleChildren[i];
+                        if (child.implicitWidth > minWidth)
+                            minWidth = child.implicitWidth;
                     }
 
-                    PETableHeader {
-                        text: "Value"
-                    }
+                    width = minWidth;
+                }
 
-                    PETableCell {
-                        Text {
-                            text: "Key1"
-                        }
-                    }
+                Component.onCompleted: recalculateWidth()
 
-                    PETableEditableCell {
-                        placeholderText: "editable cell"
-                    }
+                IdentificationEditTable {
+                    id: identificationEditTable
+                    elfModel: viewEdit.elfModel
+                    Layout.fillWidth: true
 
-                    PETableCell {
-                        Text {
-                            text: "Key2"
-                        }
-                    }
+                    onChildrenRectChanged: tableColumnLayout.recalculateWidth()
+                }
 
-                    PETableEditableCell {
-                        placeholderText: "editable cell"
+                Loader {
+                    id: headerEditTableLoader
+                    Layout.fillWidth: true
+                    sourceComponent: headerEditTableComponent
+                    active: elfModel && elfModel.header
+
+                }
+
+                Component {
+                    id: headerEditTableComponent
+
+                    HeaderEditTable {
+                        id: headerEditTable
+                        headerModel: elfModel ? elfModel.header : null
+                        width: parent.width
+
+                        onChildrenRectChanged: tableColumnLayout.recalculateWidth()
                     }
                 }
             }
@@ -75,27 +91,58 @@ PESplitView {
     ColumnLayout {
         id: sectionHeaderColumn
         Layout.fillHeight: true
-        width: 250
+        Layout.fillWidth: true
+        spacing: 0
 
         PEToolBar {
+            id: headersToolBar
             Layout.fillWidth: true
 
-            PEToolBarText {
-                text: "Section header"
+            property int currentIndex: firstButon.checked ? 0 : 1
+
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+
+                PEToolBarButton {
+                    id: firstButon
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    autoExclusive: true
+                    checkable: true
+                    checked: true
+                    text: qsTr("Section headers")
+                }
+
+                PEToolBarButton {
+                    clip: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    autoExclusive: true
+                    checkable: true
+                    text: qsTr("Program headers")
+                }
             }
         }
-    }
 
-    ColumnLayout {
-        id: sectionsColumn
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-
-        PEToolBar {
+        StackLayout {
+            Layout.fillHeight: true
             Layout.fillWidth: true
 
-            PEToolBarText {
-                text: "Sections"
+            currentIndex: headersToolBar.currentIndex
+
+            SectionHeadersEdit {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                elfModel: viewEdit.elfModel
+            }
+
+            ProgramHeadersEdit {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                elfModel: viewEdit.elfModel
             }
         }
     }

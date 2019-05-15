@@ -8,6 +8,9 @@
 #include "core/models/ELFModelItem.h"
 
 class ELFIndexedModelItem : public ELFModelItem {
+    Q_OBJECT
+
+    Q_PROPERTY(unsigned index READ getIndex CONSTANT)
 public:
     ELFIndexedModelItem(ELFModel *parent, std::shared_ptr<elf::ELF> elf, unsigned index);
 

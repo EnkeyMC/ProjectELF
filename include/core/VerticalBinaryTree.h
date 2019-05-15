@@ -8,6 +8,7 @@
 #include <array>
 #include <vector>
 #include <QLine>
+#include <QRect>
 
 template <typename TData>
 class VerticalBinaryTree {
@@ -26,6 +27,8 @@ public:
 
     QLine getBounds() const;
 
+    std::vector<TData*> getAllItems() const;
+
 private:
 
     void split();
@@ -36,6 +39,8 @@ private:
     bool shouldSplit() const;
 
     void getContainingRecursive(QPoint point, std::vector<TData*> &outItems) const;
+
+    void getAllItemsRecursive(std::vector<TData*> &outItems) const;
 
     bool contains(QLine bounds) const;
     bool contains(QRect bounds) const;
@@ -170,6 +175,24 @@ bool VerticalBinaryTree<TData>::contains(QLine bounds) const {
 template <typename TData>
 bool VerticalBinaryTree<TData>::contains(QRect bounds) const {
     return this->verticalBounds.y1() <= bounds.top() && this->verticalBounds.y2() >= bounds.bottom();
+}
+
+template<typename TData>
+std::vector<TData *> VerticalBinaryTree<TData>::getAllItems() const {
+    std::vector<TData *> allItems;
+    this->getAllItemsRecursive(allItems);
+    return allItems;
+}
+
+template<typename TData>
+void VerticalBinaryTree<TData>::getAllItemsRecursive(std::vector<TData *> &outItems) const {
+    for (auto item : items)
+        outItems.push_back(item);
+
+    for (auto node : nodes) {
+        if (node != nullptr)
+            node->getAllItemsRecursive(outItems);
+    }
 }
 
 

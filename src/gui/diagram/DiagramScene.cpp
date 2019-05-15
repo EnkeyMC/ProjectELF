@@ -26,6 +26,7 @@ DiagramScene::DiagramScene(QQuickItem *parent)
     this->setRenderTarget(QQuickPaintedItem::RenderTarget::Image);
     this->layout = new ProportionalDiagramLayout(this);
     connect(this->layout, &DiagramLayout::layoutChanged, this, &DiagramScene::onLayoutChanged);
+    connect(this, &DiagramScene::pushNodeToFront, this->layout, &DiagramLayout::pushToFront);
 
     this->setMinWidth(this->layout->getMinWidth() + 2*this->padding);
 
@@ -33,9 +34,7 @@ DiagramScene::DiagramScene(QQuickItem *parent)
 }
 
 DiagramScene::~DiagramScene() {
-    for (auto connection : connections)
-        delete connection;
-
+    this->clearConnections();
     delete layout;
 }
 
@@ -55,6 +54,7 @@ void DiagramScene::paint(QPainter *painter) {
 void DiagramScene::setModel(ELFModel *model) {
     if (model != this->model) {
         this->model = model;
+        connect(this->model, &ELFModel::structureChanged, this, &DiagramScene::onModelChanged);
         emit modelChanged(this->model);
     }
 }
@@ -86,6 +86,7 @@ void DiagramScene::setMinWidth(int minWidth) {
 
 void DiagramScene::onModelChanged() {
     this->layout->clearNodes();
+    this->clearConnections();
 
     if (this->model == nullptr) {
         this->setImplicitHeight(2*getPadding());
@@ -99,38 +100,42 @@ void DiagramScene::onModelChanged() {
     }
 
     auto headerNode = new DiagramHeaderNode(this, header);
-    this->layout->addLinkNode(headerNode);
+    this->layout->addNode(headerNode);
 
 
     auto sectionHeaderTable = header->getSectionHeaderTable();
     if (sectionHeaderTable != nullptr) {
         auto sectionHeaderTableNode = new DiagramSectionHeaderTableNode(this, sectionHeaderTable);
-        this->layout->addLinkNode(sectionHeaderTableNode);
+        this->layout->addNode(sectionHeaderTableNode);
 
-        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, Connection::LEFT, 0);
+        createConnection(headerNode, "e_shoff", sectionHeaderTableNode, LEFT, 0);
 
         for (auto sectionHeader : sectionHeaderTable->getSectionHeaders()) {
-            auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
-            this->layout->addLinkNode(sectionNode);
+            if (sectionHeader->getSectionModelItem() != nullptr) {
+                auto sectionNode = new DiagramSectionNode(this, sectionHeader->getSectionModelItem());
+                this->layout->addNode(sectionNode);
 
-            auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
-            createConnection(sectionHeaderNode, "sh_offset", sectionNode, Connection::LEFT, 1);
+                auto sectionHeaderNode = sectionHeaderTableNode->getSectionHeaderNode(sectionHeader->getIndex());
+                createConnection(sectionHeaderNode, "sh_offset", sectionNode, LEFT, 1);
+            }
         }
     }
 
     auto programHeaderTable = header->getProgramHeaderTable();
     if (programHeaderTable != nullptr) {
         auto programHeaderTableNode = new DiagramProgramHeaderTableNode(this, programHeaderTable);
-        this->layout->addExecNode(programHeaderTableNode);
+        this->layout->addNode(programHeaderTableNode);
 
-        createConnection(headerNode, "e_phoff", programHeaderTableNode, Connection::RIGHT, 0);
+        createConnection(headerNode, "e_phoff", programHeaderTableNode, RIGHT, 0);
 
         for (auto programHeader : programHeaderTable->getProgramHeaders()) {
-            auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
-            this->layout->addExecNode(segmentNode);
+            if (programHeader->getSegmentModelItem() != nullptr) {
+                auto segmentNode = new DiagramSegmentNode(this, programHeader->getSegmentModelItem());
+                this->layout->addNode(segmentNode);
 
-            auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
-            createConnection(programHeaderNode, "p_offset", segmentNode, Connection::RIGHT, 1);
+                auto programHeaderNode = programHeaderTableNode->getProgramHeaderNode(programHeader->getIndex());
+                createConnection(programHeaderNode, "p_offset", segmentNode, RIGHT, 1);
+            }
         }
     }
 
@@ -141,17 +146,28 @@ void DiagramScene::onModelChanged() {
 void DiagramScene::createConnection(DiagramNode *nodeFrom,
         const QString &connPoint,
         DiagramNode *nodeTo,
-        Connection::Side side,
+        Side side,
         int level)
 {
-    auto shtConnection = new Connection(this, side, level);
-    shtConnection->getStartBindable().bindTo(*nodeFrom->getConnectionPoints().at(connPoint));
-    shtConnection->getEndBindable().bindTo(nodeTo->getNodeBindable());
-    connect(nodeFrom, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
-    connect(nodeFrom, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
-    connect(nodeTo, &DiagramNode::hoverEntered, shtConnection, &Connection::setVisible);
-    connect(nodeTo, &DiagramNode::hoverLeaved, shtConnection, &Connection::setInvisible);
-    connections.push_back(shtConnection);
+    if (!nodeFrom->isValid())
+        return;
+
+    auto connection = new Connection(this, side, level);
+    nodeFrom->getConnectionPoints().at(connPoint)->bindConnection(connection);
+    connection->getEndBindable().bindTo(nodeTo->getNodeBindable());
+    connection->setValid(nodeTo->isValid());
+    connect(nodeFrom, &DiagramNode::hoverEntered, connection, &Connection::setVisible);
+    connect(nodeFrom, &DiagramNode::hoverLeaved, connection, &Connection::setInvisible);
+    connect(nodeTo, &DiagramNode::hoverEntered, connection, &Connection::setVisible);
+    connect(nodeTo, &DiagramNode::hoverLeaved, connection, &Connection::setInvisible);
+    connect(nodeFrom, &DiagramNode::hoverEntered, [=]() {emit this->pushNodeToFront(nodeTo);});
+    connections.push_back(connection);
+}
+
+void DiagramScene::clearConnections() {
+    for (auto connection : connections)
+        delete connection;
+    connections.clear();
 }
 
 void DiagramScene::mousePressEvent(QMouseEvent *event) {
@@ -199,22 +215,36 @@ void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
             translateMousePos(event->oldPos()),
             event->modifiers()
     };
+    translatedEvent.setAccepted(false);
 
-    layout->forEachNode([&translatedEvent](DiagramNode &node) {node.hoverMoveEvent(&translatedEvent);});
+    std::deque<DiagramNode *> zOrderedNodes{layout->getNodesZOrdered().size()};
+    // Copy to avoid concurrent modification
+    std::copy(layout->getNodesZOrdered().begin(), layout->getNodesZOrdered().end(), zOrderedNodes.begin());
+    for (auto it = zOrderedNodes.rbegin(); it != zOrderedNodes.rend(); it++) {
+        if (translatedEvent.isAccepted()) {
+            break;
+        }
+        (*it)->hoverMoveEvent(&translatedEvent);
+    }
 
     QQuickItem::hoverMoveEvent(event);
 }
 
 void DiagramScene::onLayoutChanged() {
-    nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->height())));
+    nodeTree.clear();
+    nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->getContentHeight())));
 
     auto linkNodes = this->layout->getLinkColumnSortedNodes();
-    for (auto node : linkNodes)
-        nodeTree.insert(node);
+    for (auto node : linkNodes) {
+        if (node.first->isValid())
+            nodeTree.insert(node.first);
+    }
 
     auto execNodes = this->layout->getExecColumnSortedNodes();
-    for (auto node : execNodes)
-        nodeTree.insert(node);
+    for (auto node : execNodes) {
+        if (node.first->isValid())
+            nodeTree.insert(node.first);
+    }
 
     this->update();
     emit contentSizeChanged(this->getContentSize());
@@ -330,9 +360,8 @@ DiagramLayout *DiagramScene::getLayout() const {
     return layout;
 }
 
-void DiagramScene::scrollToAddress(elf::Elf64_Addr address) {
-    auto proportionalOffset = layout->getSize().height() * (static_cast<double>(address) / model->getFileSize());
-    scroll.setY(- static_cast<int>(proportionalOffset) - layout->getNodeOffset().y() - padding);
+void DiagramScene::scrollTo(int y) {
+    scroll.setY(- y - layout->getNodeOffset().y() - padding);
     clampScroll();
     emit scrollYPositionChanged(getScrollYPosition());
 }

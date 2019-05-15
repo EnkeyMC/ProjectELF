@@ -9,24 +9,25 @@
 #include <QPoint>
 #include <QPainter>
 #include "core/Bindable.h"
+#include "core/Side.h"
 
 class DiagramScene;
 
 class Connection : public QObject {
     Q_OBJECT
 public:
-    enum Side {
-        LEFT,
-        RIGHT
-    };
 
-    explicit Connection(DiagramScene* diagram, enum Side side, int level = 0);
+    explicit Connection(DiagramScene* diagram, Side side, int level = 0);
 
     void paint(QPainter *painter) const;
 
     Bindable<QPoint> &getStartBindable();
 
     Bindable<QPoint> &getEndBindable();
+
+    bool isValid() const;
+
+    void setValid(bool valid);
 
 public slots:
     void setVisible();
@@ -38,9 +39,14 @@ private:
 
     DiagramScene* diagram;
 
-    enum Side side;
+    Side side;
     bool visible;
+    bool valid;
     int level;
+
+    void paintValid(QPainter *painter, int lineX) const;
+
+    void paintInvalid(QPainter *painter, int lineX) const;
 };
 
 

@@ -18,6 +18,18 @@ using std::map;
 class DiagramNode : public QObject, virtual public IDiagramMouseListener {
     Q_OBJECT
 public:
+    typedef enum {
+        LEFT,
+        RIGHT,
+        BOTH
+    } ViewSide;
+
+    typedef struct {
+        bool operator()(const DiagramNode* lhs, const DiagramNode* rhs) const {
+            return *lhs < *rhs;
+        }
+    } PtrComparer;
+
     explicit DiagramNode(DiagramScene *diagram);
 
     ~DiagramNode() override;
@@ -28,25 +40,23 @@ public:
 
     virtual double getProportionalSize() const = 0;
 
+    virtual bool isValid() const = 0;
+
     virtual int getMinHeight() const = 0;
 
     int getColspan() const;
+
+    void setColspan(int colspan);
 
     const QRect &getNodeRect() const;
 
     void setNodeRect(const QRect &nodeRect);
 
-    void setHeight(int height);
-
     void setColumn(int column);
 
     int getColumn() const;
 
-    void moveTop(int y);
-
-    void setBottom(int y);
-
-    void stretch(double factor);
+    ViewSide getViewSide() const;
 
     bool operator<(const DiagramNode &rhs) const;
 
@@ -78,17 +88,17 @@ protected:
 
     void paintConnectionPoints(QPainter *painter) const;
 
-    void hoverEnteredEvent() override;
+    void hoverEnteredEvent(QHoverEvent *event) override;
 
     void hoverLeavedEvent() override;
-
-protected:
 
     map<QString, ConnectionPoint*> connectionPoints;
 
     DiagramScene *diagram;
 
     QRect nodeRect;
+
+    ViewSide viewSide;
 
     int colspan;
     int column;

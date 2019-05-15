@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQuick 2.0
+import QtQuick 2.11
 import projectelf.diagram 1.0
 
 QtObject {
@@ -17,6 +17,8 @@ QtObject {
 
     readonly property color _ColorTextLight: "#FFFFFF"
     readonly property color _ColorTextDark: "#000000"
+
+    readonly property int _DefaultFontSize: 13
 
     readonly property DiagramStyle _DiagramStyle: DiagramStyle {}
 
@@ -45,11 +47,19 @@ QtObject {
         readonly property int _Height: 20
     }
 
+    readonly property QtObject statusBarButton: QtObject {
+        readonly property int _FontSize: 11
+    }
+
     readonly property QtObject progressBar: QtObject {
         readonly property int _Height: 8
     }
 
     readonly property QtObject toolBar: QtObject {
         readonly property int _Height: 30
+    }
+
+    readonly property QtObject badge: QtObject {
+        readonly property int _FontSize: 11
     }
 }
