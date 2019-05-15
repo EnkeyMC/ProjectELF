@@ -232,7 +232,7 @@ void DiagramScene::hoverMoveEvent(QHoverEvent *event) {
 
 void DiagramScene::onLayoutChanged() {
     nodeTree.clear();
-    nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->height())));
+    nodeTree.setBounds(QLine(0, 0, 0, static_cast<int>(this->getContentHeight())));
 
     auto linkNodes = this->layout->getLinkColumnSortedNodes();
     for (auto node : linkNodes) {
