@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
     auto font = app.font();
     font.setPixelSize(11);
     app.setFont(font);
+    app.setOrganizationName("ProjectELF");
+    app.setOrganizationDomain("projectelf");
 
     registerCustomQMLTypes();
 
