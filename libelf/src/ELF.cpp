@@ -13,6 +13,8 @@
 
 namespace elf {
 
+unsigned int ELF::MAX_STRUCTURES = 100;
+
 SIZEOF_EI_FIELD(ei_mag0)
 SIZEOF_EI_FIELD(ei_mag1)
 SIZEOF_EI_FIELD(ei_mag2)

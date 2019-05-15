@@ -74,7 +74,7 @@ public:
     void set_ei_osabi(unsigned char value);
     void set_ei_abiversion(unsigned char value);
 
-    static constexpr int MAX_STRUCTURES = 100;
+    static unsigned int MAX_STRUCTURES;
 
 private:
     void read_file_bytes(std::istream &istream);

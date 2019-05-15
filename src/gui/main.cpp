@@ -47,6 +47,15 @@ int main(int argc, char *argv[])
         return EXIT_SUCCESS;
     }
 
+    if (argc == 2) {
+        bool ok = false;
+        unsigned int maxStructures = QString(argv[1]).toUInt(&ok);
+        if (ok)
+            elf::ELF::MAX_STRUCTURES = maxStructures;
+        else
+            std::cerr << "First argument has invalid value, ignoring.";
+    }
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
